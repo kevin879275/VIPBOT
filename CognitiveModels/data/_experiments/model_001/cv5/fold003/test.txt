@@ -1,0 +1,27 @@
+Label	Weight	Text
+l_BuySell	1	]
+l_BuySell	1	"entities": [
+l_BuySell	1	"list": []
+l_BuySell	1	"canonicalForm": "對",
+l_BuySell	1	}
+l_BuySell	1	],
+l_BuySell	1	],
+l_BuySell	1	"list": []
+l_BuySell	1	"modelName": "Measure",
+l_BuySell	1	{
+l_BuySell	1	"list": []
+l_BuySell	1	{
+l_BuySell	1	"features": [
+l_BuySell	1	"canonicalForm": "打",
+l_BuySell	1	"canonicalForm": "台",
+l_BuySell	1	"name": "Item",
+l_BuySell	1	"name": "None",
+l_BuySell	1	"下單",
+l_BuySell	1	"luis_schema_version": "7.0.0",
+l_BuySell	1	"購入"
+l_BuySell	1	"isRequired": false
+l_BuySell	1	"桌機",
+l_BuySell	1	"composites": [],
+l_BuySell	1	"canonicalForm": "跟",
+l_BuySell	1	{
+q_BuySell	1	Hi

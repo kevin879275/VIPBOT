@@ -1,0 +1,27 @@
+Label	Weight	Text
+l_BuySell	1	"roles": []
+l_BuySell	1	"name": "Measure",
+l_BuySell	1	"regex_features": [],
+l_BuySell	1	"roles": []
+l_BuySell	1	"features": []
+l_BuySell	1	"list": [
+l_BuySell	1	"list": []
+l_BuySell	1	"name": "Buy Action",
+l_BuySell	1	"isRequired": false
+l_BuySell	1	"canonicalForm": "主機",
+l_BuySell	1	{
+l_BuySell	1	"canonicalForm": "顯卡",
+l_BuySell	1	"list": []
+l_BuySell	1	{
+l_BuySell	1	{
+l_BuySell	1	"modelName": "number",
+l_BuySell	1	"canonicalForm": "買",
+l_BuySell	1	"roles": []
+l_BuySell	1	"name": "number",
+l_BuySell	1	{
+l_BuySell	1	"utterances": [],
+l_BuySell	1	{
+l_BuySell	1	},
+l_BuySell	1	"canonicalForm": "筆電",
+l_BuySell	1	}
+q_BuySell	1	Hi

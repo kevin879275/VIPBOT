@@ -1,0 +1,39 @@
+{
+  "authoringRegion": "westus",
+  "hierarchical": true,
+  "useAllTrainingData": true,
+  "dontReviseUtterance": false,
+  "copyLuisData": true,
+  "normalizeDiacritics": true,
+  "services": [
+    {
+      "intentName": "l_BuySell",
+      "appId": "4af6e5ec-376b-423b-b96b-2873ca9fd215",
+      "authoringKey": "6d1174a30dd946868c16b4c4675f402a",
+      "version": "0.1",
+      "region": "westus",
+      "type": "luis",
+      "name": "VIPLuis",
+      "id": "1"
+    },
+    {
+      "intentName": "q_BuySell",
+      "includePrompts": true,
+      "kbId": "ebe9c1d4-24c7-4af7-b467-28b3ca85c462",
+      "subscriptionKey": "f1e45182b14149ffb6813ffe3c916455",
+      "type": "qna",
+      "name": "VIPQNAKB",
+      "id": "2"
+    }
+  ],
+  "serviceIds": [
+    "1",
+    "2"
+  ],
+  "appId": "6c9dde1d-5637-43db-9e00-5334c45324f6",
+  "authoringKey": "6d1174a30dd946868c16b4c4675f402a",
+  "version": "Dispatch",
+  "region": "westus",
+  "type": "dispatch",
+  "name": "VIPDispatch"
+}

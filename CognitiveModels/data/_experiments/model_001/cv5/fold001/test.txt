@@ -1,0 +1,27 @@
+Label	Weight	Text
+l_BuySell	1	"subLists": [
+l_BuySell	1	}
+l_BuySell	1	],
+l_BuySell	1	}
+l_BuySell	1	"hierarchicals": [],
+l_BuySell	1	],
+l_BuySell	1	}
+l_BuySell	1	"list": [
+l_BuySell	1	{
+l_BuySell	1	{
+l_BuySell	1	},
+l_BuySell	1	},
+l_BuySell	1	"canonicalForm": "個",
+l_BuySell	1	"subLists": [
+l_BuySell	1	],
+l_BuySell	1	"versionId": "0.1",
+l_BuySell	1	},
+l_BuySell	1	"features": []
+l_BuySell	1	"list": []
+l_BuySell	1	{
+l_BuySell	1	"roles": [],
+l_BuySell	1	{
+l_BuySell	1	{
+l_BuySell	1	"regex_entities": [],
+l_BuySell	1	}
+q_BuySell	1	Hello

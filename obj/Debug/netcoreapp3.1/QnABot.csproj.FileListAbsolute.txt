@@ -1,0 +1,6 @@
+/Users/kevinge/Desktop/vipqnamaker-bot/obj/Debug/netcoreapp3.1/QnABot.csprojAssemblyReference.cache
+/Users/kevinge/Desktop/vipqnamaker-bot/obj/Debug/netcoreapp3.1/QnABot.AssemblyInfoInputs.cache
+/Users/kevinge/Desktop/vipqnamaker-bot/obj/Debug/netcoreapp3.1/QnABot.AssemblyInfo.cs
+/Users/kevinge/Desktop/vipqnamaker-bot/obj/Debug/netcoreapp3.1/QnABot.csproj.CoreCompileInputs.cache
+/Users/kevinge/Desktop/vipqnamaker-bot/obj/Debug/netcoreapp3.1/QnABot.MvcApplicationPartsAssemblyInfo.cs
+/Users/kevinge/Desktop/vipqnamaker-bot/obj/Debug/netcoreapp3.1/QnABot.MvcApplicationPartsAssemblyInfo.cache

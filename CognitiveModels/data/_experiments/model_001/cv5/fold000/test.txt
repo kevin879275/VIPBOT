@@ -1,0 +1,27 @@
+Label	Weight	Text
+l_BuySell	1	"subLists": [
+l_BuySell	1	"prebuiltEntities": [
+l_BuySell	1	{
+l_BuySell	1	"patterns": [],
+l_BuySell	1	"筆記型電腦"
+l_BuySell	1	"canonicalForm": "件",
+l_BuySell	1	"list": []
+l_BuySell	1	"roles": []
+l_BuySell	1	"桌電"
+l_BuySell	1	{
+l_BuySell	1	{
+l_BuySell	1	},
+l_BuySell	1	"tokenizerVersion": "1.0.0",
+l_BuySell	1	"desc": "",
+l_BuySell	1	"購買",
+l_BuySell	1	}
+l_BuySell	1	"name": "Order",
+l_BuySell	1	{
+l_BuySell	1	],
+l_BuySell	1	},
+l_BuySell	1	"list": [
+l_BuySell	1	{
+l_BuySell	1	},
+l_BuySell	1	"children": [],
+l_BuySell	1	{
+q_BuySell	1	買
