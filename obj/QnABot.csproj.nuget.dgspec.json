@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/kevinge/Desktop/vipqnamaker-bot/QnABot.csproj": {}
+    "/Users/kevinge/Desktop/未命名檔案夾/QnABot.csproj": {}
   },
   "projects": {
-    "/Users/kevinge/Desktop/vipqnamaker-bot/QnABot.csproj": {
+    "/Users/kevinge/Desktop/未命名檔案夾/QnABot.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/kevinge/Desktop/vipqnamaker-bot/QnABot.csproj",
+        "projectUniqueName": "/Users/kevinge/Desktop/未命名檔案夾/QnABot.csproj",
         "projectName": "QnABot",
-        "projectPath": "/Users/kevinge/Desktop/vipqnamaker-bot/QnABot.csproj",
+        "projectPath": "/Users/kevinge/Desktop/未命名檔案夾/QnABot.csproj",
         "packagesPath": "/Users/kevinge/.nuget/packages/",
-        "outputPath": "/Users/kevinge/Desktop/vipqnamaker-bot/obj/",
+        "outputPath": "/Users/kevinge/Desktop/未命名檔案夾/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/kevinge/.config/NuGet/NuGet.Config"
@@ -42,19 +42,11 @@
               "target": "Package",
               "version": "[3.1.1, )"
             },
-            "Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime": {
-              "target": "Package",
-              "version": "[3.0.0, )"
-            },
             "Microsoft.Bot.Builder.AI.Luis": {
               "target": "Package",
               "version": "[4.8.0, )"
             },
             "Microsoft.Bot.Builder.AI.QnA": {
-              "target": "Package",
-              "version": "[4.8.0, )"
-            },
-            "Microsoft.Bot.Builder.Dialogs": {
               "target": "Package",
               "version": "[4.8.0, )"
             },

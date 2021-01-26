@@ -1,0 +1,31 @@
+﻿<Properties StartupConfiguration="{011BF8E5-6C91-4D05-A1CB-4AD6637DA400}|Default">
+  <MonoDevelop.Ide.ItemProperties.QnABot PreferredExecutionTarget="/Applications/Safari.app" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="appsettings.json">
+    <Files>
+      <File FileName="Dialog/QnAMakerBaseDialog.cs" Line="17" Column="20" />
+      <File FileName="Dialog/RootDialog.cs" Line="19" Column="26" />
+      <File FileName="appsettings.json" Line="14" Column="2" />
+      <File FileName="IBotServices.cs" Line="1" Column="1" />
+      <File FileName="Bots/DispatchBot.cs" Line="72" Column="27" />
+      <File FileName="BotServices.cs" Line="72" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="QnABot" expanded="True">
+            <Node name="QnABot" expanded="True">
+              <Node name="Bots" expanded="True" />
+              <Node name="appsettings.json" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

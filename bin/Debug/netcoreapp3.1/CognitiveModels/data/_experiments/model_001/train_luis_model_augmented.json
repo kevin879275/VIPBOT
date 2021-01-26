@@ -1,0 +1,348 @@
+﻿{
+  "luis_schema_version": "7.0.0",
+  "intents": [
+    {
+      "name": "l_BuySell"
+    },
+    {
+      "name": "q_BuySell"
+    }
+  ],
+  "entities": [],
+  "hierarchicals": [],
+  "composites": [],
+  "closedLists": [],
+  "prebuiltEntities": [],
+  "utterances": [
+    {
+      "text": "\"sublists\": [",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"prebuiltentities\": [",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "{",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"patterns\": [],",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"筆記型電腦\"",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"canonicalform\": \"件\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"list\": []",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"roles\": []",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"桌電\"",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "},",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"tokenizerversion\": \"1.0.0\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"desc\": \"\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"購買\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "}",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"name\": \"order\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "],",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"list\": [",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"children\": [],",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"hierarchicals\": [],",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"canonicalform\": \"個\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"versionid\": \"0.1\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"features\": []",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"roles\": [],",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"regex_entities\": [],",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"name\": \"measure\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"regex_features\": [],",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"name\": \"buy action\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"isrequired\": false",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"canonicalform\": \"主機\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"canonicalform\": \"顯卡\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"modelname\": \"number\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"canonicalform\": \"買\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"name\": \"number\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"utterances\": [],",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"canonicalform\": \"筆電\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "]",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"entities\": [",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"canonicalform\": \"對\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"modelname\": \"measure\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"features\": [",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"canonicalform\": \"打\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"canonicalform\": \"台\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"name\": \"item\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"name\": \"none\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"下單\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"luis_schema_version\": \"7.0.0\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"購入\"",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"桌機\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"composites\": [],",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"canonicalform\": \"跟\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"name\": \"buy\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"settings\": []",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"patternanyentities\": [],",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"phraselists\": [],",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"name\": \"vipluis\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"closedlists\": [",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"culture\": \"zh-cn\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"intents\": [",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "\"canonicalform\": \"手\",",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "買",
+      "intent": "q_BuySell",
+      "entities": []
+    },
+    {
+      "text": "hello",
+      "intent": "q_BuySell",
+      "entities": []
+    },
+    {
+      "text": "hi",
+      "intent": "q_BuySell",
+      "entities": []
+    }
+  ],
+  "versionId": "Dispatch",
+  "name": "VIPDispatch",
+  "desc": "Dispatch model for VIPDispatch",
+  "culture": "zh-cn",
+  "tokenizerVersion": "1.0.0",
+  "patternAnyEntities": [],
+  "regex_entities": [],
+  "phraselists": [],
+  "regex_features": [],
+  "patterns": [],
+  "settings": [
+    {
+      "name": "NormalizeDiacritics",
+      "value": "true"
+    },
+    {
+      "name": "UseAllTrainingData",
+      "value": "true"
+    }
+  ]
+}

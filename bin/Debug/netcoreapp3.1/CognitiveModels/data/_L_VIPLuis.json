@@ -1,0 +1,123 @@
+{
+  "luis_schema_version": "7.0.0",
+  "intents": [
+    {
+      "name": "Buy",
+      "features": []
+    },
+    {
+      "name": "None",
+      "features": []
+    }
+  ],
+  "entities": [
+    {
+      "name": "Order",
+      "children": [],
+      "roles": [],
+      "features": [
+        {
+          "modelName": "Measure",
+          "isRequired": false
+        },
+        {
+          "modelName": "number",
+          "isRequired": false
+        }
+      ]
+    }
+  ],
+  "hierarchicals": [],
+  "composites": [],
+  "closedLists": [
+    {
+      "name": "Buy Action",
+      "subLists": [
+        {
+          "canonicalForm": "買",
+          "list": [
+            "下單",
+            "購買",
+            "購入"
+          ]
+        }
+      ],
+      "roles": []
+    },
+    {
+      "name": "Item",
+      "subLists": [
+        {
+          "canonicalForm": "筆電",
+          "list": [
+            "筆記型電腦"
+          ]
+        },
+        {
+          "canonicalForm": "主機",
+          "list": [
+            "桌機",
+            "桌電"
+          ]
+        },
+        {
+          "canonicalForm": "顯卡",
+          "list": []
+        }
+      ],
+      "roles": []
+    },
+    {
+      "name": "Measure",
+      "subLists": [
+        {
+          "canonicalForm": "個",
+          "list": []
+        },
+        {
+          "canonicalForm": "件",
+          "list": []
+        },
+        {
+          "canonicalForm": "台",
+          "list": []
+        },
+        {
+          "canonicalForm": "對",
+          "list": []
+        },
+        {
+          "canonicalForm": "手",
+          "list": []
+        },
+        {
+          "canonicalForm": "打",
+          "list": []
+        },
+        {
+          "canonicalForm": "跟",
+          "list": []
+        }
+      ],
+      "roles": []
+    }
+  ],
+  "prebuiltEntities": [
+    {
+      "name": "number",
+      "roles": []
+    }
+  ],
+  "utterances": [],
+  "versionId": "0.1",
+  "name": "VIPLuis",
+  "desc": "",
+  "culture": "zh-cn",
+  "tokenizerVersion": "1.0.0",
+  "patternAnyEntities": [],
+  "regex_entities": [],
+  "phraselists": [],
+  "regex_features": [],
+  "patterns": [],
+  "settings": []
+}
