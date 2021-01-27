@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Snm3XYMLt0AKk+ERS0RmXwTcx4590crnxin/v6tNM50CqzHZ9InQqtPh5DWH/iuhHZ8xB/A4/tJpeiXEL6sCjA==",
+  "dgSpecHash": "KwK6UkN6B9xi4hZdyXDCXkXca5T0JPuA+LG42r45z0oXBUbV+cWkb5K8RwVQsdcQq8v9WGpgAjH17tyi/MCJ5w==",
   "success": true,
-  "projectFilePath": "/Users/kevinge/Desktop/未命名檔案夾/QnABot.csproj",
+  "projectFilePath": "/Users/kevinge/Desktop/二手拍賣bot/QnABot.csproj",
   "expectedPackageFiles": [
     "/Users/kevinge/.nuget/packages/microsoft.aspnetcore.jsonpatch/3.1.1/microsoft.aspnetcore.jsonpatch.3.1.1.nupkg.sha512",
     "/Users/kevinge/.nuget/packages/microsoft.aspnetcore.mvc.newtonsoftjson/3.1.1/microsoft.aspnetcore.mvc.newtonsoftjson.3.1.1.nupkg.sha512",

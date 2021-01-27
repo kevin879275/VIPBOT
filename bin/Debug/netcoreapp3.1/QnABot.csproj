@@ -24,8 +24,8 @@
   </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="CognitiveModels\" />
       <Folder Include="cards\" />
+      <Folder Include="CognitiveModels\" />
     </ItemGroup>
   <Import Project="PostDeployScripts\IncludeSources.targets" Condition="Exists('PostDeployScripts\IncludeSources.targets')" />
   <Import Project="..\PostDeployScripts\IncludeSources.targets" Condition="Exists('..\PostDeployScripts\IncludeSources.targets')" />

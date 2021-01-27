@@ -1,27 +1,3 @@
 Label	Weight	Text
-l_BuySell	1	"canonicalForm": "跟",
-l_BuySell	1	{
-l_BuySell	1	}
-l_BuySell	1	"name": "Buy",
-l_BuySell	1	"settings": []
-l_BuySell	1	]
-l_BuySell	1	]
-l_BuySell	1	"patternAnyEntities": [],
-l_BuySell	1	},
-l_BuySell	1	"phraselists": [],
-l_BuySell	1	},
-l_BuySell	1	},
-l_BuySell	1	"name": "VIPLuis",
-l_BuySell	1	"closedLists": [
-l_BuySell	1	]
-l_BuySell	1	},
-l_BuySell	1	"culture": "zh-cn",
-l_BuySell	1	"intents": [
-l_BuySell	1	],
-l_BuySell	1	"list": []
-l_BuySell	1	"canonicalForm": "手",
-l_BuySell	1	{
-l_BuySell	1	{
-l_BuySell	1	},
-l_BuySell	1	}
+l_BuySell	1	賣鍵盤 500元
 q_BuySell	1	Hi

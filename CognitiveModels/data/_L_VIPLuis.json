@@ -3,14 +3,72 @@
   "intents": [
     {
       "name": "Buy",
-      "features": []
+      "features": [
+        {
+          "modelName": "Buy Action",
+          "isRequired": false
+        },
+        {
+          "modelName": "ItemNumber",
+          "isRequired": false
+        },
+        {
+          "modelName": "Item Quantity",
+          "isRequired": false
+        }
+      ]
     },
     {
       "name": "None",
       "features": []
+    },
+    {
+      "name": "Number",
+      "features": [
+        {
+          "modelName": "number",
+          "isRequired": false
+        }
+      ]
+    },
+    {
+      "name": "Sell",
+      "features": [
+        {
+          "modelName": "Item",
+          "isRequired": false
+        },
+        {
+          "modelName": "Order",
+          "isRequired": false
+        },
+        {
+          "modelName": "Sell Action",
+          "isRequired": false
+        },
+        {
+          "modelName": "money",
+          "isRequired": false
+        }
+      ]
     }
   ],
   "entities": [
+    {
+      "name": "Item Quantity",
+      "children": [],
+      "roles": [],
+      "features": [
+        {
+          "modelName": "ItemNumber",
+          "isRequired": false
+        },
+        {
+          "modelName": "Quantity math",
+          "isRequired": false
+        }
+      ]
+    },
     {
       "name": "Order",
       "children": [],
@@ -22,6 +80,10 @@
         },
         {
           "modelName": "number",
+          "isRequired": false
+        },
+        {
+          "modelName": "Item",
           "isRequired": false
         }
       ]
@@ -62,7 +124,59 @@
         },
         {
           "canonicalForm": "顯卡",
+          "list": [
+            "顯示卡",
+            "GPU"
+          ]
+        },
+        {
+          "canonicalForm": "CPU",
+          "list": [
+            "中央處理器",
+            "處理器"
+          ]
+        },
+        {
+          "canonicalForm": "記憶體",
+          "list": [
+            "RAM"
+          ]
+        },
+        {
+          "canonicalForm": "顯示器",
+          "list": [
+            "螢幕"
+          ]
+        },
+        {
+          "canonicalForm": "酒",
           "list": []
+        },
+        {
+          "canonicalForm": "椅子",
+          "list": []
+        },
+        {
+          "canonicalForm": "桌子",
+          "list": []
+        },
+        {
+          "canonicalForm": "機車",
+          "list": []
+        },
+        {
+          "canonicalForm": "汽車",
+          "list": []
+        },
+        {
+          "canonicalForm": "腳踏車",
+          "list": []
+        },
+        {
+          "canonicalForm": "手機",
+          "list": [
+            "智慧型手機"
+          ]
         }
       ],
       "roles": []
@@ -95,8 +209,34 @@
           "list": []
         },
         {
-          "canonicalForm": "跟",
+          "canonicalForm": "根",
           "list": []
+        },
+        {
+          "canonicalForm": "張",
+          "list": []
+        },
+        {
+          "canonicalForm": "本",
+          "list": []
+        },
+        {
+          "canonicalForm": "組",
+          "list": []
+        }
+      ],
+      "roles": []
+    },
+    {
+      "name": "Sell Action",
+      "subLists": [
+        {
+          "canonicalForm": "賣",
+          "list": [
+            "賣出",
+            "出售",
+            "售"
+          ]
         }
       ],
       "roles": []
@@ -104,18 +244,69 @@
   ],
   "prebuiltEntities": [
     {
+      "name": "money",
+      "roles": []
+    },
+    {
       "name": "number",
       "roles": []
     }
   ],
-  "utterances": [],
+  "utterances": [
+    {
+      "text": "999",
+      "intent": "Number",
+      "entities": []
+    },
+    {
+      "text": "No001 x2",
+      "intent": "Buy",
+      "entities": []
+    },
+    {
+      "text": "下單 #400 兩組",
+      "intent": "Buy",
+      "entities": []
+    },
+    {
+      "text": "滑鼠400元",
+      "intent": "Sell",
+      "entities": []
+    },
+    {
+      "text": "買 #0001 *2",
+      "intent": "Buy",
+      "entities": []
+    },
+    {
+      "text": "賣鍵盤 500元",
+      "intent": "Sell",
+      "entities": []
+    },
+    {
+      "text": "購 no1 400台",
+      "intent": "Buy",
+      "entities": []
+    }
+  ],
   "versionId": "0.1",
   "name": "VIPLuis",
   "desc": "",
   "culture": "zh-cn",
   "tokenizerVersion": "1.0.0",
   "patternAnyEntities": [],
-  "regex_entities": [],
+  "regex_entities": [
+    {
+      "name": "ItemNumber",
+      "regexPattern": "(?:#|＃|No\\.|No|no\\.|no)\\d+",
+      "roles": []
+    },
+    {
+      "name": "Quantity math",
+      "regexPattern": "[\\*|x|＊|X|ｘ|Ｘ]\\d+",
+      "roles": []
+    }
+  ],
   "phraselists": [],
   "regex_features": [],
   "patterns": [],

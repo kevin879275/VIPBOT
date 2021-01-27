@@ -6903,11 +6903,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/kevinge/Desktop/未命名檔案夾/QnABot.csproj",
+      "projectUniqueName": "/Users/kevinge/Desktop/二手拍賣bot/QnABot.csproj",
       "projectName": "QnABot",
-      "projectPath": "/Users/kevinge/Desktop/未命名檔案夾/QnABot.csproj",
+      "projectPath": "/Users/kevinge/Desktop/二手拍賣bot/QnABot.csproj",
       "packagesPath": "/Users/kevinge/.nuget/packages/",
-      "outputPath": "/Users/kevinge/Desktop/未命名檔案夾/obj/",
+      "outputPath": "/Users/kevinge/Desktop/二手拍賣bot/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/kevinge/.config/NuGet/NuGet.Config"
