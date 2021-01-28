@@ -78,6 +78,8 @@ namespace Microsoft.BotBuilderSamples
             switch (intent)
             {
                 case "l_BuySell":
+                    var result = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(recognizerResult.Properties["luisResult"], new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
+                    //var topIntent = result.Prediction.Intents[result.Prediction.TopIntent];
                     await ProcessCovid19LuisAsync(turnContext, recognizerResult.Properties["luisResult"] as LuisResult, cancellationToken);
                     break;
                 // case "l_Weather":

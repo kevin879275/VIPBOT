@@ -9,9 +9,9 @@
   <ItemGroup>
 <!--    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.19"><PrivateAssets Condition="'%(PackageReference.Version)' == ''">all</PrivateAssets>
 -->
-     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.1">   
-     <Publish Condition="'%(PackageReference.Version)' == ''">true</Publish>
-</PackageReference>
+     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.1"/>   
+<!--     <Publish Condition="'%(PackageReference.Version)' == ''">true</Publish>
+-->
     <PackageReference Include="Microsoft.Bot.Builder.AI.QnA" Version="4.8.0" />
     <PackageReference Include="Microsoft.Bot.Builder.Integration.AspNet.Core" Version="4.8.0" />
     <PackageReference Include="Microsoft.Bot.Builder.AI.Luis" Version="4.11.1" />
@@ -25,8 +25,8 @@
 
     <ItemGroup>
       <Folder Include="cards\" />
-      <Folder Include="CognitiveModels\" />
-    </ItemGroup>
+<!--      <Folder Include="CognitiveModels\" />
+-->    </ItemGroup>
   <Import Project="PostDeployScripts\IncludeSources.targets" Condition="Exists('PostDeployScripts\IncludeSources.targets')" />
   <Import Project="..\PostDeployScripts\IncludeSources.targets" Condition="Exists('..\PostDeployScripts\IncludeSources.targets')" />
 

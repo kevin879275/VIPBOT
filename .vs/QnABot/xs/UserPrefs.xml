@@ -1,15 +1,10 @@
 ﻿<Properties StartupConfiguration="{011BF8E5-6C91-4D05-A1CB-4AD6637DA400}|Default">
   <MonoDevelop.Ide.ItemProperties.QnABot PreferredExecutionTarget="/Applications/Safari.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="CognitiveModels/VIPDispatch.json">
+  <MonoDevelop.Ide.Workbench ActiveDocument="appsettings.json">
     <Files>
-      <File FileName="Dialog/QnAMakerBaseDialog.cs" Line="17" Column="20" />
-      <File FileName="Dialog/RootDialog.cs" Line="1" Column="1" />
-      <File FileName="appsettings.json" Line="12" Column="17" />
-      <File FileName="IBotServices.cs" Line="12" Column="38" />
-      <File FileName="Bots/DispatchBot.cs" Line="61" Column="10" />
-      <File FileName="BotServices.cs" Line="60" Column="41" />
-      <File FileName="QnABot.csproj" Line="22" Column="60" />
-      <File FileName="CognitiveModels/VIPDispatch.json" Line="43" Column="19" />
+      <File FileName="Bots/DispatchBot.cs" Line="67" Column="64" IsPinned="True" />
+      <File FileName="CognitiveModels/VIPDispatch.dispatch" Line="11" Column="25" />
+      <File FileName="appsettings.json" Line="17" Column="2" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -17,10 +12,8 @@
           <Node name="QnABot" expanded="True">
             <Node name="QnABot" expanded="True">
               <Node name="Bots" expanded="True" />
-              <Node name="CognitiveModels" expanded="True">
-                <Node name="VIPDispatch.json" selected="True" />
-              </Node>
-              <Node name="Dialog" expanded="True" />
+              <Node name="CognitiveModels" expanded="True" />
+              <Node name="appsettings.json" selected="True" />
             </Node>
           </Node>
         </State>
@@ -32,9 +25,7 @@
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Catchpoint exceptionName="System.Exception" includeSubclasses="True" />
-      <Breakpoint file="/Users/kevinge/Desktop/二手拍賣bot/Bots/DispatchBot.cs" relfile="Bots/DispatchBot.cs" line="86" column="1" />
-      <Breakpoint file="/Users/kevinge/Desktop/二手拍賣bot/Bots/DispatchBot.cs" relfile="Bots/DispatchBot.cs" line="65" column="1" />
-      <Breakpoint file="/Users/kevinge/Desktop/二手拍賣bot/Bots/DispatchBot.cs" relfile="Bots/DispatchBot.cs" line="39" column="1" />
+      <Breakpoint file="/Users/kevinge/Desktop/二手拍賣bot/Bots/DispatchBot.cs" relfile="Bots/DispatchBot.cs" line="67" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
