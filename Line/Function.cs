@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.BotBuilderSamples
 {
-    class Collections
+    public class LineFunctions
     {
         public async Task AcceptedLineMsg(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
