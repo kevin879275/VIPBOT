@@ -88,12 +88,7 @@ namespace Imgur
         {
             return Upload(srcToBase64(src));
         }
-        static void Main(string[] args)
-        {
-            string s = UploadFile(@"0_0.png");
-            Console.WriteLine(s);
-            Download(s, @"1_1.png");
-        }
+
 
     }
 }
