@@ -1,3 +1,3 @@
 Label	LabelName	Samples
-0	l_BuySell	7
-1	q_BuySell	3
+0	l_BuySell	8
+1	q_BuySell	4

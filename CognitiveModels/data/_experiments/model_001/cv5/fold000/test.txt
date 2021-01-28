@@ -1,3 +1,4 @@
 Label	Weight	Text
-l_BuySell	1	No001 x2
-q_BuySell	1	買
+l_BuySell	1	賣鍵盤 500元
+l_BuySell	1	買 #0001 *2
+q_BuySell	1	Hi

@@ -15,7 +15,7 @@
   "prebuiltEntities": [],
   "utterances": [
     {
-      "text": "no001 x2",
+      "text": "賣鍵盤 500元",
       "intent": "l_BuySell",
       "entities": []
     },
@@ -25,17 +25,12 @@
       "entities": []
     },
     {
+      "text": "no001 x2",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
       "text": "滑鼠400元",
-      "intent": "l_BuySell",
-      "entities": []
-    },
-    {
-      "text": "下單 #400 兩組",
-      "intent": "l_BuySell",
-      "entities": []
-    },
-    {
-      "text": "賣鍵盤 500元",
       "intent": "l_BuySell",
       "entities": []
     },
@@ -45,12 +40,22 @@
       "entities": []
     },
     {
+      "text": "買no500",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
       "text": "購 no1 400台",
       "intent": "l_BuySell",
       "entities": []
     },
     {
-      "text": "買",
+      "text": "下單 #400 兩組",
+      "intent": "l_BuySell",
+      "entities": []
+    },
+    {
+      "text": "hi",
       "intent": "q_BuySell",
       "entities": []
     },
@@ -60,7 +65,12 @@
       "entities": []
     },
     {
-      "text": "hi",
+      "text": "怎麼賣商品",
+      "intent": "q_BuySell",
+      "entities": []
+    },
+    {
+      "text": "怎麼買",
       "intent": "q_BuySell",
       "entities": []
     }

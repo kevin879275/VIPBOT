@@ -1,3 +1,4 @@
 Label	Weight	Text
-l_BuySell	1	滑鼠400元
-q_BuySell	1	Hi
+l_BuySell	1	999
+l_BuySell	1	買no500
+q_BuySell	1	怎麼賣商品

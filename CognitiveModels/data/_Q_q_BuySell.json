@@ -2,10 +2,10 @@
   "qnaDocuments": [
     {
       "id": 1,
-      "answer": "你要買什麼?",
+      "answer": "請輸入您要的物品",
       "source": "Editorial",
       "questions": [
-        "買"
+        "怎麼買?"
       ],
       "metadata": [],
       "alternateQuestionClusters": [],
@@ -13,7 +13,7 @@
         "isContextOnly": false,
         "prompts": []
       },
-      "lastUpdatedTimestamp": "2021-01-26T14:54:57.722+00:00",
+      "lastUpdatedTimestamp": "2021-01-28T07:03:13.975+00:00",
       "isDocumentText": false
     },
     {
@@ -31,6 +31,22 @@
         "prompts": []
       },
       "lastUpdatedTimestamp": "2021-01-26T14:54:57.722+00:00",
+      "isDocumentText": false
+    },
+    {
+      "id": 3,
+      "answer": "選擇下方賣的按鈕，並依序輸入商品名稱，簡短描述，數量，圖片",
+      "source": "Editorial",
+      "questions": [
+        "怎麼賣商品?"
+      ],
+      "metadata": [],
+      "alternateQuestionClusters": [],
+      "context": {
+        "isContextOnly": false,
+        "prompts": []
+      },
+      "lastUpdatedTimestamp": "2021-01-28T07:06:33.503+00:00",
       "isDocumentText": false
     }
   ]

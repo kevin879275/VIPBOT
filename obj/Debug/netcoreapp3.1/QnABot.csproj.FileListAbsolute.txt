@@ -254,9 +254,6 @@ C:/Users/ASUS/Documents/GitHub/VIPBOT/obj/Debug/netcoreapp3.1/QnABot.dll
 C:/Users/ASUS/Documents/GitHub/VIPBOT/obj/Debug/netcoreapp3.1/QnABot.pdb
 C:/Users/ASUS/Documents/GitHub/VIPBOT/obj/Debug/netcoreapp3.1/QnABot.genruntimeconfig.cache
 C:/Users/ASUS/Documents/GitHub/VIPBOT/bin/Debug/netcoreapp3.1/SQL_Database.cs
-/Users/kevinge/Desktop/二手拍賣bot/bin/Debug/netcoreapp3.1/CognitiveModels/data/_experiments/model_001/train_luis_model_augmented.json
-/Users/kevinge/Desktop/二手拍賣bot/bin/Debug/netcoreapp3.1/CognitiveModels/data/_L_VIPLuis.json
-/Users/kevinge/Desktop/二手拍賣bot/bin/Debug/netcoreapp3.1/CognitiveModels/data/_Q_q_BuySell.json
 /Users/kevinge/Desktop/二手拍賣bot/bin/Debug/netcoreapp3.1/SQL_Database.cs
 /Users/kevinge/Desktop/二手拍賣bot/bin/Debug/netcoreapp3.1/AdaptiveExpressions.dll
 /Users/kevinge/Desktop/二手拍賣bot/bin/Debug/netcoreapp3.1/Antlr4.Runtime.Standard.dll

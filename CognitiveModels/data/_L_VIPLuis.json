@@ -279,6 +279,11 @@
       "entities": []
     },
     {
+      "text": "買no500",
+      "intent": "Buy",
+      "entities": []
+    },
+    {
       "text": "賣鍵盤 500元",
       "intent": "Sell",
       "entities": []
