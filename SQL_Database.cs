@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.IO;
 using System.Data;
-
+/*
 namespace SQL_Database
 {
     class Program
@@ -17,11 +17,14 @@ namespace SQL_Database
             try
             {
                 SQL_Database sQL_Database = new SQL_Database();
-                var cb = new SqlConnectionStringBuilder();
-                cb.DataSource = "viplabcareerhackserver.database.windows.net";
-                cb.UserID = "viplab";
-                cb.Password = "Careerhack12345";
-                cb.InitialCatalog = "VIPLABCAREERHACKDB";
+                var cb = new SqlConnectionStringBuilder
+                {
+                    DataSource = "viplabcareerhackserver.database.windows.net",
+                    UserID = "viplab",
+                    Password = "Careerhack12345",
+                    InitialCatalog = "VIPLABCAREERHACKDB",
+                };
+                
                 using (var connection = new SqlConnection(cb.ConnectionString))
                 {
                     connection.Open();
@@ -662,3 +665,4 @@ namespace SQL_Database
     }
 }
 
+*/

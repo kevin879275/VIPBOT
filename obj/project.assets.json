@@ -2,6 +2,33 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v3.1": {
+      "AdaptiveExpressions/4.11.1": {
+        "type": "package",
+        "dependencies": {
+          "Antlr4.Runtime.Standard": "4.8.0",
+          "Microsoft.CSharp": "4.5.0",
+          "Microsoft.Recognizers.Text.DataTypes.TimexExpression": "1.2.9",
+          "Newtonsoft.Json": "12.0.3"
+        },
+        "compile": {
+          "lib/netstandard2.0/AdaptiveExpressions.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/AdaptiveExpressions.dll": {}
+        }
+      },
+      "Antlr4.Runtime.Standard/4.8.0": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
+        },
+        "compile": {
+          "lib/netstandard1.3/Antlr4.Runtime.Standard.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/Antlr4.Runtime.Standard.dll": {}
+        }
+      },
       "Microsoft.AspNetCore.JsonPatch/3.1.1": {
         "type": "package",
         "dependencies": {
@@ -47,11 +74,11 @@
           "lib/netstandard2.0/Microsoft.Azure.CognitiveServices.Language.LUIS.dll": {}
         }
       },
-      "Microsoft.Bot.Builder/4.8.0": {
+      "Microsoft.Bot.Builder/4.11.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Bot.Connector": "4.8.0",
-          "Microsoft.Bot.Streaming": "4.8.0",
+          "Microsoft.Bot.Connector": "4.11.1",
+          "Microsoft.Bot.Streaming": "4.11.1",
           "Microsoft.Extensions.Logging": "2.1.0"
         },
         "compile": {
@@ -61,14 +88,12 @@
           "lib/netstandard2.0/Microsoft.Bot.Builder.dll": {}
         }
       },
-      "Microsoft.Bot.Builder.AI.Luis/4.8.0": {
+      "Microsoft.Bot.Builder.AI.Luis/4.11.1": {
         "type": "package",
         "dependencies": {
           "Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime": "2.1.0",
-          "Microsoft.Bot.Builder": "4.8.0",
-          "Microsoft.Bot.Builder.Dialogs": "4.8.0",
-          "Microsoft.Bot.Configuration": "4.8.0",
-          "Microsoft.Bot.Schema": "4.8.0",
+          "Microsoft.Bot.Builder.Dialogs.Declarative": "4.11.1",
+          "Microsoft.Bot.Configuration": "4.11.1",
           "Microsoft.Extensions.Configuration": "2.1.0",
           "Microsoft.Extensions.Configuration.Json": "2.1.0",
           "Newtonsoft.Json": "12.0.3"
@@ -94,10 +119,10 @@
           "lib/netstandard2.0/Microsoft.Bot.Builder.AI.QnA.dll": {}
         }
       },
-      "Microsoft.Bot.Builder.Dialogs/4.8.0": {
+      "Microsoft.Bot.Builder.Dialogs/4.11.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Bot.Builder": "4.8.0",
+          "Microsoft.Bot.Builder": "4.11.1",
           "Microsoft.Recognizers.Text.Choice": "1.2.9",
           "Microsoft.Recognizers.Text.DateTime": "1.2.9"
         },
@@ -106,6 +131,21 @@
         },
         "runtime": {
           "lib/netstandard2.0/Microsoft.Bot.Builder.Dialogs.dll": {}
+        }
+      },
+      "Microsoft.Bot.Builder.Dialogs.Declarative/4.11.1": {
+        "type": "package",
+        "dependencies": {
+          "AdaptiveExpressions": "4.11.1",
+          "Microsoft.Bot.Builder.Dialogs": "4.11.1",
+          "Newtonsoft.Json": "12.0.3",
+          "NuGet.Packaging": "5.5.1"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Bot.Builder.Dialogs.Declarative.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Bot.Builder.Dialogs.Declarative.dll": {}
         }
       },
       "Microsoft.Bot.Builder.Integration.AspNet.Core/4.8.0": {
@@ -122,11 +162,11 @@
           "lib/netcoreapp3.1/Microsoft.Bot.Builder.Integration.AspNet.Core.dll": {}
         }
       },
-      "Microsoft.Bot.Configuration/4.8.0": {
+      "Microsoft.Bot.Configuration/4.11.1": {
         "type": "package",
         "dependencies": {
           "Newtonsoft.Json": "10.0.3",
-          "System.Threading.Tasks.Extensions": "4.5.1"
+          "System.Threading.Tasks.Extensions": "4.5.4"
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.Bot.Configuration.dll": {}
@@ -135,10 +175,10 @@
           "lib/netstandard2.0/Microsoft.Bot.Configuration.dll": {}
         }
       },
-      "Microsoft.Bot.Connector/4.8.0": {
+      "Microsoft.Bot.Connector/4.11.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Bot.Schema": "4.8.0",
+          "Microsoft.Bot.Schema": "4.11.1",
           "Microsoft.Extensions.Logging": "2.1.0",
           "Microsoft.IdentityModel.Clients.ActiveDirectory": "5.2.4",
           "Microsoft.IdentityModel.Protocols.OpenIdConnect": "5.6.0",
@@ -152,7 +192,7 @@
           "lib/netstandard2.0/Microsoft.Bot.Connector.dll": {}
         }
       },
-      "Microsoft.Bot.Schema/4.8.0": {
+      "Microsoft.Bot.Schema/4.11.1": {
         "type": "package",
         "dependencies": {
           "Newtonsoft.Json": "12.0.3"
@@ -164,7 +204,7 @@
           "lib/netstandard2.0/Microsoft.Bot.Schema.dll": {}
         }
       },
-      "Microsoft.Bot.Streaming/4.8.0": {
+      "Microsoft.Bot.Streaming/4.11.1": {
         "type": "package",
         "dependencies": {
           "Microsoft.Extensions.Logging": "2.1.0",
@@ -489,6 +529,15 @@
           "lib/netstandard2.0/Microsoft.Recognizers.Text.Choice.dll": {}
         }
       },
+      "Microsoft.Recognizers.Text.DataTypes.TimexExpression/1.2.9": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Recognizers.Text.DataTypes.TimexExpression.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Recognizers.Text.DataTypes.TimexExpression.dll": {}
+        }
+      },
       "Microsoft.Recognizers.Text.DateTime/1.2.9": {
         "type": "package",
         "dependencies": {
@@ -567,6 +616,32 @@
           "ref/netstandard1.3/Microsoft.Win32.Primitives.dll": {}
         }
       },
+      "Microsoft.Win32.Registry/4.3.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "1.1.0",
+          "System.Collections": "4.3.0",
+          "System.Globalization": "4.3.0",
+          "System.Resources.ResourceManager": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Runtime.Extensions": "4.3.0",
+          "System.Runtime.Handles": "4.3.0",
+          "System.Runtime.InteropServices": "4.3.0"
+        },
+        "compile": {
+          "ref/netstandard1.3/_._": {}
+        },
+        "runtimeTargets": {
+          "runtimes/unix/lib/netstandard1.3/Microsoft.Win32.Registry.dll": {
+            "assetType": "runtime",
+            "rid": "unix"
+          },
+          "runtimes/win/lib/netstandard1.3/Microsoft.Win32.Registry.dll": {
+            "assetType": "runtime",
+            "rid": "win"
+          }
+        }
+      },
       "NETStandard.Library/1.6.1": {
         "type": "package",
         "dependencies": {
@@ -635,6 +710,66 @@
         },
         "runtime": {
           "lib/netstandard2.0/Newtonsoft.Json.Bson.dll": {}
+        }
+      },
+      "NuGet.Common/5.5.1": {
+        "type": "package",
+        "dependencies": {
+          "NuGet.Frameworks": "5.5.1",
+          "System.Diagnostics.Process": "4.3.0",
+          "System.Threading.Thread": "4.3.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/NuGet.Common.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/NuGet.Common.dll": {}
+        }
+      },
+      "NuGet.Configuration/5.5.1": {
+        "type": "package",
+        "dependencies": {
+          "NuGet.Common": "5.5.1",
+          "System.Security.Cryptography.ProtectedData": "4.3.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/NuGet.Configuration.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/NuGet.Configuration.dll": {}
+        }
+      },
+      "NuGet.Frameworks/5.5.1": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/NuGet.Frameworks.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/NuGet.Frameworks.dll": {}
+        }
+      },
+      "NuGet.Packaging/5.5.1": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "9.0.1",
+          "NuGet.Configuration": "5.5.1",
+          "NuGet.Versioning": "5.5.1",
+          "System.Dynamic.Runtime": "4.3.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/NuGet.Packaging.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/NuGet.Packaging.dll": {}
+        }
+      },
+      "NuGet.Versioning/5.5.1": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/NuGet.Versioning.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/NuGet.Versioning.dll": {}
         }
       },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2": {
@@ -995,6 +1130,49 @@
         },
         "runtime": {
           "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll": {}
+        }
+      },
+      "System.Diagnostics.Process/4.3.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "1.1.0",
+          "Microsoft.Win32.Primitives": "4.3.0",
+          "Microsoft.Win32.Registry": "4.3.0",
+          "System.Collections": "4.3.0",
+          "System.Diagnostics.Debug": "4.3.0",
+          "System.Globalization": "4.3.0",
+          "System.IO": "4.3.0",
+          "System.IO.FileSystem": "4.3.0",
+          "System.IO.FileSystem.Primitives": "4.3.0",
+          "System.Resources.ResourceManager": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Runtime.Extensions": "4.3.0",
+          "System.Runtime.Handles": "4.3.0",
+          "System.Runtime.InteropServices": "4.3.0",
+          "System.Text.Encoding": "4.3.0",
+          "System.Text.Encoding.Extensions": "4.3.0",
+          "System.Threading": "4.3.0",
+          "System.Threading.Tasks": "4.3.0",
+          "System.Threading.Thread": "4.3.0",
+          "System.Threading.ThreadPool": "4.3.0",
+          "runtime.native.System": "4.3.0"
+        },
+        "compile": {
+          "ref/netstandard1.4/System.Diagnostics.Process.dll": {}
+        },
+        "runtimeTargets": {
+          "runtimes/linux/lib/netstandard1.4/System.Diagnostics.Process.dll": {
+            "assetType": "runtime",
+            "rid": "linux"
+          },
+          "runtimes/osx/lib/netstandard1.4/System.Diagnostics.Process.dll": {
+            "assetType": "runtime",
+            "rid": "osx"
+          },
+          "runtimes/win/lib/netstandard1.4/System.Diagnostics.Process.dll": {
+            "assetType": "runtime",
+            "rid": "win"
+          }
         }
       },
       "System.Diagnostics.Tools/4.3.0": {
@@ -1792,6 +1970,29 @@
           "lib/netstandard1.3/System.Security.Cryptography.Primitives.dll": {}
         }
       },
+      "System.Security.Cryptography.ProtectedData/4.3.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "1.1.0",
+          "System.Resources.ResourceManager": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Runtime.InteropServices": "4.3.0",
+          "System.Security.Cryptography.Primitives": "4.3.0"
+        },
+        "compile": {
+          "ref/netstandard1.3/System.Security.Cryptography.ProtectedData.dll": {}
+        },
+        "runtimeTargets": {
+          "runtimes/unix/lib/netstandard1.3/System.Security.Cryptography.ProtectedData.dll": {
+            "assetType": "runtime",
+            "rid": "unix"
+          },
+          "runtimes/win/lib/netstandard1.3/System.Security.Cryptography.ProtectedData.dll": {
+            "assetType": "runtime",
+            "rid": "win"
+          }
+        }
+      },
       "System.Security.Cryptography.X509Certificates/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -1920,13 +2121,38 @@
           "ref/netstandard1.3/System.Threading.Tasks.dll": {}
         }
       },
-      "System.Threading.Tasks.Extensions/4.5.1": {
+      "System.Threading.Tasks.Extensions/4.5.4": {
         "type": "package",
         "compile": {
           "ref/netcoreapp2.1/_._": {}
         },
         "runtime": {
           "lib/netcoreapp2.1/_._": {}
+        }
+      },
+      "System.Threading.Thread/4.3.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Runtime": "4.3.0"
+        },
+        "compile": {
+          "ref/netstandard1.3/System.Threading.Thread.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/System.Threading.Thread.dll": {}
+        }
+      },
+      "System.Threading.ThreadPool/4.3.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Runtime": "4.3.0",
+          "System.Runtime.Handles": "4.3.0"
+        },
+        "compile": {
+          "ref/netstandard1.3/_._": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/System.Threading.ThreadPool.dll": {}
         }
       },
       "System.Threading.Timer/4.3.0": {
@@ -2050,6 +2276,35 @@
     }
   },
   "libraries": {
+    "AdaptiveExpressions/4.11.1": {
+      "sha512": "ajiuMb/Ir9zLA9OKZFjwYBvXIxc9thGWyCu1tvUaRkEubCSxh9Gg77GCOtlYIXn2Tb7YAKukGV97J9Ak/Dn1mA==",
+      "type": "package",
+      "path": "adaptiveexpressions/4.11.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "adaptiveexpressions.4.11.1.nupkg.sha512",
+        "adaptiveexpressions.nuspec",
+        "icon.png",
+        "lib/netstandard2.0/AdaptiveExpressions.dll",
+        "lib/netstandard2.0/AdaptiveExpressions.xml"
+      ]
+    },
+    "Antlr4.Runtime.Standard/4.8.0": {
+      "sha512": "90b8XFYaDKZkjEFae/GaazqXQTfINtZI1in+nCXGQGeGaajvCy1Ii2Va99H5ehULJRtDzNvFki4eXhwm3ymtag==",
+      "type": "package",
+      "path": "antlr4.runtime.standard/4.8.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "antlr4.runtime.standard.4.8.0.nupkg.sha512",
+        "antlr4.runtime.standard.nuspec",
+        "lib/net35/Antlr4.Runtime.Standard.dll",
+        "lib/net35/Antlr4.Runtime.Standard.xml",
+        "lib/netstandard1.3/Antlr4.Runtime.Standard.dll",
+        "lib/netstandard1.3/Antlr4.Runtime.Standard.xml"
+      ]
+    },
     "Microsoft.AspNetCore.JsonPatch/3.1.1": {
       "sha512": "Y2hwnbYzA8nmRH3+eTXtG+HP7rkMSLcqcLh5vfoN/J3zcmYb7vMtRauSDT9GO85JGwk+blNiCDXEou8Dj2TR4g==",
       "type": "package",
@@ -2101,31 +2356,32 @@
         "microsoft.azure.cognitiveservices.language.luis.runtime.nuspec"
       ]
     },
-    "Microsoft.Bot.Builder/4.8.0": {
-      "sha512": "6T7JPIMFQYkMSuKY83FnTbroeuE7EI7eQhrG4KnENwScurw69sn5GgYkfH2pYTweIuJWZVgD8aio7m9xo6ED1g==",
+    "Microsoft.Bot.Builder/4.11.1": {
+      "sha512": "FsL66refY+hCox+mM1vrJnoQNHmSspk8mKR0vnIgfxqVK5qm66md0OPF3/Q/E5WeGcQEZD8MrPDkEMCrWeNetQ==",
       "type": "package",
-      "path": "microsoft.bot.builder/4.8.0",
+      "path": "microsoft.bot.builder/4.11.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "icon.png",
         "lib/netstandard2.0/Microsoft.Bot.Builder.dll",
         "lib/netstandard2.0/Microsoft.Bot.Builder.xml",
-        "microsoft.bot.builder.4.8.0.nupkg.sha512",
+        "microsoft.bot.builder.4.11.1.nupkg.sha512",
         "microsoft.bot.builder.nuspec"
       ]
     },
-    "Microsoft.Bot.Builder.AI.Luis/4.8.0": {
-      "sha512": "bo5Usng5I9s7Qie2InjlPWDxe1Z18fU0qy8fyti473ptziswSggLdOBs3+7zBGhOHy/ZArfs3eUOqhRhUTcSkQ==",
+    "Microsoft.Bot.Builder.AI.Luis/4.11.1": {
+      "sha512": "cTPPEdiG3m775U4SGNC8FmBeeaky1XV53hzV/ZQn06bm5tyhziugYPlPd5LyiOMOHV+CcxcpvCfmZIIz7Jb31A==",
       "type": "package",
-      "path": "microsoft.bot.builder.ai.luis/4.8.0",
+      "path": "microsoft.bot.builder.ai.luis/4.11.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "content/Schemas/Microsoft.LuisRecognizer.schema",
         "icon.png",
         "lib/netstandard2.0/Microsoft.Bot.Builder.AI.Luis.dll",
         "lib/netstandard2.0/Microsoft.Bot.Builder.AI.Luis.xml",
-        "microsoft.bot.builder.ai.luis.4.8.0.nupkg.sha512",
+        "microsoft.bot.builder.ai.luis.4.11.1.nupkg.sha512",
         "microsoft.bot.builder.ai.luis.nuspec"
       ]
     },
@@ -2143,18 +2399,36 @@
         "microsoft.bot.builder.ai.qna.nuspec"
       ]
     },
-    "Microsoft.Bot.Builder.Dialogs/4.8.0": {
-      "sha512": "4793l4qupIsDtbfUQ+RhBEAdcYA8Rmag+VF1fV0IZsfiKz9rjn+t7/NXgfVzkOeM+dO0ICCgs27JUT1RIcPWEA==",
+    "Microsoft.Bot.Builder.Dialogs/4.11.1": {
+      "sha512": "BD4yzixSCH9RyTwXZrCfJeN1i2jPJCW1a/qAtW4XCfxm5LRgCBmaqk2FfgiQm2E+OtslgG1+NjK8CveALby07g==",
       "type": "package",
-      "path": "microsoft.bot.builder.dialogs/4.8.0",
+      "path": "microsoft.bot.builder.dialogs/4.11.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "icon.png",
         "lib/netstandard2.0/Microsoft.Bot.Builder.Dialogs.dll",
         "lib/netstandard2.0/Microsoft.Bot.Builder.Dialogs.xml",
-        "microsoft.bot.builder.dialogs.4.8.0.nupkg.sha512",
+        "microsoft.bot.builder.dialogs.4.11.1.nupkg.sha512",
         "microsoft.bot.builder.dialogs.nuspec"
+      ]
+    },
+    "Microsoft.Bot.Builder.Dialogs.Declarative/4.11.1": {
+      "sha512": "2NOnpc1RW7ZjuS7o7CfwCg+DqrDFlxWp+QV0/nPIbaDLkDajASRPtmHbNlSiYQ23aKQdKfaxrjnOeTepTw59EA==",
+      "type": "package",
+      "path": "microsoft.bot.builder.dialogs.declarative/4.11.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "content/Schemas/Microsoft.IActivityTemplate.schema",
+        "content/Schemas/Microsoft.IDialog.schema",
+        "content/Schemas/Microsoft.IRecognizer.schema",
+        "content/Schemas/Microsoft.ITextTemplate.schema",
+        "icon.png",
+        "lib/netstandard2.0/Microsoft.Bot.Builder.Dialogs.Declarative.dll",
+        "lib/netstandard2.0/Microsoft.Bot.Builder.Dialogs.Declarative.xml",
+        "microsoft.bot.builder.dialogs.declarative.4.11.1.nupkg.sha512",
+        "microsoft.bot.builder.dialogs.declarative.nuspec"
       ]
     },
     "Microsoft.Bot.Builder.Integration.AspNet.Core/4.8.0": {
@@ -2173,52 +2447,52 @@
         "microsoft.bot.builder.integration.aspnet.core.nuspec"
       ]
     },
-    "Microsoft.Bot.Configuration/4.8.0": {
-      "sha512": "zlerR+4F111orVgyQksdn2mWFvTVOh4Is1cz7tPqfzNhhyxts6ZHfFlsRM+vfqfbjbVZWmZDyPng2flI0THajw==",
+    "Microsoft.Bot.Configuration/4.11.1": {
+      "sha512": "dqw8LjivX/LtrF4D2d5wtxQjbDBPbi16Xm5+TVPflmnECRtjrng5qt6Qyqsz2jzGytOE3PV9jMpKWmtcYIEWmQ==",
       "type": "package",
-      "path": "microsoft.bot.configuration/4.8.0",
+      "path": "microsoft.bot.configuration/4.11.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "icon.png",
         "lib/netstandard2.0/Microsoft.Bot.Configuration.dll",
         "lib/netstandard2.0/Microsoft.Bot.Configuration.xml",
-        "microsoft.bot.configuration.4.8.0.nupkg.sha512",
+        "microsoft.bot.configuration.4.11.1.nupkg.sha512",
         "microsoft.bot.configuration.nuspec"
       ]
     },
-    "Microsoft.Bot.Connector/4.8.0": {
-      "sha512": "1Azs7NLyvDC3iWGtYMABEUZGHK/qQcioRqft9ad8ARZFSXhL3YJQAXzDJzeInMGnmO8Wp7wrYQiCEM1Ao8RXDw==",
+    "Microsoft.Bot.Connector/4.11.1": {
+      "sha512": "fDC6JCpS2WKAYCphT2usTY0XkLIx7NZyCzmvDmo+EcgsJvurAy9q29fc/aM0VbybEqxMK2QyV6wnYsOlOfqO7w==",
       "type": "package",
-      "path": "microsoft.bot.connector/4.8.0",
+      "path": "microsoft.bot.connector/4.11.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "icon.png",
         "lib/netstandard2.0/Microsoft.Bot.Connector.dll",
         "lib/netstandard2.0/Microsoft.Bot.Connector.xml",
-        "microsoft.bot.connector.4.8.0.nupkg.sha512",
+        "microsoft.bot.connector.4.11.1.nupkg.sha512",
         "microsoft.bot.connector.nuspec"
       ]
     },
-    "Microsoft.Bot.Schema/4.8.0": {
-      "sha512": "vbQvpX+kai6iYYg/6XZF7AUvl2B9lwLlP3A4hMXp1k1YOLSFlaaMXf3EIDIH8q3aMjomKCIuGLVXDigAJTOE5w==",
+    "Microsoft.Bot.Schema/4.11.1": {
+      "sha512": "sb2BL8WbhI+yJXSYXyRPHdNPpn1NsgQB8YMVyawg3kjCH0zjUvRtEs+oynDu81CUbf6bZVW1tS23bRdJDMdgvA==",
       "type": "package",
-      "path": "microsoft.bot.schema/4.8.0",
+      "path": "microsoft.bot.schema/4.11.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "icon.png",
         "lib/netstandard2.0/Microsoft.Bot.Schema.dll",
         "lib/netstandard2.0/Microsoft.Bot.Schema.xml",
-        "microsoft.bot.schema.4.8.0.nupkg.sha512",
+        "microsoft.bot.schema.4.11.1.nupkg.sha512",
         "microsoft.bot.schema.nuspec"
       ]
     },
-    "Microsoft.Bot.Streaming/4.8.0": {
-      "sha512": "MTECNefERl1bzObtbPmTA2eouJnAQYOYGtaYawsSXkwWAbh1slqtTvbnrtBxAC7uk+eGlfXTYimJaWG1VayEFg==",
+    "Microsoft.Bot.Streaming/4.11.1": {
+      "sha512": "IhwxE+daMZ7Tdp+vatDZHbfID+A3C+5gdLDB1F/Sa44Mqj9wXnDn4oqx8fb9r5WTeWSFKbAYGEa8yTCsau1jvQ==",
       "type": "package",
-      "path": "microsoft.bot.streaming/4.8.0",
+      "path": "microsoft.bot.streaming/4.11.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2226,7 +2500,7 @@
         "lib/netstandard2.0/Microsoft.Bot.Streaming.dll",
         "lib/netstandard2.0/Microsoft.Bot.Streaming.pdb",
         "lib/netstandard2.0/Microsoft.Bot.Streaming.xml",
-        "microsoft.bot.streaming.4.8.0.nupkg.sha512",
+        "microsoft.bot.streaming.4.11.1.nupkg.sha512",
         "microsoft.bot.streaming.nuspec"
       ]
     },
@@ -2679,6 +2953,22 @@
         "microsoft.recognizers.text.choice.nuspec"
       ]
     },
+    "Microsoft.Recognizers.Text.DataTypes.TimexExpression/1.2.9": {
+      "sha512": "ih1B1GF3YqtqCb161A7VtVfsKbIDnC3SZXYcMyGqY6WQNw0T8UwAZAnBUXw05U4LdI7NAwYSOxFcvvno3t1qmA==",
+      "type": "package",
+      "path": "microsoft.recognizers.text.datatypes.timexexpression/1.2.9",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "images/icon.png",
+        "lib/net45/Microsoft.Recognizers.Text.DataTypes.TimexExpression.dll",
+        "lib/net452/Microsoft.Recognizers.Text.DataTypes.TimexExpression.dll",
+        "lib/net462/Microsoft.Recognizers.Text.DataTypes.TimexExpression.dll",
+        "lib/netstandard2.0/Microsoft.Recognizers.Text.DataTypes.TimexExpression.dll",
+        "microsoft.recognizers.text.datatypes.timexexpression.1.2.9.nupkg.sha512",
+        "microsoft.recognizers.text.datatypes.timexexpression.nuspec"
+      ]
+    },
     "Microsoft.Recognizers.Text.DateTime/1.2.9": {
       "sha512": "dbZox2gglj8qEmdhtRiaDboI18BDIxhkamvTDFTBtf5fg6VUEgZACO0RaVenmCw039DWlIDqNqk6XyRpRzn/xw==",
       "type": "package",
@@ -2807,6 +3097,36 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
+    "Microsoft.Win32.Registry/4.3.0": {
+      "sha512": "Lw1/VwLH1yxz6SfFEjVRCN0pnflLEsWgnV4qsdJ512/HhTwnKXUG+zDQ4yTO3K/EJQemGoNaBHX5InISNKTzUQ==",
+      "type": "package",
+      "path": "microsoft.win32.registry/4.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "ThirdPartyNotices.txt",
+        "dotnet_library_license.txt",
+        "lib/net46/Microsoft.Win32.Registry.dll",
+        "microsoft.win32.registry.4.3.0.nupkg.sha512",
+        "microsoft.win32.registry.nuspec",
+        "ref/net46/Microsoft.Win32.Registry.dll",
+        "ref/netstandard1.3/Microsoft.Win32.Registry.dll",
+        "ref/netstandard1.3/Microsoft.Win32.Registry.xml",
+        "ref/netstandard1.3/de/Microsoft.Win32.Registry.xml",
+        "ref/netstandard1.3/es/Microsoft.Win32.Registry.xml",
+        "ref/netstandard1.3/fr/Microsoft.Win32.Registry.xml",
+        "ref/netstandard1.3/it/Microsoft.Win32.Registry.xml",
+        "ref/netstandard1.3/ja/Microsoft.Win32.Registry.xml",
+        "ref/netstandard1.3/ko/Microsoft.Win32.Registry.xml",
+        "ref/netstandard1.3/ru/Microsoft.Win32.Registry.xml",
+        "ref/netstandard1.3/zh-hans/Microsoft.Win32.Registry.xml",
+        "ref/netstandard1.3/zh-hant/Microsoft.Win32.Registry.xml",
+        "runtimes/unix/lib/netstandard1.3/Microsoft.Win32.Registry.dll",
+        "runtimes/win/lib/net46/Microsoft.Win32.Registry.dll",
+        "runtimes/win/lib/netcore50/_._",
+        "runtimes/win/lib/netstandard1.3/Microsoft.Win32.Registry.dll"
+      ]
+    },
     "NETStandard.Library/1.6.1": {
       "sha512": "WcSp3+vP+yHNgS8EV5J7pZ9IRpeDuARBPN28by8zqff1wJQXm26PVU8L3/fYLBJVU7BtDyqNVWq2KlCVvSSR4A==",
       "type": "package",
@@ -2870,6 +3190,83 @@
         "lib/netstandard2.0/Newtonsoft.Json.Bson.xml",
         "newtonsoft.json.bson.1.0.2.nupkg.sha512",
         "newtonsoft.json.bson.nuspec"
+      ]
+    },
+    "NuGet.Common/5.5.1": {
+      "sha512": "q0GkQM/lk2IQvw56gkuDoFpGKQv4HLZvZkKakSV1wPFO9Yi68P59uEaMH6QwNDBzm4iw9xbPtCEyrpuoWp8itw==",
+      "type": "package",
+      "path": "nuget.common/5.5.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net472/NuGet.Common.dll",
+        "lib/net472/NuGet.Common.xml",
+        "lib/netstandard2.0/NuGet.Common.dll",
+        "lib/netstandard2.0/NuGet.Common.xml",
+        "nuget.common.5.5.1.nupkg.sha512",
+        "nuget.common.nuspec"
+      ]
+    },
+    "NuGet.Configuration/5.5.1": {
+      "sha512": "S9cLsAlYinq0QaVn4ILhENnir3RqKTO6lsjUuiiwEJNtJLj/aQM5PCZq0S0aDqlLtiBu2hEpECvV96VIVL7kqA==",
+      "type": "package",
+      "path": "nuget.configuration/5.5.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net472/NuGet.Configuration.dll",
+        "lib/net472/NuGet.Configuration.xml",
+        "lib/netstandard2.0/NuGet.Configuration.dll",
+        "lib/netstandard2.0/NuGet.Configuration.xml",
+        "nuget.configuration.5.5.1.nupkg.sha512",
+        "nuget.configuration.nuspec"
+      ]
+    },
+    "NuGet.Frameworks/5.5.1": {
+      "sha512": "5yOfJFBrTOE+vURDwyNqJ5GIRUjyGvQEhYDViBqIOwkcDPBLSaAUEsgqJ01UmGVfzQh4Z/V7olV8kik10uvl2w==",
+      "type": "package",
+      "path": "nuget.frameworks/5.5.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net40/NuGet.Frameworks.dll",
+        "lib/net40/NuGet.Frameworks.xml",
+        "lib/net472/NuGet.Frameworks.dll",
+        "lib/net472/NuGet.Frameworks.xml",
+        "lib/netstandard2.0/NuGet.Frameworks.dll",
+        "lib/netstandard2.0/NuGet.Frameworks.xml",
+        "nuget.frameworks.5.5.1.nupkg.sha512",
+        "nuget.frameworks.nuspec"
+      ]
+    },
+    "NuGet.Packaging/5.5.1": {
+      "sha512": "aZvWQqFNLAN9nU6jI+4+7up5sbNBN40FZ0BeiKmpFrysvNh78vTHHBFH1P7oYO6rQz0YeJubnhWoqU3Bvlr+fw==",
+      "type": "package",
+      "path": "nuget.packaging/5.5.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net472/NuGet.Packaging.dll",
+        "lib/net472/NuGet.Packaging.xml",
+        "lib/netstandard2.0/NuGet.Packaging.dll",
+        "lib/netstandard2.0/NuGet.Packaging.xml",
+        "nuget.packaging.5.5.1.nupkg.sha512",
+        "nuget.packaging.nuspec"
+      ]
+    },
+    "NuGet.Versioning/5.5.1": {
+      "sha512": "EgKbD8MLKqPV9GwE5B8fse0AbXOHn/6KoLcs0wERL31mftwx4jqIl7xjCs+IVHAw3St5aH8Erq28kZJkmDveGw==",
+      "type": "package",
+      "path": "nuget.versioning/5.5.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net472/NuGet.Versioning.dll",
+        "lib/net472/NuGet.Versioning.xml",
+        "lib/netstandard2.0/NuGet.Versioning.dll",
+        "lib/netstandard2.0/NuGet.Versioning.xml",
+        "nuget.versioning.5.5.1.nupkg.sha512",
+        "nuget.versioning.nuspec"
       ]
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2": {
@@ -3693,6 +4090,63 @@
         "lib/portable-net45+win8+wpa81/System.Diagnostics.DiagnosticSource.xml",
         "system.diagnostics.diagnosticsource.4.3.0.nupkg.sha512",
         "system.diagnostics.diagnosticsource.nuspec"
+      ]
+    },
+    "System.Diagnostics.Process/4.3.0": {
+      "sha512": "J0wOX07+QASQblsfxmIMFc9Iq7KTXYL3zs2G/Xc704Ylv3NpuVdo6gij6V3PGiptTxqsK0K7CdXenRvKUnkA2g==",
+      "type": "package",
+      "path": "system.diagnostics.process/4.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "ThirdPartyNotices.txt",
+        "dotnet_library_license.txt",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.Diagnostics.Process.dll",
+        "lib/net461/System.Diagnostics.Process.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.Diagnostics.Process.dll",
+        "ref/net461/System.Diagnostics.Process.dll",
+        "ref/netstandard1.3/System.Diagnostics.Process.dll",
+        "ref/netstandard1.3/System.Diagnostics.Process.xml",
+        "ref/netstandard1.3/de/System.Diagnostics.Process.xml",
+        "ref/netstandard1.3/es/System.Diagnostics.Process.xml",
+        "ref/netstandard1.3/fr/System.Diagnostics.Process.xml",
+        "ref/netstandard1.3/it/System.Diagnostics.Process.xml",
+        "ref/netstandard1.3/ja/System.Diagnostics.Process.xml",
+        "ref/netstandard1.3/ko/System.Diagnostics.Process.xml",
+        "ref/netstandard1.3/ru/System.Diagnostics.Process.xml",
+        "ref/netstandard1.3/zh-hans/System.Diagnostics.Process.xml",
+        "ref/netstandard1.3/zh-hant/System.Diagnostics.Process.xml",
+        "ref/netstandard1.4/System.Diagnostics.Process.dll",
+        "ref/netstandard1.4/System.Diagnostics.Process.xml",
+        "ref/netstandard1.4/de/System.Diagnostics.Process.xml",
+        "ref/netstandard1.4/es/System.Diagnostics.Process.xml",
+        "ref/netstandard1.4/fr/System.Diagnostics.Process.xml",
+        "ref/netstandard1.4/it/System.Diagnostics.Process.xml",
+        "ref/netstandard1.4/ja/System.Diagnostics.Process.xml",
+        "ref/netstandard1.4/ko/System.Diagnostics.Process.xml",
+        "ref/netstandard1.4/ru/System.Diagnostics.Process.xml",
+        "ref/netstandard1.4/zh-hans/System.Diagnostics.Process.xml",
+        "ref/netstandard1.4/zh-hant/System.Diagnostics.Process.xml",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "runtimes/linux/lib/netstandard1.4/System.Diagnostics.Process.dll",
+        "runtimes/osx/lib/netstandard1.4/System.Diagnostics.Process.dll",
+        "runtimes/win/lib/net46/System.Diagnostics.Process.dll",
+        "runtimes/win/lib/net461/System.Diagnostics.Process.dll",
+        "runtimes/win/lib/netstandard1.4/System.Diagnostics.Process.dll",
+        "runtimes/win7/lib/netcore50/_._",
+        "system.diagnostics.process.4.3.0.nupkg.sha512",
+        "system.diagnostics.process.nuspec"
       ]
     },
     "System.Diagnostics.Tools/4.3.0": {
@@ -6041,6 +6495,37 @@
         "system.security.cryptography.primitives.nuspec"
       ]
     },
+    "System.Security.Cryptography.ProtectedData/4.3.0": {
+      "sha512": "qBUHUk7IqrPHY96THHTa1akCxw0GsNFpsk3XFHbi0A0tMUDBpQprtY1Tbl6yaS1x4c96ilcXU8PocYtmSmkaQQ==",
+      "type": "package",
+      "path": "system.security.cryptography.protecteddata/4.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "ThirdPartyNotices.txt",
+        "dotnet_library_license.txt",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.Security.Cryptography.ProtectedData.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.Security.Cryptography.ProtectedData.dll",
+        "ref/netstandard1.3/System.Security.Cryptography.ProtectedData.dll",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "runtimes/unix/lib/netstandard1.3/System.Security.Cryptography.ProtectedData.dll",
+        "runtimes/win/lib/net46/System.Security.Cryptography.ProtectedData.dll",
+        "runtimes/win/lib/netstandard1.3/System.Security.Cryptography.ProtectedData.dll",
+        "system.security.cryptography.protecteddata.4.3.0.nupkg.sha512",
+        "system.security.cryptography.protecteddata.nuspec"
+      ]
+    },
     "System.Security.Cryptography.X509Certificates/4.3.0": {
       "sha512": "t2Tmu6Y2NtJ2um0RtcuhP7ZdNNxXEgUm2JeoA/0NvlMjAhKCnM1NX07TDl3244mVp3QU6LPEhT3HTtH1uF7IYw==",
       "type": "package",
@@ -6497,10 +6982,10 @@
         "system.threading.tasks.nuspec"
       ]
     },
-    "System.Threading.Tasks.Extensions/4.5.1": {
-      "sha512": "WSKUTtLhPR8gllzIWO2x6l4lmAIfbyMAiTlyXAis4QBDonXK4b4S6F8zGARX4/P8wH3DH+sLdhamCiHn+fTU1A==",
+    "System.Threading.Tasks.Extensions/4.5.4": {
+      "sha512": "zteT+G8xuGu6mS+mzDzYXbzS7rd3K6Fjb9RiZlYlJPam2/hU7JCBZBVEcywNuR+oZ1ncTvc/cq0faRr3P01OVg==",
       "type": "package",
-      "path": "system.threading.tasks.extensions/4.5.1",
+      "path": "system.threading.tasks.extensions/4.5.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -6508,6 +6993,8 @@
         "THIRD-PARTY-NOTICES.TXT",
         "lib/MonoAndroid10/_._",
         "lib/MonoTouch10/_._",
+        "lib/net461/System.Threading.Tasks.Extensions.dll",
+        "lib/net461/System.Threading.Tasks.Extensions.xml",
         "lib/netcoreapp2.1/_._",
         "lib/netstandard1.0/System.Threading.Tasks.Extensions.dll",
         "lib/netstandard1.0/System.Threading.Tasks.Extensions.xml",
@@ -6522,18 +7009,94 @@
         "ref/MonoAndroid10/_._",
         "ref/MonoTouch10/_._",
         "ref/netcoreapp2.1/_._",
-        "ref/netstandard1.0/System.Threading.Tasks.Extensions.dll",
-        "ref/netstandard1.0/System.Threading.Tasks.Extensions.xml",
-        "ref/netstandard2.0/System.Threading.Tasks.Extensions.dll",
-        "ref/netstandard2.0/System.Threading.Tasks.Extensions.xml",
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._",
         "ref/xamarintvos10/_._",
         "ref/xamarinwatchos10/_._",
-        "system.threading.tasks.extensions.4.5.1.nupkg.sha512",
+        "system.threading.tasks.extensions.4.5.4.nupkg.sha512",
         "system.threading.tasks.extensions.nuspec",
         "useSharedDesignerContext.txt",
         "version.txt"
+      ]
+    },
+    "System.Threading.Thread/4.3.0": {
+      "sha512": "OHmbT+Zz065NKII/ZHcH9XO1dEuLGI1L2k7uYss+9C1jLxTC9kTZZuzUOyXHayRk+dft9CiDf3I/QZ0t8JKyBQ==",
+      "type": "package",
+      "path": "system.threading.thread/4.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "ThirdPartyNotices.txt",
+        "dotnet_library_license.txt",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.Threading.Thread.dll",
+        "lib/netcore50/_._",
+        "lib/netstandard1.3/System.Threading.Thread.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.Threading.Thread.dll",
+        "ref/netstandard1.3/System.Threading.Thread.dll",
+        "ref/netstandard1.3/System.Threading.Thread.xml",
+        "ref/netstandard1.3/de/System.Threading.Thread.xml",
+        "ref/netstandard1.3/es/System.Threading.Thread.xml",
+        "ref/netstandard1.3/fr/System.Threading.Thread.xml",
+        "ref/netstandard1.3/it/System.Threading.Thread.xml",
+        "ref/netstandard1.3/ja/System.Threading.Thread.xml",
+        "ref/netstandard1.3/ko/System.Threading.Thread.xml",
+        "ref/netstandard1.3/ru/System.Threading.Thread.xml",
+        "ref/netstandard1.3/zh-hans/System.Threading.Thread.xml",
+        "ref/netstandard1.3/zh-hant/System.Threading.Thread.xml",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "system.threading.thread.4.3.0.nupkg.sha512",
+        "system.threading.thread.nuspec"
+      ]
+    },
+    "System.Threading.ThreadPool/4.3.0": {
+      "sha512": "k/+g4b7vjdd4aix83sTgC9VG6oXYKAktSfNIJUNGxPEj7ryEOfzHHhfnmsZvjxawwcD9HyWXKCXmPjX8U4zeSw==",
+      "type": "package",
+      "path": "system.threading.threadpool/4.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "ThirdPartyNotices.txt",
+        "dotnet_library_license.txt",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.Threading.ThreadPool.dll",
+        "lib/netcore50/_._",
+        "lib/netstandard1.3/System.Threading.ThreadPool.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.Threading.ThreadPool.dll",
+        "ref/netstandard1.3/System.Threading.ThreadPool.dll",
+        "ref/netstandard1.3/System.Threading.ThreadPool.xml",
+        "ref/netstandard1.3/de/System.Threading.ThreadPool.xml",
+        "ref/netstandard1.3/es/System.Threading.ThreadPool.xml",
+        "ref/netstandard1.3/fr/System.Threading.ThreadPool.xml",
+        "ref/netstandard1.3/it/System.Threading.ThreadPool.xml",
+        "ref/netstandard1.3/ja/System.Threading.ThreadPool.xml",
+        "ref/netstandard1.3/ko/System.Threading.ThreadPool.xml",
+        "ref/netstandard1.3/ru/System.Threading.ThreadPool.xml",
+        "ref/netstandard1.3/zh-hans/System.Threading.ThreadPool.xml",
+        "ref/netstandard1.3/zh-hant/System.Threading.ThreadPool.xml",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "system.threading.threadpool.4.3.0.nupkg.sha512",
+        "system.threading.threadpool.nuspec"
       ]
     },
     "System.Threading.Timer/4.3.0": {
@@ -6892,30 +7455,32 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
       "Microsoft.AspNetCore.Mvc.NewtonsoftJson >= 3.1.1",
-      "Microsoft.Bot.Builder.AI.Luis >= 4.8.0",
+      "Microsoft.Bot.Builder.AI.Luis >= 4.11.1",
       "Microsoft.Bot.Builder.AI.QnA >= 4.8.0",
       "Microsoft.Bot.Builder.Integration.AspNet.Core >= 4.8.0"
     ]
   },
   "packageFolders": {
-    "/Users/kevinge/.nuget/packages/": {}
+    "C:\\Users\\ASUS\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/kevinge/Desktop/二手拍賣bot/QnABot.csproj",
+      "projectUniqueName": "C:\\Users\\ASUS\\Documents\\GitHub\\VIPBOT\\QnABot.csproj",
       "projectName": "QnABot",
-      "projectPath": "/Users/kevinge/Desktop/二手拍賣bot/QnABot.csproj",
-      "packagesPath": "/Users/kevinge/.nuget/packages/",
-      "outputPath": "/Users/kevinge/Desktop/二手拍賣bot/obj/",
+      "projectPath": "C:\\Users\\ASUS\\Documents\\GitHub\\VIPBOT\\QnABot.csproj",
+      "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ASUS\\Documents\\GitHub\\VIPBOT\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/kevinge/.config/NuGet/NuGet.Config"
+        "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -6940,7 +7505,7 @@
           },
           "Microsoft.Bot.Builder.AI.Luis": {
             "target": "Package",
-            "version": "[4.8.0, )"
+            "version": "[4.11.1, )"
           },
           "Microsoft.Bot.Builder.AI.QnA": {
             "target": "Package",
@@ -6969,7 +7534,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.102/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
       }
     }
   }

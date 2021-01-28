@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "/Users/kevinge/Desktop/二手拍賣bot/QnABot.csproj": {}
+    "C:\\Users\\ASUS\\Documents\\GitHub\\VIPBOT\\QnABot.csproj": {}
   },
   "projects": {
-    "/Users/kevinge/Desktop/二手拍賣bot/QnABot.csproj": {
+    "C:\\Users\\ASUS\\Documents\\GitHub\\VIPBOT\\QnABot.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/kevinge/Desktop/二手拍賣bot/QnABot.csproj",
+        "projectUniqueName": "C:\\Users\\ASUS\\Documents\\GitHub\\VIPBOT\\QnABot.csproj",
         "projectName": "QnABot",
-        "projectPath": "/Users/kevinge/Desktop/二手拍賣bot/QnABot.csproj",
-        "packagesPath": "/Users/kevinge/.nuget/packages/",
-        "outputPath": "/Users/kevinge/Desktop/二手拍賣bot/obj/",
+        "projectPath": "C:\\Users\\ASUS\\Documents\\GitHub\\VIPBOT\\QnABot.csproj",
+        "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ASUS\\Documents\\GitHub\\VIPBOT\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/kevinge/.config/NuGet/NuGet.Config"
+          "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -44,7 +46,7 @@
             },
             "Microsoft.Bot.Builder.AI.Luis": {
               "target": "Package",
-              "version": "[4.8.0, )"
+              "version": "[4.11.1, )"
             },
             "Microsoft.Bot.Builder.AI.QnA": {
               "target": "Package",
@@ -73,7 +75,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.102/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
         }
       }
     }
