@@ -37,6 +37,11 @@ namespace Microsoft.BotBuilderSamples
 
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
+            if(turnContext.Activity.Attachments.Count==1)
+            {
+                string s=Imgur.UploadSrc(turnContext.Activity.Attachments[0].ContentUrl);
+                turnContext.SendActivityAsync(MessageFactory.Text(s), cancellationToken);
+            }
             // First, we use the dispatch model to determine which cognitive service (LUIS or QnA) to use.
             var recognizerResult = await _botServices.Dispatch.RecognizeAsync(turnContext, cancellationToken);
             // Top intent tell us which cognitive service to use.
