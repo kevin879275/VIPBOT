@@ -68,23 +68,23 @@ namespace Imgur
         {
             Download(imgsrc).Save(savepath);
         }
-        static string Upload(string base64)
+        public static string Upload(string base64)
         {
             return Uploader.Upload(clientId, base64);
         }
-        static string Upload(byte[] bytearray)
+        public static string Upload(byte[] bytearray)
         {
             return Upload(ImageToBase64(bytearray));
         }
-        static string Upload(Image image)
+        public static string Upload(Image image)
         {
             return Upload(ImageToBase64(image));
         }
-        static string UploadFile(string file)
+        public static string UploadFile(string file)
         {
             return  Upload(ImageToBase64(file));
         }
-        static string UploadSrc(string src)
+        public static string UploadSrc(string src)
         {
             return Upload(srcToBase64(src));
         }
