@@ -6,7 +6,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Data.SqlClient;
 using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime.Models;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Schema;
@@ -14,13 +13,18 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Imgur;
+using Microsoft.Bot.Builder.Dialogs;
+
 namespace Microsoft.BotBuilderSamples
 {
-    public class DispatchBot : ActivityHandler
+    public class DispatchBot<T> : ActivityHandler where T : Microsoft.Bot.Builder.Dialogs.Dialog
     {
-        private readonly ILogger<DispatchBot> _logger;
+        protected readonly BotState ConversationState;
+        private readonly ILogger<DispatchBot<T>> _logger;
         private readonly IBotServices _botServices;
-
+        protected readonly BotState UserState;
+        protected readonly Microsoft.Bot.Builder.Dialogs.Dialog Dialog;
+        private static Dictionary<string,bool> dialogState = new Dictionary<string, bool>();
         private static readonly HttpClient client = new HttpClient();
 
         private readonly string[] _cards = {
@@ -28,27 +32,53 @@ namespace Microsoft.BotBuilderSamples
             //Path.Combine (".", "Cards", "GlobalStatus.json"),
         };
 
-        public DispatchBot(IBotServices botServices, ILogger<DispatchBot> logger)
+        public DispatchBot(IBotServices botServices, ILogger<DispatchBot<T>> logger, T dialog, ConversationState conversationState, UserState userState)
         {
             _logger = logger;
             _botServices = botServices;
-            
+            Dialog = dialog;
+            ConversationState = conversationState;
+            UserState = userState;
+        }
+
+        //public DispatchBot(IBotServices botServices, ILogger<DispatchBot<T>> logger, T dialog)
+        //{
+        //    _logger = logger;
+        //    _botServices = botServices;
+        //    Dialog = dialog;
+        //}
+
+        public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default)
+        {
+            await base.OnTurnAsync(turnContext, cancellationToken);
+
+            // Save any state changes that might have occurred during the turn.
+            await ConversationState.SaveChangesAsync(turnContext, false, cancellationToken);
+            await UserState.SaveChangesAsync(turnContext, false, cancellationToken);
         }
 
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
             // First, we use the dispatch model to determine which cognitive service (LUIS or QnA) to use.
-            var recognizerResult = await _botServices.Dispatch.RecognizeAsync(turnContext, cancellationToken);
-            // Top intent tell us which cognitive service to use.
-            var topIntent = recognizerResult.GetTopScoringIntent();
+            //await Dialog.BeginDialogAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
+            if (dialogState[turnContext.Activity.Recipient.Id] == true)
+            {
+                await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
+            }
+            else
+            {
+                var recognizerResult = await _botServices.Dispatch.RecognizeAsync(turnContext, cancellationToken);
+                // Top intent tell us which cognitive service to use.
+                var topIntent = recognizerResult.GetTopScoringIntent();
 
-            // Next, we call the dispatcher with the top intent.
-            await DispatchToTopIntentAsync(turnContext, topIntent.intent, recognizerResult, cancellationToken);
+                // Next, we call the dispatcher with the top intent.
+                await DispatchToTopIntentAsync(turnContext, topIntent.intent, recognizerResult, cancellationToken);
+            }
         }
 
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
-
+            dialogState[turnContext.Activity.Recipient.Id] = false;
             foreach (var member in membersAdded)
             {
                 if (member.Id != turnContext.Activity.Recipient.Id)
@@ -60,43 +90,16 @@ namespace Microsoft.BotBuilderSamples
 
         private static async Task SendSuggestedActionsAsync(ITurnContext turnContext, CancellationToken cancellationToken)
         {
-            
-            //try
-            //{
-            //    SQL_Database sQL_Database = new SQL_Database();
-            //    var cb = new SqlConnectionStringBuilder
-            //    {
-            //        DataSource = "viplabcareerhackserver.database.windows.net",
-            //        UserID = "viplab",
-            //        Password = "Careerhack12345",
-            //        InitialCatalog = "VIPLABCAREERHACKDB",
-            //    };
-            //        using (var connection = new SqlConnection(cb.ConnectionString))
-            //    {
-            //        connection.Open();
-            //        sQL_Database.Submit_Tsql_NonQuery(connection, "Create-Tables", sQL_Database.sql_cmd_CreateTables());
-
-            //        //sQL_Database.Submit_Tsql_Insert_tabUser(connection, "Insert into table user",
-            //        //    sQL_Database.sql_cmd_Insert_tabUser(), "Taiwan", "dog");
-
-
-
-            //    }
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e.ToString());
-            //}
             var reply = MessageFactory.Text("您好，本機器人提供鄰近區域服務、物品買賣仲介，第一次使用請傳送您的位置資訊");
-
             reply.SuggestedActions = new SuggestedActions()
             {
+
                 Actions = new List<CardAction>()
-                {
-                    new CardAction() { Title = "Red", Type = ActionTypes.ImBack, Value = "Red", Image = "https://via.placeholder.com/20/FF0000?text=R", ImageAltText = "R" },
-                    new CardAction() { Title = "Yellow", Type = ActionTypes.ImBack, Value = "Yellow", Image = "https://via.placeholder.com/20/FFFF00?text=Y", ImageAltText = "Y" },
-                    new CardAction() { Title = "Blue", Type = ActionTypes.ImBack, Value = "Blue", Image = "https://via.placeholder.com/20/0000FF?text=B", ImageAltText = "B"   },
-                },
+            {
+                new CardAction() { Title = "Red", Type = ActionTypes.ImBack, Value = "Red", Image = "https://via.placeholder.com/20/FF0000?text=R", ImageAltText = "R" },
+                new CardAction() { Title = "Yellow", Type = ActionTypes.ImBack, Value = "Yellow", Image = "https://via.placeholder.com/20/FFFF00?text=Y", ImageAltText = "Y" },
+                new CardAction() { Title = "Blue", Type = ActionTypes.ImBack, Value = "Blue", Image = "https://via.placeholder.com/20/0000FF?text=B", ImageAltText = "B"   },
+            },
             };
 
             await turnContext.SendActivityAsync(reply, cancellationToken);
@@ -107,13 +110,8 @@ namespace Microsoft.BotBuilderSamples
             switch (intent)
             {
                 case "l_BuySell":
-                    //var result = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(recognizerResult.Properties["luisResult"], new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
-                    //var topIntent = result.Prediction.Intents[result.Prediction.TopIntent];
                     await ProcessCovid19LuisAsync(turnContext, recognizerResult.Properties["luisResult"] as LuisResult, cancellationToken);
                     break;
-                // case "l_Weather":
-                //     await ProcessWeatherAsync(turnContext, recognizerResult.Properties["luisResult"] as LuisResult, cancellationToken);
-                //     break;
                 case "q_BuySell":
                     await ProcessSampleQnAAsync(turnContext, cancellationToken);
                     break;
@@ -137,7 +135,8 @@ namespace Microsoft.BotBuilderSamples
             }
             else if(topIntent == "Buy")
             {
-
+                dialogState[turnContext.Activity.Recipient.Id] = true;
+                await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
             }
             else if(topIntent == "Sell")
             {
