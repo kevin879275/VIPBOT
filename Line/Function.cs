@@ -8,16 +8,15 @@ namespace Microsoft.BotBuilderSamples
 {
     class Collections
     {
-        public async Task LineMsg(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
+        public async Task AcceptedLineMsg(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
             var channelData = turnContext.Activity.ChannelData;
-            var jsonObj = JsonConvert.SerializeObject(channelData);
-
-            string msgType = jsonObj["type"];
+            string msgType = channelData["type"];
             switch (msgType)
             {
                 case "location":
-                    await turnContext.SendActivityAsync(MessageFactory.Text(jsonObj["address"]), cancellationToken);
+                    await turnContext.SendActivityAsync(MessageFactory.Text(channelData["address"]), cancellationToken);
+                    string dataStr = JsonConvert.SerializeObject(channelData);
                     break;
                 case "text":
                     break;
