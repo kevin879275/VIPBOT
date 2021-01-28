@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
 using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime.Models;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Schema;
@@ -58,6 +59,33 @@ namespace Microsoft.BotBuilderSamples
 
         private static async Task SendSuggestedActionsAsync(ITurnContext turnContext, CancellationToken cancellationToken)
         {
+            
+            //try
+            //{
+            //    SQL_Database sQL_Database = new SQL_Database();
+            //    var cb = new SqlConnectionStringBuilder
+            //    {
+            //        DataSource = "viplabcareerhackserver.database.windows.net",
+            //        UserID = "viplab",
+            //        Password = "Careerhack12345",
+            //        InitialCatalog = "VIPLABCAREERHACKDB",
+            //    };
+            //        using (var connection = new SqlConnection(cb.ConnectionString))
+            //    {
+            //        connection.Open();
+            //        sQL_Database.Submit_Tsql_NonQuery(connection, "Create-Tables", sQL_Database.sql_cmd_CreateTables());
+
+            //        //sQL_Database.Submit_Tsql_Insert_tabUser(connection, "Insert into table user",
+            //        //    sQL_Database.sql_cmd_Insert_tabUser(), "Taiwan", "dog");
+
+
+
+            //    }
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine(e.ToString());
+            //}
             var reply = MessageFactory.Text("您好，本機器人提供鄰近區域服務、物品買賣仲介，第一次使用請傳送您的位置資訊");
 
             reply.SuggestedActions = new SuggestedActions()
