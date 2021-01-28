@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\zxcz1\\Downloads\\AI_ChatBot\\VIPBOT\\QnABot.csproj": {}
+    "D:\\synchronization\\Synchronization\\MyProject\\C#\\VIPBOT\\QnABot.csproj": {}
   },
   "projects": {
-    "C:\\Users\\zxcz1\\Downloads\\AI_ChatBot\\VIPBOT\\QnABot.csproj": {
+    "D:\\synchronization\\Synchronization\\MyProject\\C#\\VIPBOT\\QnABot.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\zxcz1\\Downloads\\AI_ChatBot\\VIPBOT\\QnABot.csproj",
+        "projectUniqueName": "D:\\synchronization\\Synchronization\\MyProject\\C#\\VIPBOT\\QnABot.csproj",
         "projectName": "QnABot",
-        "projectPath": "C:\\Users\\zxcz1\\Downloads\\AI_ChatBot\\VIPBOT\\QnABot.csproj",
-        "packagesPath": "C:\\Users\\zxcz1\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\zxcz1\\Downloads\\AI_ChatBot\\VIPBOT\\obj\\",
+        "projectPath": "D:\\synchronization\\Synchronization\\MyProject\\C#\\VIPBOT\\QnABot.csproj",
+        "packagesPath": "C:\\Users\\nawanawa\\.nuget\\packages\\",
+        "outputPath": "D:\\synchronization\\Synchronization\\MyProject\\C#\\VIPBOT\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\zxcz1\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\nawanawa\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -40,6 +40,10 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
+            "EasiestImgur": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
             "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
               "target": "Package",
               "version": "[3.1.1, )"
@@ -59,6 +63,10 @@
             "System.Data.SqlClient": {
               "target": "Package",
               "version": "[4.8.2, )"
+            },
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[5.0.0, )"
             }
           },
           "imports": [

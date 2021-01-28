@@ -13,7 +13,7 @@ using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
+using Imgur;
 namespace Microsoft.BotBuilderSamples
 {
     public class DispatchBot : ActivityHandler
@@ -32,6 +32,7 @@ namespace Microsoft.BotBuilderSamples
         {
             _logger = logger;
             _botServices = botServices;
+            
         }
 
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
