@@ -68,26 +68,30 @@ namespace Microsoft.BotBuilderSamples
     {
             // First, we use the dispatch model to determine which cognitive service (LUIS or QnA) to use.
             //await Dialog.BeginDialogAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
-            //if (dialogState[turnContext.Activity.Recipient.Id] == true)
-            //{
-            //  await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
-            //}
-            //else
-            //{
-            //  var recognizerResult = await _botServices.Dispatch.RecognizeAsync(turnContext, cancellationToken);
-            //  // Top intent tell us which cognitive service to use.
-            //  var topIntent = recognizerResult.GetTopScoringIntent();
+            if (dialogState[turnContext.Activity.Recipient.Id] == true)
+            {
+                var conversationStateAccessors = ConversationState.CreateProperty<BuyFlow>(nameof(BuyFlow));
+                var flow = await conversationStateAccessors.GetAsync(turnContext, () => new BuyFlow(), cancellationToken);
 
-            //  // Next, we call the dispatcher with the top intent.
-            //  await DispatchToTopIntentAsync(turnContext, topIntent.intent, recognizerResult, cancellationToken);
-            var conversationStateAccessors = ConversationState.CreateProperty<ConversationFlow>(nameof(ConversationFlow));
-            var flow = await conversationStateAccessors.GetAsync(turnContext, () => new ConversationFlow(), cancellationToken);
+                var userStateAccessors = UserState.CreateProperty<BuyItem>(nameof(UserProfile));
+                var item = await userStateAccessors.GetAsync(turnContext, () => new BuyItem(), cancellationToken);
 
-            var userStateAccessors = UserState.CreateProperty<UserProfile>(nameof(UserProfile));
-            var profile = await userStateAccessors.GetAsync(turnContext, () => new UserProfile(), cancellationToken);
+                await FillOutBuyItemAsync(flow, item, turnContext, cancellationToken);
+                if (flow.LastQuestionAsked == BuyFlow.Question.None)
+                {
+                    dialogState[turnContext.Activity.Recipient.Id] = false;
+                    db.Insert_tabBought_List(turnContext.Activity.Recipient.Id, item.iId, item.quantiy);
+                }
+            }
+            else
+            {
+                var recognizerResult = await _botServices.Dispatch.RecognizeAsync(turnContext, cancellationToken);
+                // Top intent tell us which cognitive service to use.
+                var topIntent = recognizerResult.GetTopScoringIntent();
 
-            await FillOutUserProfileAsync(flow, profile, turnContext, cancellationToken);
-
+                // Next, we call the dispatcher with the top intent.
+                await DispatchToTopIntentAsync(turnContext, topIntent.intent, recognizerResult, cancellationToken);
+            }
         }
     
     private static int itemNow = 0;
@@ -100,7 +104,7 @@ namespace Microsoft.BotBuilderSamples
         {
           await SendSuggestedActionsAsync(turnContext, cancellationToken);
           db.Insert_tabUser(turnContext.Activity.Recipient.Id, "新竹市東區", "[\"天竺鼠車車\",\"車車天竺鼠\"]");
-          //db.Insert_tabItem(itemNow.ToString(), "now", "cart", "", "selling", 5, "天竺鼠車車", "新竹市東區", turnContext.Activity.Recipient.Id, 99999);
+          db.Insert_tabItem(itemNow.ToString(), "now", "cart", "", "selling", 5, "天竺鼠車車", "新竹市東區", turnContext.Activity.Recipient.Id, 99999);
           itemNow++;
         }
       }
@@ -153,20 +157,29 @@ namespace Microsoft.BotBuilderSamples
       }
       else if (topIntent == "Buy")
       {
-        var qm = result.Entities.SingleOrDefault(s => s.Type == "Quantity math") ?? result.Entities.SingleOrDefault(s => s.Type == "Measure Quantity");
 
-        var inum = result.Entities.SingleOrDefault(s => s.Type == "ItemNumber");
-        if (qm == null || inum == null)
-        {
-          dialogState[turnContext.Activity.Recipient.Id] = true;
-          //await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
-        }
-        else
-        {
-          int q = getNumberInString(qm.Entity);
-          int inu = getNumberInString(inum.Entity);
+                var conversationStateAccessors = ConversationState.CreateProperty<BuyFlow>(nameof(BuyFlow));
+                var flow = await conversationStateAccessors.GetAsync(turnContext, () => new BuyFlow(), cancellationToken);
 
-          string uid = turnContext.Activity.Recipient.Id;
+                var userStateAccessors = UserState.CreateProperty<BuyItem>(nameof(BuyItem));
+                var item = await userStateAccessors.GetAsync(turnContext, () => new BuyItem(), cancellationToken);
+
+                await FillOutBuyItemAsync(flow, item, turnContext, cancellationToken);
+                dialogState[turnContext.Activity.Recipient.Id] = true;
+                //var qm = result.Entities.SingleOrDefault(s => s.Type == "Quantity math") ?? result.Entities.SingleOrDefault(s => s.Type == "Measure Quantity");
+
+                //var inum = result.Entities.SingleOrDefault(s => s.Type == "ItemNumber");
+        //if (qm == null || inum == null)
+        //{
+        //  dialogState[turnContext.Activity.Recipient.Id] = true;
+        //  //await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
+        //}
+        //else
+        //{
+        //  int q = getNumberInString(qm.Entity);
+        //  int inu = getNumberInString(inum.Entity);
+
+        //  string uid = turnContext.Activity.Recipient.Id;
           //int amount = db.Select_tabItem(inu.ToString());
           //if (amount == 0)
           //{
@@ -185,7 +198,6 @@ namespace Microsoft.BotBuilderSamples
           //}
           //else
           //      turnContext.SendActivityAsync(MessageFactory.Text("庫存不足瞜!!!"));
-        }
 
       }
       else if (topIntent == "Sell")
@@ -318,24 +330,24 @@ namespace Microsoft.BotBuilderSamples
       }
       return repositories;
     }
-        private static async Task FillOutUserProfileAsync(ConversationFlow flow, UserProfile profile, ITurnContext turnContext, CancellationToken cancellationToken)
+        private static async Task FillOutBuyItemAsync(BuyFlow flow, BuyItem Item, ITurnContext turnContext, CancellationToken cancellationToken)
         {
             var input = turnContext.Activity.Text?.Trim();
             string message;
 
             switch (flow.LastQuestionAsked)
             {
-                case ConversationFlow.Question.None:
-                    await turnContext.SendActivityAsync("Let's get started. What is your name?", null, null, cancellationToken);
-                    flow.LastQuestionAsked = ConversationFlow.Question.Name;
+                case BuyFlow.Question.None:
+                    await turnContext.SendActivityAsync("您好，你要買什麼東西?", null, null, cancellationToken);
+                    flow.LastQuestionAsked = BuyFlow.Question.ID;
                     break;
-                case ConversationFlow.Question.Name:
-                    if (ValidateName(input, out var name, out message))
+                case BuyFlow.Question.ID:
+                    if (ValidateID(input, out var ID, out message))
                     {
-                        profile.Name = name;
-                        await turnContext.SendActivityAsync($"Hi {profile.Name}.", null, null, cancellationToken);
-                        await turnContext.SendActivityAsync("How old are you?", null, null, cancellationToken);
-                        flow.LastQuestionAsked = ConversationFlow.Question.Age;
+                        Item.iId = ID;
+                        //await turnContext.SendActivityAsync($"Hi {profile.Name}.", null, null, cancellationToken);
+                        await turnContext.SendActivityAsync("數量多少?", null, null, cancellationToken);
+                        flow.LastQuestionAsked = BuyFlow.Question.Qua;
                         break;
                     }
                     else
@@ -343,13 +355,14 @@ namespace Microsoft.BotBuilderSamples
                         await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
                         break;
                     }
-                case ConversationFlow.Question.Age:
-                    if (ValidateAge(input, out var age, out message))
+                case BuyFlow.Question.Qua:
+                    if (ValidateQua(input, out var Q, out message, Item.iId))
                     {
-                        profile.Age = age;
-                        await turnContext.SendActivityAsync($"I have your age as {profile.Age}.", null, null, cancellationToken);
-                        await turnContext.SendActivityAsync("When is your flight?", null, null, cancellationToken);
-                        flow.LastQuestionAsked = ConversationFlow.Question.Date;
+                        Item.quantiy = Q;
+                        //await turnContext.SendActivityAsync($"I have your age as {profile.Age}.", null, null, cancellationToken);
+                        await turnContext.SendActivityAsync("感謝您的購買!", null, null, cancellationToken);
+                        flow.LastQuestionAsked = BuyFlow.Question.None;
+                        Item = new BuyItem();
                         break;
                     }
                     else
@@ -358,28 +371,28 @@ namespace Microsoft.BotBuilderSamples
                         break;
                     }
 
-                case ConversationFlow.Question.Date:
-                    if (ValidateDate(input, out var date, out message))
-                    {
-                        profile.Date = date;
-                        await turnContext.SendActivityAsync($"Your cab ride to the airport is scheduled for {profile.Date}.");
-                        await turnContext.SendActivityAsync($"Thanks for completing the booking {profile.Name}.");
-                        await turnContext.SendActivityAsync($"Type anything to run the bot again.");
-                        flow.LastQuestionAsked = ConversationFlow.Question.None;
-                        profile = new UserProfile();
-                        break;
-                    }
-                    else
-                    {
-                        await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
-                        break;
-                    }
+                //case ConversationFlow.Question.Date:
+                //    if (ValidateDate(input, out var date, out message))
+                //    {
+                //        profile.Date = date;
+                //        await turnContext.SendActivityAsync($"Your cab ride to the airport is scheduled for {profile.Date}.");
+                //        await turnContext.SendActivityAsync($"Thanks for completing the booking {profile.Name}.");
+                //        await turnContext.SendActivityAsync($"Type anything to run the bot again.");
+                //        flow.LastQuestionAsked = ConversationFlow.Question.None;
+                //        profile = new UserProfile();
+                //        break;
+                //    }
+                //    else
+                //    {
+                //        await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
+                //        break;
+                //    }
             }
         }
 
-        private static bool ValidateName(string input, out string name, out string message)
+        private static bool ValidateID(string input, out string ID, out string message)
         {
-            name = null;
+            ID = null;
             message = null;
 
             if (string.IsNullOrWhiteSpace(input))
@@ -388,17 +401,21 @@ namespace Microsoft.BotBuilderSamples
             }
             else
             {
-                name = input.Trim();
+                ID = input.Trim();
             }
-
+            int amount = db.Select_tabItem(ID);
+            if (amount == 0)
+            {
+                message = "沒有這個物品呦!!!";
+            }
             return message is null;
         }
 
-        private static bool ValidateAge(string input, out int age, out string message)
+        private static bool ValidateQua(string input, out int Qua, out string message, string ID)
         {
-            age = 0;
+            Qua = 0;
             message = null;
-
+            int amount = db.Select_tabItem(ID);
             // Try to recognize the input as a number. This works for responses such as "twelve" as well as "12".
             try
             {
@@ -412,15 +429,30 @@ namespace Microsoft.BotBuilderSamples
                     // The result resolution is a dictionary, where the "value" entry contains the processed string.
                     if (result.Resolution.TryGetValue("value", out var value))
                     {
-                        age = Convert.ToInt32(value);
-                        if (age >= 18 && age <= 120)
+                        Qua = Convert.ToInt32(value);
+                        if (Qua > 0)
                         {
-                            return true;
+                            if (Qua <= amount)
+                            {
+                                int remain = amount - Qua;
+                                string sta = remain > 0 ? "on sell" : "sold";
+                                db.update_tabItem(sta, ID, remain);
+                                //message = $"庫存剩餘:{db.Select_tabItem(ID)}";
+                                return true;
+                            }
+                            else
+                            {
+                                message = $"庫存不足瞜!!!庫存剩餘:{db.Select_tabItem(ID)}，請再輸入一次";
+                            }
                         }
+                        else
+                        {
+                            message = "輸入大於0";
+                            break;
+                        }
+                    
                     }
                 }
-
-                message = "Please enter an age between 18 and 120.";
             }
             catch
             {
@@ -430,52 +462,52 @@ namespace Microsoft.BotBuilderSamples
             return message is null;
         }
 
-        private static bool ValidateDate(string input, out string date, out string message)
-        {
-            date = null;
-            message = null;
+        //private static bool ValidateDate(string input, out string date, out string message)
+        //{
+        //    date = null;
+        //    message = null;
 
-            // Try to recognize the input as a date-time. This works for responses such as "11/14/2018", "9pm", "tomorrow", "Sunday at 5pm", and so on.
-            // The recognizer returns a list of potential recognition results, if any.
-            try
-            {
-                var results = DateTimeRecognizer.RecognizeDateTime(input, Culture.English);
+        //    // Try to recognize the input as a date-time. This works for responses such as "11/14/2018", "9pm", "tomorrow", "Sunday at 5pm", and so on.
+        //    // The recognizer returns a list of potential recognition results, if any.
+        //    try
+        //    {
+        //        var results = DateTimeRecognizer.RecognizeDateTime(input, Culture.English);
 
-                // Check whether any of the recognized date-times are appropriate,
-                // and if so, return the first appropriate date-time. We're checking for a value at least an hour in the future.
-                var earliest = DateTime.Now.AddHours(1.0);
+        //        // Check whether any of the recognized date-times are appropriate,
+        //        // and if so, return the first appropriate date-time. We're checking for a value at least an hour in the future.
+        //        var earliest = DateTime.Now.AddHours(1.0);
 
-                foreach (var result in results)
-                {
-                    // The result resolution is a dictionary, where the "values" entry contains the processed input.
-                    var resolutions = result.Resolution["values"] as List<Dictionary<string, string>>;
+        //        foreach (var result in results)
+        //        {
+        //            // The result resolution is a dictionary, where the "values" entry contains the processed input.
+        //            var resolutions = result.Resolution["values"] as List<Dictionary<string, string>>;
 
-                    foreach (var resolution in resolutions)
-                    {
-                        // The processed input contains a "value" entry if it is a date-time value, or "start" and
-                        // "end" entries if it is a date-time range.
-                        if (resolution.TryGetValue("value", out var dateString)
-                            || resolution.TryGetValue("start", out dateString))
-                        {
-                            if (DateTime.TryParse(dateString, out var candidate)
-                                && earliest < candidate)
-                            {
-                                date = candidate.ToShortDateString();
-                                return true;
-                            }
-                        }
-                    }
-                }
+        //            foreach (var resolution in resolutions)
+        //            {
+        //                // The processed input contains a "value" entry if it is a date-time value, or "start" and
+        //                // "end" entries if it is a date-time range.
+        //                if (resolution.TryGetValue("value", out var dateString)
+        //                    || resolution.TryGetValue("start", out dateString))
+        //                {
+        //                    if (DateTime.TryParse(dateString, out var candidate)
+        //                        && earliest < candidate)
+        //                    {
+        //                        date = candidate.ToShortDateString();
+        //                        return true;
+        //                    }
+        //                }
+        //            }
+        //        }
 
-                message = "I'm sorry, please enter a date at least an hour out.";
-            }
-            catch
-            {
-                message = "I'm sorry, I could not interpret that as an appropriate date. Please enter a date at least an hour out.";
-            }
+        //        message = "I'm sorry, please enter a date at least an hour out.";
+        //    }
+        //    catch
+        //    {
+        //        message = "I'm sorry, I could not interpret that as an appropriate date. Please enter a date at least an hour out.";
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
     }
 
 }
