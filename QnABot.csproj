@@ -28,7 +28,11 @@
 
     <ItemGroup>
       <Folder Include="cards\" /><!--      <Folder Include="CognitiveModels\" />
--->          <Folder Include="Flow\" />
+-->          <Folder Include="Flow\" /><!--      <Folder Include="CognitiveModels\" />
+-->    <Folder Include="CognitiveModels\data\" />
+<Folder Include="CognitiveModels\" />
+
+
 <!--      <Folder Include="CognitiveModels\" />
 -->    <!--      <Folder Include="CognitiveModels\" />
 -->    

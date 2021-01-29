@@ -497,3 +497,6 @@ D:/synchronization/Synchronization/MyProject/C#/VIPBOT/bin/Debug/netcoreapp3.1/r
 /Users/kevinge/Desktop/二手拍賣bot/bin/Debug/netcoreapp3.1/Flow/ConversationFlow.cs
 /Users/kevinge/Desktop/二手拍賣bot/bin/Debug/netcoreapp3.1/Flow/SellFlow.cs
 /Users/kevinge/Desktop/二手拍賣bot/bin/Debug/netcoreapp3.1/Flow/SellItem.cs
+/Users/kevinge/Desktop/二手拍賣bot/bin/Debug/netcoreapp3.1/CognitiveModels/data/_experiments/model_001/train_luis_model_augmented.json
+/Users/kevinge/Desktop/二手拍賣bot/bin/Debug/netcoreapp3.1/CognitiveModels/data/_L_VIPLuis.json
+/Users/kevinge/Desktop/二手拍賣bot/bin/Debug/netcoreapp3.1/CognitiveModels/data/_Q_q_BuySell.json
