@@ -573,7 +573,7 @@ namespace Microsoft.BotBuilderSamples
                         Item.imageSrc = image;
                         Item.cvResults = await cvResult(image);
                         var o = Item.cvResults.Objects;
-                        var obj = MessageFactory.Text("您的物品是否為?");
+                        var obj = MessageFactory.Text("您的物品是否為");
  
                             obj.SuggestedActions = new SuggestedActions()
                             {
@@ -601,7 +601,7 @@ namespace Microsoft.BotBuilderSamples
                         Item.name = name;
                         var captions = Item.cvResults.Description.Captions;
                         string c_text = captions[0].Text;
-                        var obj = MessageFactory.Text("請問您的物品描述是否為?");
+                        var obj = MessageFactory.Text("請問您的物品描述是否為");
                         obj.SuggestedActions = new SuggestedActions()
                         {
                             Actions = new List<CardAction>()
@@ -640,7 +640,7 @@ namespace Microsoft.BotBuilderSamples
                     if (ValidateQua(input, out var Qua, out message))
                     {
                         Item.quantity = Qua;
-                        await turnContext.SendActivityAsync("請定價您的物品?", null, null, cancellationToken);
+                        await turnContext.SendActivityAsync("請定價您的物品", null, null, cancellationToken);
                         flow.LastQuestionAsked = SellFlow.Question.discription;
                         break;
                     }
