@@ -123,6 +123,7 @@ namespace Microsoft.BotBuilderSamples
                             profile.Interest,
                             profile.location.Latitude, 
                             profile.location.Longitude);
+                        await turnContext.SendActivityAsync($"已完成輸入，感謝您", null, null, cancellationToken);
                         break;
                     }
                     else
