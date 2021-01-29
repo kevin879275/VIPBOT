@@ -22,14 +22,14 @@ namespace Microsoft.BotBuilderSamples
     private SqlConnection connection;
     public SQL_Database()
     {
-      //using (connection = new SqlConnection(cb.ConnectionString))
-      //{
-      //  connection.Open();
-      //  Submit_Tsql_NonQuery(sql_cmd_CreateTables);
+            using (connection = new SqlConnection(cb.ConnectionString))
+            {
+                connection.Open();
+                Submit_Tsql_NonQuery(sql_cmd_CreateTables);
 
-      //}
+            }
 
-    }
+        }
 
     public void Submit_Tsql_NonQuery(string tsqlSourceCode)
     {

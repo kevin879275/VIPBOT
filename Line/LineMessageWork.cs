@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -43,6 +44,19 @@ namespace Microsoft.BotBuilderSamples
             {
                 throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = new StringContent(x.Message) });
             }
+        }
+
+        public string GetlineImage(string messageID)
+        {
+            string LineAPI = @$"https://api-data.line.me/v2/bot/message/{messageID}/content";
+
+            var client = new RestClient(LineAPI);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("Authorization", $"Bearer {MyToken}");
+            IRestResponse response = client.Execute(request);
+            var result = response.RawBytes;
+
+            return Imgur.Imgur.Upload(result);
         }
 
         public async Task<HttpStatusCode> PushJson(IList<string> userId, JObject msg)

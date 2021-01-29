@@ -67,14 +67,14 @@ namespace Microsoft.BotBuilderSamples
             ConversationState = conversationState;
             UserState = userState;
 
-            var users = db.Select_tabUser();
-            foreach (var ele in users)
-            {
-                dialogState[ele.UserId] = "None";
-                askFirstState[ele.UserId] = new StartDialog();
-                askFirstState[ele.UserId].flow.LastQuestionAsked = StartConversationFlow.Question.End;
+            //var users = db.Select_tabUser();
+            //foreach (var ele in users)
+            //{
+            //    dialogState[ele.UserId] = "None";
+            //    askFirstState[ele.UserId] = new StartDialog();
+            //    askFirstState[ele.UserId].flow.LastQuestionAsked = StartConversationFlow.Question.End;
 
-            }
+            //}
         }
 
 
@@ -619,7 +619,7 @@ namespace Microsoft.BotBuilderSamples
                         break;
                     }
                 case SellFlow.Question.imageSrc:
-                    if (ValidateImage(turnContext.Activity.Attachments[0].ContentUrl, out var image, out message))
+                    if (ValidateImage(turnContext, out var image, out message))
                     {
                         Item.imageSrc = image;
                         Item.cvResults = await cvResult(image);
@@ -747,11 +747,30 @@ namespace Microsoft.BotBuilderSamples
             }
         }
 
-        private static bool ValidateImage(string input, out string image, out string message)
+        private static bool ValidateImage(ITurnContext turnContext, out string image, out string message)
         {
             message = null;
-            image = Imgur.Imgur.UploadSrc(input);
-            if (image == "false") message = "圖片格式錯誤，請再試一次";
+            image = "https://p2.bahamut.com.tw/B/2KU/06/ab809378e0d5116c0b861c30c31b3di5.JPG";
+            if (turnContext.Activity.ChannelId == "line")
+            {
+                var channelData = ((DelegatingTurnContext<IMessageActivity>)turnContext).Activity.ChannelData.ToString();
+                //_logger.LogInformation("fuck", channelData);
+                try
+                {
+                    var msg = JsonConvert.DeserializeObject<LineImage>(channelData);
+                    image = lineBot.GetlineImage(msg.message.id);
+                }
+                catch
+                {
+                    message = "上傳失敗，請再試一次";
+                }
+            }
+            //else
+            //{
+            //    string input = turnContext.Activity.Attachments[0].ContentUrl;
+            //    image = Imgur.Imgur.UploadSrc(input);
+            //    if (image == "false") message = "圖片格式錯誤，請再試一次";
+            //}
             return message is null;
         }
 
