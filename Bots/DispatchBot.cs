@@ -485,7 +485,7 @@ namespace Microsoft.BotBuilderSamples
             }
             catch
             {
-                message = "I'm sorry, I could not interpret that as an age. Please enter an age between 18 and 120.";
+                message = "輸入大於0";
             }
 
             return message is null;
@@ -499,7 +499,7 @@ namespace Microsoft.BotBuilderSamples
             switch (flow.LastQuestionAsked)
             {
                 case SellFlow.Question.None:
-                    await turnContext.SendActivityAsync("您好，你要賣什麼東西?", null, null, cancellationToken);
+                    await turnContext.SendActivityAsync("您好，你要賣什麼東西(請上傳圖片)?", null, null, cancellationToken);
                     flow.LastQuestionAsked = SellFlow.Question.imageSrc;
                     break;
                 case SellFlow.Question.imageSrc:
@@ -508,7 +508,6 @@ namespace Microsoft.BotBuilderSamples
                         Item.imageSrc = image;
                         await turnContext.SendActivityAsync("您好，你要賣什麼類型?", null, null, cancellationToken);
                         Item.imageSrc = image;
-                        //await turnContext.SendActivityAsync($"Hi {profile.Name}.", null, null, cancellationToken);
                         var reply = MessageFactory.Text("請選擇下列類型?");
                         reply.SuggestedActions = new SuggestedActions()
                         {
@@ -660,7 +659,7 @@ namespace Microsoft.BotBuilderSamples
             }
             catch
             {
-                message = "I'm sorry, I could not interpret that as an age. Please enter an age between 18 and 120.";
+                message = "商品金額需大於0";
             }
             return message is null;
         }
