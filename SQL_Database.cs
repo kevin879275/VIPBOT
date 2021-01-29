@@ -195,8 +195,28 @@ namespace Microsoft.BotBuilderSamples
       }
     }
 
+        public void update_Bought_List(
+        string User_id,
+        string Item_id,
+        int Bought_quantity,
+        string tsqlSourceCode = sql_cmd_update_tabBought_list)
+        {
+            using (connection = new SqlConnection(cb.ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand(tsqlSourceCode, connection))
+                {
+                    command.Parameters.AddWithValue("@value1", User_id);
+                    command.Parameters.AddWithValue("@value2", Item_id);
+                    command.Parameters.AddWithValue("@value3", Bought_quantity);
+                    int rowsAffected = command.ExecuteNonQuery();
+                    Console.WriteLine(rowsAffected + " = rows affected.");
+                }
+            }
+        }
 
-    private const string sql_cmd_DeleteTables = @" 
+
+        private const string sql_cmd_DeleteTables = @" 
                 DROP TABLE IF EXISTS tabBought_List;
                 DROP TABLE IF EXISTS tabItem;
                 DROP TABLE IF EXISTS tabUser;
@@ -241,9 +261,22 @@ namespace Microsoft.BotBuilderSamples
                 WHERE User_id=@User_id AND Item_id=@Item_id;
             ";
 
-        public const string sql_cmd_select_tabUser_coordinate = @"
-                
+        
+        public const string sql_cmd_update_tabBought_list = @"
+            DECLARE @user_id nvarchar(40) = @value1;
+            DECLARE @item_id nvarchar(40) = @value2
+            DECLARE @bought_quantity INT = @value3;
+            UPDATE tabBought_list
+            SET
+                Bought_quantity += @bought_quantity
+            FROM tabBought_list
+            WHERE User_id=@user_id AND Item_id=@item_id
+            ";
+
+        public const string sql_cmd_select_tabUser = @"
                 SELECT
+                    id,
+                    InterestType,
                     latitude,
                     longitude
                 FROM tabUser
@@ -328,7 +361,7 @@ namespace Microsoft.BotBuilderSamples
       }
     }
 
-        public float[] Select_tabUser_coordinate(string tsql = sql_cmd_select_tabUser_coordinate)
+        public List<User> Select_tabUser(string tsql = sql_cmd_select_tabUser)
         {
             using (connection = new SqlConnection(cb.ConnectionString))
             {
@@ -336,7 +369,8 @@ namespace Microsoft.BotBuilderSamples
                 Console.WriteLine();
                 Console.WriteLine("=================================");
                 Console.WriteLine("Select value from table");
-                float[] coordinate = new float[2];
+                User user = new User();
+                List<User> arr = new List<User>();
 
                 using (var command = new SqlCommand(tsql, connection))
                 {
@@ -348,15 +382,21 @@ namespace Microsoft.BotBuilderSamples
 
                         while (reader.Read())
                         {
-                            coordinate[0] = reader.GetFloat(0);
-                            coordinate[1] = reader.GetFloat(1);
+                            user.UserId = reader.GetString(0);
+                            user.Interest = reader.GetString(1);
+                            user.location.Latitude = reader.GetFloat(2);
+                            user.location.Longitude = reader.GetFloat(3);
 
-                            Console.WriteLine(coordinate[0]);
-                            Console.WriteLine(coordinate[1]);
+                            Console.WriteLine(user.UserId);
+                            Console.WriteLine(user.Interest);
+                            Console.WriteLine(user.location.Latitude);
+                            Console.WriteLine(user.location.Longitude);
+
+                            arr.Add(user);
                         }
                     }
                 }
-                return coordinate;
+                return arr;
             }
         }
     }
