@@ -66,6 +66,15 @@ namespace Microsoft.BotBuilderSamples
             _botServices = botServices;
             ConversationState = conversationState;
             UserState = userState;
+
+            var users = db.Select_tabUser();
+            foreach (var ele in users)
+            {
+                dialogState[ele.UserId] = "None";
+                askFirstState[ele.UserId] = new StartDialog();
+                askFirstState[ele.UserId].flow.LastQuestionAsked = StartConversationFlow.Question.End;
+
+            }
         }
 
 
@@ -131,7 +140,7 @@ namespace Microsoft.BotBuilderSamples
                        item.price,
                        item.name);
                     var tmp = new LineFunctions();
-                    var msg = tmp.SetCard(item.imageSrc, "Name", item.quantity.ToString(), item.price.ToString(),
+                    var msg = tmp.SetCard(item.imageSrc, item.name, item.quantity.ToString(), item.price.ToString(),
                         item.description, item.location, itemNow);
                     var pushLst = getAccountList(askFirstState[userID].profile, item.type);
                     await lineBot.PushJson(pushLst, msg);
