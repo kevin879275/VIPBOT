@@ -97,7 +97,7 @@ namespace Microsoft.BotBuilderSamples
                     string id = turnContext.Activity.Recipient.Id;
                     int boughtAmount = db.Select_tabBought_List(id, item.iId);
                     if (boughtAmount > 0)
-                        db.Update_tabBought_List(id, item.iId, boughtAmount + item.quantiy);
+                        db.update_Bought_List(id, item.iId, boughtAmount + item.quantiy);
                     else
                         db.Insert_tabBought_List(id, item.iId, item.quantiy);
                 }
@@ -791,7 +791,7 @@ namespace Microsoft.BotBuilderSamples
         {
             List<string> accountList = new List<string>();
             var userList = db.Select_tabUser();
-            foreach(User user in userList)
+            foreach (User user in userList)
             {
                 if (user.UserId == me.UserId) continue;
                 double dis = getDistance(me.location.Latitude, me.location.Longitude, user.location.Latitude, user.location.Longitude);
