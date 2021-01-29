@@ -28,7 +28,7 @@ namespace Microsoft.BotBuilderSamples
     private readonly IBotServices _botServices;
 
     private static readonly HttpClient client = new HttpClient();
-    //private SQL_Database db = new SQL_Database();
+    private static SQL_Database db = new SQL_Database();
 
 
     protected readonly BotState ConversationState;
@@ -81,7 +81,7 @@ namespace Microsoft.BotBuilderSamples
         await DispatchToTopIntentAsync(turnContext, topIntent.intent, recognizerResult, cancellationToken);
       }
     }
-
+    private static int itemNow = 0;
     protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
     {
       dialogState[turnContext.Activity.Recipient.Id] = false;
@@ -90,6 +90,9 @@ namespace Microsoft.BotBuilderSamples
         if (member.Id != turnContext.Activity.Recipient.Id)
         {
           await SendSuggestedActionsAsync(turnContext, cancellationToken);
+          db.Insert_tabUser(turnContext.Activity.Recipient.Id, "新竹市東區", "[\"天竺鼠車車\",\"車車天竺鼠\"]");
+          db.Insert_tabItem(itemNow.ToString(), "now", "cart", "", "selling", 5, "天竺鼠車車", "新竹市東區", turnContext.Activity.Recipient.Id, 99999);
+          itemNow++;
         }
       }
     }
@@ -168,13 +171,55 @@ namespace Microsoft.BotBuilderSamples
         {
           int q = getNumberInString(qm.Entity);
           int inu = getNumberInString(inum.Entity);
-          await turnContext.SendActivityAsync(MessageFactory.Text($"q:{q} inu:{inu}"));
-          //db.Select(SQL_Database.sql_cmd_select_tabItem);
+
+          string uid = turnContext.Activity.Recipient.Id;
+          int amount = db.Select_tabItem(inu.ToString());
+          if (amount == 0)
+          {
+            turnContext.SendActivityAsync(MessageFactory.Text("沒有這個物品id優!!!"));
+            return;
+          }
+
+          if (q <= amount)
+          {
+            db.Insert_tabBought_List(uid, inu.ToString(), q);
+            int remain = amount - q;
+            string sta = remain > 0 ? "on sell" : "sold";
+            db.update_tabItem(sta, inu.ToString(), remain);
+
+            turnContext.SendActivityAsync(MessageFactory.Text($"庫存剩餘:{db.Select_tabItem(inu.ToString())}"));
+          }
+          else
+            turnContext.SendActivityAsync(MessageFactory.Text("庫存不足瞜!!!"));
         }
 
       }
       else if (topIntent == "Sell")
       {
+        var mon = result.Entities.SingleOrDefault(s => s.Type == "builtin.currency");
+        var q = result.Entities.SingleOrDefault(s => s.Type == "Quantity math") ?? result.Entities.SingleOrDefault(s => s.Type == "Measure Quantity");
+        if (mon == null || q == null)
+        {
+          //dialog
+        }
+        else
+        {
+          int money = getNumberInString(mon.Entity);
+          int quantity = getNumberInString(q.Entity);
+          string other = result.Query;
+          foreach (var entity in result.Entities)
+          {
+            other = other.Replace(entity.Entity, "");
+          }
+          other = other.Replace(" ", "");
+          string name = "no name";
+          if (other.Length > 0)
+            name = other;
+          db.Insert_tabItem(itemNow.ToString(), DateTime.Now.ToString(), "second hand", "[]", "on sell", quantity, name, "新竹市東區", turnContext.Activity.Recipient.Id, money);
+          // to do get location from user
+          itemNow++;
+        }
+
 
       }
       else
