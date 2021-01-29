@@ -94,7 +94,12 @@ namespace Microsoft.BotBuilderSamples
                 if (flow.LastQuestionAsked == BuyFlow.Question.None)
                 {
                     dialogState[turnContext.Activity.Recipient.Id] = "None";
-                    db.Insert_tabBought_List(turnContext.Activity.Recipient.Id, item.iId, item.quantiy);
+                    string id = turnContext.Activity.Recipient.Id;
+                    int boughtAmount = db.Select_tabBought_List(id, item.iId);
+                    if (boughtAmount > 0)
+                        db.Update_tabBought_List(id, item.iId, boughtAmount + item.quantiy);
+                    else
+                        db.Insert_tabBought_List(id, item.iId, item.quantiy);
                 }
             }
             else if (askFirstState[turnContext.Activity.Recipient.Id].flow.LastQuestionAsked != StartConversationFlow.Question.End)
