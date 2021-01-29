@@ -88,6 +88,7 @@ namespace Microsoft.BotBuilderSamples
                     new CardAction() { Title = $"樂器", Type = ActionTypes.ImBack, Value = $"樂器"},
                     new CardAction() { Title = $"書籍", Type = ActionTypes.ImBack, Value = $"書籍"},
                     new CardAction() { Title = $"票券", Type = ActionTypes.ImBack, Value = $"票券"},
+                    new CardAction() { Title = $"其他", Type = ActionTypes.ImBack, Value = $"其他"},
                 },
             };
 
@@ -167,7 +168,7 @@ namespace Microsoft.BotBuilderSamples
                 {$"打工機會", $"打工機會"}, {$"3C產品", $"3C產品"},
                 {$"電腦周邊", $"電腦周邊"}, {$"食品", $"食品"},
                 {$"樂器", $"樂器"}, {$"書籍", $"書籍"},
-                {$"票券", $"票券"}
+                {$"票券", $"票券"},{$"其他", $"其他"}
             };
             if (interestDict.ContainsKey(turnContext.Activity.Text))
             {

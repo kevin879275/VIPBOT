@@ -519,6 +519,7 @@ namespace Microsoft.BotBuilderSamples
                                 new CardAction() { Title = "樂器", Type = ActionTypes.ImBack, Value = "樂器"},
                                 new CardAction() { Title = "書籍", Type = ActionTypes.ImBack, Value = "書籍"},
                                 new CardAction() { Title = "票券", Type = ActionTypes.ImBack, Value = "票券"},
+                                new CardAction() { Title = "其他", Type = ActionTypes.ImBack, Value = "其他"},
                             },
                         };
                         flow.LastQuestionAsked = SellFlow.Question.type;
