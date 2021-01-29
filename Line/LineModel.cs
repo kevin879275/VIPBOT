@@ -3,20 +3,38 @@ using System.Text.Json.Serialization;
 
 namespace Microsoft.BotBuilderSamples
 {
-    public class LineChannel
+    public class LineLocation
     {
-        public object Message { get; set; }
-        public string ReplyToken { get; set; }
+        [JsonPropertyName("message")]
+        public Location message { get; set; }
+        [JsonPropertyName("replyToken")]
+        public string replyToken { get; set; }
+        [JsonPropertyName("type")]
+        public string type { get; set; }
+    }
+
+    public class LineImage
+    {
+        [JsonPropertyName("message")]
+        public Image message { get; set; }
+        [JsonPropertyName("replyToken")]
+        public string replyToken { get; set; }
+        [JsonPropertyName("type")]
+        public string type { get; set; }
     }
 
     public class Image
     {
-        [JsonPropertyName("type")]
-        public string Type { get; set; }
-        [JsonPropertyName("originUrl")]
-        public string originUrl { get; set; }
-        [JsonPropertyName("previewUrl")]
-        public string previewUrl { get; set; }
+        public Contentprovider contentProvider { get; set; }
+        public string id { get; set; }
+        public string type { get; set; }
+    }
+
+    public class Contentprovider
+    {
+        public string type { get; set; }
+        public string originalContentUrl { get; set; }
+        public string previewImageUrl { get; set; }
     }
 
     public class Location
@@ -31,13 +49,6 @@ namespace Microsoft.BotBuilderSamples
         public float Longitude { get; set; }
     }
 
-    public class Text
-    {
-        [JsonPropertyName("type")]
-        public string Type { get; set; }
-        [JsonPropertyName("text")]
-        public string TextString { get; set; }
-    }
 
 
     // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse); 
