@@ -558,7 +558,7 @@ namespace Microsoft.BotBuilderSamples
                     if(ValidateType(input, out var type, out message))
                     {
                         Item.type = type;
-                        await turnContext.SendActivityAsync("您好，你要賣什麼東西(請上傳圖片)?", null, null, cancellationToken);
+                        await turnContext.SendActivityAsync("您好，請上傳物品圖片並稍後片刻", null, null, cancellationToken);
                         flow.LastQuestionAsked = SellFlow.Question.imageSrc;
                         break;
                     }
@@ -653,17 +653,22 @@ namespace Microsoft.BotBuilderSamples
                     if (ValidatePrice(input, out var price, out message))
                     {
                         Item.price = price;
-                        var rep = MessageFactory.Text("請確認您的商品?");
-                        rep.SuggestedActions = new SuggestedActions()
-                        {
-                            Actions = new List<CardAction>()
-                            {
-                                new CardAction() { Title = "是", Type = ActionTypes.ImBack, Value = "是"},
-                                new CardAction() { Title = "否", Type = ActionTypes.ImBack, Value = "否"},
-                            },
-                        };
+                        //var rep = MessageFactory.Text("請確認您的商品?");
+                        
+                        //rep.SuggestedActions = new SuggestedActions()
+                        //{
+                        //    Actions = new List<CardAction>()
+                        //    {
+                        //        new CardAction() { Title = "是", Type = ActionTypes.ImBack, Value = "是"},
+                        //        new CardAction() { Title = "否", Type = ActionTypes.ImBack, Value = "否"},
+                        //    },
+                        //};
+                        string json = getSellJson(Item);
+                        //var joject = LineFunctions.SetCardWithString(json);
+                        //IList<string> id = new[] { turnContext.Activity.Recipient.Id };
+                        //await lineBot.PushJson(id,joject);
                         flow.LastQuestionAsked = SellFlow.Question.Check;
-                        await turnContext.SendActivityAsync(rep, cancellationToken);
+                        //await turnContext.SendActivityAsync(rep, cancellationToken);
                         break;
                     }
                     else
@@ -676,6 +681,7 @@ namespace Microsoft.BotBuilderSamples
                     {
                         Item.ownerUserId = turnContext.Activity.Recipient.Id;
                         Item.time = DateTime.Now.ToString();
+                        Item.location = askFirstState[getID(turnContext)].profile.location.ToString();
                         await turnContext.SendActivityAsync("感謝您，物品已成功登錄", null, null, cancellationToken);
                         Item = new SellItem();
                         flow.LastQuestionAsked = SellFlow.Question.None;
@@ -853,7 +859,6 @@ namespace Microsoft.BotBuilderSamples
                 {
                     accountList.Add(user.UserId);
                 }
-
             }
             return accountList;
         }
@@ -870,6 +875,10 @@ namespace Microsoft.BotBuilderSamples
                 var msg = JsonConvert.DeserializeObject<LineAdapt>(channelData);
                 return msg.source.userId;
             }
+        }
+        private static string getSellJson(SellItem item)
+        {
+            return "";
         }
     }
 
