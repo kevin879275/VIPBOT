@@ -68,26 +68,27 @@ namespace Microsoft.BotBuilderSamples
     {
             // First, we use the dispatch model to determine which cognitive service (LUIS or QnA) to use.
             //await Dialog.BeginDialogAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
-            //if (dialogState[turnContext.Activity.Recipient.Id] == true)
-            //{
-            //  await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
-            //}
-            //else
-            //{
-            //  var recognizerResult = await _botServices.Dispatch.RecognizeAsync(turnContext, cancellationToken);
-            //  // Top intent tell us which cognitive service to use.
-            //  var topIntent = recognizerResult.GetTopScoringIntent();
+            if (dialogState[turnContext.Activity.Recipient.Id] == true)
+            {
+                var conversationStateAccessors = ConversationState.CreateProperty<ConversationFlow>(nameof(ConversationFlow));
+                var flow = await conversationStateAccessors.GetAsync(turnContext, () => new ConversationFlow(), cancellationToken);
 
-            //  // Next, we call the dispatcher with the top intent.
-            //  await DispatchToTopIntentAsync(turnContext, topIntent.intent, recognizerResult, cancellationToken);
-            var conversationStateAccessors = ConversationState.CreateProperty<ConversationFlow>(nameof(ConversationFlow));
-            var flow = await conversationStateAccessors.GetAsync(turnContext, () => new ConversationFlow(), cancellationToken);
+                var userStateAccessors = UserState.CreateProperty<UserProfile>(nameof(UserProfile));
+                var profile = await userStateAccessors.GetAsync(turnContext, () => new UserProfile(), cancellationToken);
 
-            var userStateAccessors = UserState.CreateProperty<UserProfile>(nameof(UserProfile));
-            var profile = await userStateAccessors.GetAsync(turnContext, () => new UserProfile(), cancellationToken);
+                await FillOutUserProfileAsync(flow, profile, turnContext, cancellationToken);
+                if (flow.LastQuestionAsked == ConversationFlow.Question.None)
+                    dialogState[turnContext.Activity.Recipient.Id] = false;
+            }
+            else
+            {
+                var recognizerResult = await _botServices.Dispatch.RecognizeAsync(turnContext, cancellationToken);
+                // Top intent tell us which cognitive service to use.
+                var topIntent = recognizerResult.GetTopScoringIntent();
 
-            await FillOutUserProfileAsync(flow, profile, turnContext, cancellationToken);
-
+                // Next, we call the dispatcher with the top intent.
+                await DispatchToTopIntentAsync(turnContext, topIntent.intent, recognizerResult, cancellationToken);
+            }
         }
     
     private static int itemNow = 0;
@@ -153,20 +154,29 @@ namespace Microsoft.BotBuilderSamples
       }
       else if (topIntent == "Buy")
       {
-        var qm = result.Entities.SingleOrDefault(s => s.Type == "Quantity math") ?? result.Entities.SingleOrDefault(s => s.Type == "Measure Quantity");
 
-        var inum = result.Entities.SingleOrDefault(s => s.Type == "ItemNumber");
-        if (qm == null || inum == null)
-        {
-          dialogState[turnContext.Activity.Recipient.Id] = true;
-          //await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
-        }
-        else
-        {
-          int q = getNumberInString(qm.Entity);
-          int inu = getNumberInString(inum.Entity);
+                var conversationStateAccessors = ConversationState.CreateProperty<ConversationFlow>(nameof(ConversationFlow));
+                var flow = await conversationStateAccessors.GetAsync(turnContext, () => new ConversationFlow(), cancellationToken);
 
-          string uid = turnContext.Activity.Recipient.Id;
+                var userStateAccessors = UserState.CreateProperty<UserProfile>(nameof(UserProfile));
+                var profile = await userStateAccessors.GetAsync(turnContext, () => new UserProfile(), cancellationToken);
+
+                await FillOutUserProfileAsync(flow, profile, turnContext, cancellationToken);
+                dialogState[turnContext.Activity.Recipient.Id] = true;
+                //var qm = result.Entities.SingleOrDefault(s => s.Type == "Quantity math") ?? result.Entities.SingleOrDefault(s => s.Type == "Measure Quantity");
+
+                //var inum = result.Entities.SingleOrDefault(s => s.Type == "ItemNumber");
+        //if (qm == null || inum == null)
+        //{
+        //  dialogState[turnContext.Activity.Recipient.Id] = true;
+        //  //await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
+        //}
+        //else
+        //{
+        //  int q = getNumberInString(qm.Entity);
+        //  int inu = getNumberInString(inum.Entity);
+
+        //  string uid = turnContext.Activity.Recipient.Id;
           //int amount = db.Select_tabItem(inu.ToString());
           //if (amount == 0)
           //{
@@ -185,7 +195,6 @@ namespace Microsoft.BotBuilderSamples
           //}
           //else
           //      turnContext.SendActivityAsync(MessageFactory.Text("庫存不足瞜!!!"));
-        }
 
       }
       else if (topIntent == "Sell")
