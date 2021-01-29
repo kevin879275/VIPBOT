@@ -9,41 +9,46 @@ using System.Data;
 
 namespace Microsoft.BotBuilderSamples
 {
-    class SQL_Database
+  class SQL_Database
+  {
+
+    private SqlConnectionStringBuilder cb = new SqlConnectionStringBuilder
     {
+      DataSource = "viplabcareerhackserver.database.windows.net",
+      UserID = "viplab",
+      Password = "Careerhack12345",
+      InitialCatalog = "VIPLABCAREERHACKDB",
+    };
+    private SqlConnection connection;
+    public SQL_Database()
+    {
+      using (connection = new SqlConnection(cb.ConnectionString))
+      {
+        connection.Open();
+        Submit_Tsql_NonQuery(sql_cmd_CreateTables);
 
-        private SqlConnectionStringBuilder cb = new SqlConnectionStringBuilder
-        {
-            DataSource = "viplabcareerhackserver.database.windows.net",
-            UserID = "viplab",
-            Password = "Careerhack12345",
-            InitialCatalog = "VIPLABCAREERHACKDB",
-        };
-        private SqlConnection connection;
-        public SQL_Database()
-        {
-            using (connection = new SqlConnection(cb.ConnectionString))
-            {
-                connection.Open();
-                Submit_Tsql_NonQuery(sql_cmd_CreateTables);
-            }
+      }
 
+    }
+
+    public void Submit_Tsql_NonQuery(string tsqlSourceCode)
+    {
+      using (connection = new SqlConnection(cb.ConnectionString))
+      {
+        connection.Open();
+        using (var command = new SqlCommand(tsqlSourceCode, connection))
+        {
+          int rowsAffected = command.ExecuteNonQuery();
+          Console.WriteLine(rowsAffected + " = rows affected.");
         }
+      }
+    }
+    public void createTable()
+    {
+      Submit_Tsql_NonQuery(sql_cmd_CreateTables);
+    }
 
-        public void Submit_Tsql_NonQuery(string tsqlSourceCode)
-        {
-            using (var command = new SqlCommand(tsqlSourceCode, connection))
-            {
-                int rowsAffected = command.ExecuteNonQuery();
-                Console.WriteLine(rowsAffected + " = rows affected.");
-            }
-        }
-        public void createTable()
-        {
-            Submit_Tsql_NonQuery(sql_cmd_CreateTables);
-        }
-
-        private const string sql_cmd_CreateTables = @"
+    private const string sql_cmd_CreateTables = @"
                 DROP TABLE IF EXISTS tabBought_List;
                 DROP TABLE IF EXISTS tabItem;
                 DROP TABLE IF EXISTS tabUser;
@@ -84,119 +89,133 @@ namespace Microsoft.BotBuilderSamples
             ";
 
 
-        public void Insert_tabUser(
-            string user_id,
-            string Loaction,
-            string InterestType,
-            string tsqlSourceCode = sql_cmd_Insert_tabUser)
+    public void Insert_tabUser(
+        string user_id,
+        string Loaction,
+        string InterestType,
+        string tsqlSourceCode = sql_cmd_Insert_tabUser)
+    {
+      using (connection = new SqlConnection(cb.ConnectionString))
+      {
+        connection.Open();
+        using (var command = new SqlCommand(tsqlSourceCode, connection))
         {
-            using (var command = new SqlCommand(tsqlSourceCode, connection))
-            {
-                command.Parameters.AddWithValue("@value1", user_id);
-                command.Parameters.AddWithValue("@value2", Loaction);
-                command.Parameters.AddWithValue("@value3", InterestType);
-                int rowsAffected = command.ExecuteNonQuery();
-                Console.WriteLine(rowsAffected + " = rows affected.");
-            }
+          command.Parameters.AddWithValue("@value1", user_id);
+          command.Parameters.AddWithValue("@value2", Loaction);
+          command.Parameters.AddWithValue("@value3", InterestType);
+          int rowsAffected = command.ExecuteNonQuery();
+          Console.WriteLine(rowsAffected + " = rows affected.");
         }
+      }
+    }
 
-        public void Insert_tabItem(
-            string Item_id,
-           string Time,
-           string Type,
-           string img,
-           string status,
-           int count,
-           string Description,
-           string Location,
-           int User_id,
-           int piece,
-           string tsqlSourceCode = sql_cmd_Insert_tabItem)
+    public void Insert_tabItem(
+        string Item_id,
+       string Time,
+       string Type,
+       string img,
+       string status,
+       int count,
+       string Description,
+       string Location,
+       string User_id,
+       int piece,
+       string tsqlSourceCode = sql_cmd_Insert_tabItem)
+    {
+
+      using (connection = new SqlConnection(cb.ConnectionString))
+      {
+        connection.Open();
+        using (var command = new SqlCommand(tsqlSourceCode, connection))
         {
-
-            using (var command = new SqlCommand(tsqlSourceCode, connection))
-            {
-                command.Parameters.AddWithValue("@value1", Item_id);
-                command.Parameters.AddWithValue("@value2", Time);
-                command.Parameters.AddWithValue("@value3", Type);
-                command.Parameters.AddWithValue("@value4", img);
-                command.Parameters.AddWithValue("@value5", status);
-                command.Parameters.AddWithValue("@value6", count);
-                command.Parameters.AddWithValue("@value7", Description);
-                command.Parameters.AddWithValue("@value8", Location);
-                command.Parameters.AddWithValue("@value9", User_id);
-                command.Parameters.AddWithValue("@value10", piece);
-                int rowsAffected = command.ExecuteNonQuery();
-                Console.WriteLine(rowsAffected + " = rows affected.");
-            }
+          command.Parameters.AddWithValue("@value1", Item_id);
+          command.Parameters.AddWithValue("@value2", Time);
+          command.Parameters.AddWithValue("@value3", Type);
+          command.Parameters.AddWithValue("@value4", img);
+          command.Parameters.AddWithValue("@value5", status);
+          command.Parameters.AddWithValue("@value6", count);
+          command.Parameters.AddWithValue("@value7", Description);
+          command.Parameters.AddWithValue("@value8", Location);
+          command.Parameters.AddWithValue("@value9", User_id);
+          command.Parameters.AddWithValue("@value10", piece);
+          int rowsAffected = command.ExecuteNonQuery();
+          Console.WriteLine(rowsAffected + " = rows affected.");
         }
+      }
+    }
 
 
-        public void Insert_tabBought_List(
-            string User_id,
-            string Item_id,
-            int Bought_quantity,
-            string tsqlSourceCode = sql_cmd_Insert_tabBought_List)
+    public void Insert_tabBought_List(
+        string User_id,
+        string Item_id,
+        int Bought_quantity,
+        string tsqlSourceCode = sql_cmd_Insert_tabBought_List)
+    {
+
+      using (connection = new SqlConnection(cb.ConnectionString))
+      {
+        connection.Open();
+        using (var command = new SqlCommand(tsqlSourceCode, connection))
         {
-
-
-            using (var command = new SqlCommand(tsqlSourceCode, connection))
-            {
-                command.Parameters.AddWithValue("@value1", User_id);
-                command.Parameters.AddWithValue("@value2", Item_id);
-                command.Parameters.AddWithValue("@value3", Bought_quantity);
-                int rowsAffected = command.ExecuteNonQuery();
-                Console.WriteLine(rowsAffected + " = rows affected.");
-            }
+          command.Parameters.AddWithValue("@value1", User_id);
+          command.Parameters.AddWithValue("@value2", Item_id);
+          command.Parameters.AddWithValue("@value3", Bought_quantity);
+          int rowsAffected = command.ExecuteNonQuery();
+          Console.WriteLine(rowsAffected + " = rows affected.");
         }
+      }
+    }
 
-        public void update_tabItem(
-         string status,
-         string item_id,
-         int count,
-         string tsqlSourceCode = sql_cmd_Update_tabItem)
+    public void update_tabItem(
+     string status,
+     string item_id,
+     int count,
+     string tsqlSourceCode = sql_cmd_Update_tabItem)
+    {
+      using (connection = new SqlConnection(cb.ConnectionString))
+      {
+        connection.Open();
+        using (var command = new SqlCommand(tsqlSourceCode, connection))
         {
-
-            using (var command = new SqlCommand(tsqlSourceCode, connection))
-            {
-                command.Parameters.AddWithValue("@value1", status);
-                command.Parameters.AddWithValue("@value2", item_id);
-                command.Parameters.AddWithValue("@value3", count);
-                int rowsAffected = command.ExecuteNonQuery();
-                Console.WriteLine(rowsAffected + " = rows affected.");
-            }
+          command.Parameters.AddWithValue("@value1", status);
+          command.Parameters.AddWithValue("@value2", item_id);
+          command.Parameters.AddWithValue("@value3", count);
+          int rowsAffected = command.ExecuteNonQuery();
+          Console.WriteLine(rowsAffected + " = rows affected.");
         }
+      }
+    }
 
 
-        private const string sql_cmd_DeleteTables = @" 
+    private const string sql_cmd_DeleteTables = @" 
                 DROP TABLE IF EXISTS tabBought_List;
                 DROP TABLE IF EXISTS tabItem;
                 DROP TABLE IF EXISTS tabUser;
             ";
 
 
-        private const string sql_cmd_Insert_tabUser = @"
+    private const string sql_cmd_Insert_tabUser = @"
                 INSERT INTO tabUser (id, Location, InterestType)
                 VALUES
                     (@value1, @value2, @value3)
             ";
 
 
-        private const string sql_cmd_Insert_tabItem = @"
+    private const string sql_cmd_Insert_tabItem = @"
                 INSERT INTO tabItem (id, Time, Type, img, status, count, Description, Location, User_id, piece)
                 VALUES
                     (@value1, @value2, @value3,@value4, @value5, @value6, @value7, @value8, @value9, @value10)
             ";
 
 
-        private const string sql_cmd_Insert_tabBought_List = @"
+    private const string sql_cmd_Insert_tabBought_List = @"
                 INSERT INTO tabBought_List
                 VALUES
                     (@value1, @value2, @value3)
             ";
 
 
-        public const string sql_cmd_select_tabItem = @"
+    public const string sql_cmd_select_tabItem = @"
                 DECLARE @Item_id  nvarchar(40) = @value1;
                 SELECT
                     Count
@@ -204,7 +223,7 @@ namespace Microsoft.BotBuilderSamples
                 WHERE id = @Item_id;
             ";
 
-        public const string sql_cmd_select_tabBought_List = @"
+    public const string sql_cmd_select_tabBought_List = @"
                 DECLARE @User_id  nvarchar(40) = @value1;
                 DECLARE @Item_id  nvarchar(40) = @value2;
                 SELECT
@@ -214,18 +233,18 @@ namespace Microsoft.BotBuilderSamples
             ";
 
 
-        public byte[] GetPictureData(string imagepath)
-        {
-            FileStream file = new FileStream(imagepath, FileMode.Open);
-            byte[] by = new byte[file.Length];
-            file.Read(by, 0, by.Length);
-            file.Close();
-            return by;
-        }
+    public byte[] GetPictureData(string imagepath)
+    {
+      FileStream file = new FileStream(imagepath, FileMode.Open);
+      byte[] by = new byte[file.Length];
+      file.Read(by, 0, by.Length);
+      file.Close();
+      return by;
+    }
 
 
 
-        private const string sql_cmd_Update_tabItem = @"
+    private const string sql_cmd_Update_tabItem = @"
                 DECLARE @status  nvarchar(32) = @value1;
                 DECLARE @item_id  nvarchar(32) = @value2;
                 DECLARE @count  INT = @value3;
@@ -240,7 +259,7 @@ namespace Microsoft.BotBuilderSamples
             ";
 
 
-        static private string Build_5_Tsql_DeleteJoin = @"
+    static private string Build_5_Tsql_DeleteJoin = @"
                 DECLARE @DName2  nvarchar(128);
                 SET @DName2 = @csharpParmDepartmentName;  --'Legal';
 
@@ -259,60 +278,67 @@ namespace Microsoft.BotBuilderSamples
             ";
 
 
-        public int Select_tabBought_List(string tsql, string user_id, string item_id)
+    public int Select_tabBought_List(string user_id, string item_id, string tsql = sql_cmd_select_tabBought_List)
+    {
+      using (connection = new SqlConnection(cb.ConnectionString))
+      {
+        connection.Open();
+        Console.WriteLine();
+        Console.WriteLine("=================================");
+        Console.WriteLine("Select value from table");
+
+        int value = 0;
+
+        using (var command = new SqlCommand(tsql, connection))
         {
-            Console.WriteLine();
-            Console.WriteLine("=================================");
-            Console.WriteLine("Select value from table");
+          command.Parameters.AddWithValue("@value1", user_id);
+          command.Parameters.AddWithValue("@value2", item_id);
+          int rowsAffected = command.ExecuteNonQuery();
+          Console.WriteLine(rowsAffected + " = rows affected.");
 
-            int value = 0;
+          using (SqlDataReader reader = command.ExecuteReader())
+          {
 
-            using (var command = new SqlCommand(tsql, connection))
+            while (reader.Read())
             {
-                command.Parameters.AddWithValue("@value1", user_id);
-                command.Parameters.AddWithValue("@value2", item_id);
-                int rowsAffected = command.ExecuteNonQuery();
-                Console.WriteLine(rowsAffected + " = rows affected.");
-
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-
-                    while (reader.Read())
-                    {
-                        Console.WriteLine(reader.GetInt32(0));
-                        value = reader.GetInt32(0);
-                    }
-                }
+              Console.WriteLine(reader.GetInt32(0));
+              value = reader.GetInt32(0);
             }
-            return value;
+          }
         }
-
-        public int Select_tabItem(string tsql, string item_id)
-        {
-            Console.WriteLine();
-            Console.WriteLine("=================================");
-            Console.WriteLine("Select value from table");
-
-            int value = 0;
-
-            using (var command = new SqlCommand(tsql, connection))
-            {
-                command.Parameters.AddWithValue("@value1", item_id);
-                int rowsAffected = command.ExecuteNonQuery();
-                Console.WriteLine(rowsAffected + " = rows affected.");
-
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-
-                    while (reader.Read())
-                    {
-                        Console.WriteLine(reader.GetInt32(0));
-                        value = reader.GetInt32(0);
-                    }
-                }
-            }
-            return value;
-        }
+        return value;
+      }
     }
+
+    public int Select_tabItem(string item_id, string tsql = sql_cmd_select_tabItem)
+    {
+      using (connection = new SqlConnection(cb.ConnectionString))
+      {
+        connection.Open();
+        Console.WriteLine();
+        Console.WriteLine("=================================");
+        Console.WriteLine("Select value from table");
+        int value = 0;
+
+        using (var command = new SqlCommand(tsql, connection))
+        {
+          command.Parameters.AddWithValue("@value1", item_id);
+          int rowsAffected = command.ExecuteNonQuery();
+          Console.WriteLine(rowsAffected + " = rows affected.");
+
+          using (SqlDataReader reader = command.ExecuteReader())
+          {
+
+            while (reader.Read())
+            {
+              Console.WriteLine(reader.GetInt32(0));
+              value = reader.GetInt32(0);
+            }
+          }
+        }
+        return value;
+      }
+    }
+  }
 }
 
