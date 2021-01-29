@@ -10,6 +10,8 @@ namespace Microsoft.BotBuilderSamples
         public string status { get; set; }//selling / sold out
         public string location { get; set; }//JSON Style
         public string ownerUserId { get; set; }
+
+        public string name { get; set; }
         public int quantity { get; set; }
         public int price { get; set; }
     }
