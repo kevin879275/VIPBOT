@@ -7,7 +7,9 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Choices;
 using Microsoft.Bot.Connector;
 using Microsoft.Bot.Schema;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Microsoft.BotBuilderSamples
 {
@@ -61,6 +63,7 @@ namespace Microsoft.BotBuilderSamples
         public User profile;
         public StartConversationFlow flow;
         private static SQL_Database db;
+
         public StartDialog()
         {
             profile = new User();
@@ -96,7 +99,16 @@ namespace Microsoft.BotBuilderSamples
                 case StartConversationFlow.Question.Begin:
                     await turnContext.SendActivityAsync($"請輸入您的位置資訊", null, null, cancellationToken);
                     flow.LastQuestionAsked = StartConversationFlow.Question.Location;
-                    profile.UserId = turnContext.Activity.Recipient.Id;
+                    if(turnContext.Activity.ChannelId != "line")
+                    {
+                        profile.UserId = turnContext.Activity.Recipient.Id;
+                    }
+                    else
+                    {
+                        var channelData = ((DelegatingTurnContext<IMessageActivity>)turnContext).Activity.ChannelData.ToString();
+                        var msg = JsonConvert.DeserializeObject<LineAdapt>(channelData);
+                        profile.UserId = msg.source.userId;
+                    }
                     break;
                 case StartConversationFlow.Question.Location:
                     if (ValidateLocation(turnContext, out var location))
@@ -137,25 +149,33 @@ namespace Microsoft.BotBuilderSamples
         private bool ValidateLocation(ITurnContext turnContext, out Location location)
         {
             location = null;
-            var channelData = ((ITurnContext<IMessageActivity>)turnContext).Activity.ChannelData;
-            string msgType = channelData["type"];
-            if (msgType == "location")
+            if (((ITurnContext<IMessageActivity>)turnContext).Activity.ChannelId != "line")
             {
-                location = new Location
-                {
-                    Type = channelData["type"],
-                    Address = channelData["address"],
-                    Latitude = channelData["latitude"],
-                    Longitude = channelData["longitude"],
-                };
+                return true;
             }
-            location = new Location
+
+            //var channelData = ((ITurnContext<IMessageActivity>)turnContext).Activity.ChannelData;
+            var channelData = ((DelegatingTurnContext<IMessageActivity>)turnContext).Activity.ChannelData.ToString();
+            try
             {
-                Type = "location",
-                Address = "新竹市東區",
-                Latitude = 35.688806F,
-                Longitude = 139.701739F,
-            };
+                var msg = JsonConvert.DeserializeObject<LineLocation>(channelData);
+                var msgType = msg.message;
+                if (msgType.Type == "location")
+                {
+                    location = msgType;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            //location = new Location
+            //{
+            //    Type = "location",
+            //    Address = "新竹市東區",
+            //    Latitude = 35.688806F,
+            //    Longitude = 139.701739F,
+            //};
             return location is not null;
         }
 

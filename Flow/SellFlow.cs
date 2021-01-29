@@ -7,6 +7,7 @@
         {
             imageSrc,
             type,
+            name,
             time,
             discription,
             location,
