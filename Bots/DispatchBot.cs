@@ -21,6 +21,7 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Recognizers.Text;
 using Microsoft.Recognizers.Text.DateTime;
 using Microsoft.Recognizers.Text.Number;
+using Microsoft.Bot.Builder.Dialogs.Choices;
 
 namespace Microsoft.BotBuilderSamples
 {
@@ -37,8 +38,13 @@ namespace Microsoft.BotBuilderSamples
 
     protected BotState UserState;
     //protected readonly StartDialog Dialog;
+<<<<<<< Updated upstream
     private static Dictionary<string, bool> dialogState = new Dictionary<string, bool>();
     private static Dictionary<string, StartDialog> askFirstState = new Dictionary<string, StartDialog>();
+=======
+    private static Dictionary<string, string> dialogState = new Dictionary<string, string>();
+
+>>>>>>> Stashed changes
 
     private readonly string[] _cards = {
 
@@ -68,24 +74,41 @@ namespace Microsoft.BotBuilderSamples
     {
             // First, we use the dispatch model to determine which cognitive service (LUIS or QnA) to use.
             //await Dialog.BeginDialogAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
-            if (dialogState[turnContext.Activity.Recipient.Id] == true)
+            if (dialogState[turnContext.Activity.Recipient.Id] == "Buy")
             {
                 var conversationStateAccessors = ConversationState.CreateProperty<BuyFlow>(nameof(BuyFlow));
                 var flow = await conversationStateAccessors.GetAsync(turnContext, () => new BuyFlow(), cancellationToken);
 
-                var userStateAccessors = UserState.CreateProperty<BuyItem>(nameof(UserProfile));
+                var userStateAccessors = UserState.CreateProperty<BuyItem>(nameof(BuyItem));
                 var item = await userStateAccessors.GetAsync(turnContext, () => new BuyItem(), cancellationToken);
 
                 await FillOutBuyItemAsync(flow, item, turnContext, cancellationToken);
                 if (flow.LastQuestionAsked == BuyFlow.Question.None)
                 {
-                    dialogState[turnContext.Activity.Recipient.Id] = false;
+                    dialogState[turnContext.Activity.Recipient.Id] = "None";
                     db.Insert_tabBought_List(turnContext.Activity.Recipient.Id, item.iId, item.quantiy);
                 }
             }
+<<<<<<< Updated upstream
             else if (askFirstState[turnContext.Activity.Recipient.Id].flow.LastQuestionAsked != StartConversationFlow.Question.End)
             {
                 await askFirstState[turnContext.Activity.Recipient.Id].StartFlow(turnContext, cancellationToken);
+=======
+            else if (dialogState[turnContext.Activity.Recipient.Id] == "Sell")
+            {
+                var conversationStateAccessors = ConversationState.CreateProperty<SellFlow>(nameof(SellFlow));
+                var flow = await conversationStateAccessors.GetAsync(turnContext, () => new SellFlow(), cancellationToken);
+
+                var userStateAccessors = UserState.CreateProperty<SellItem>(nameof(SellItem));
+                var item = await userStateAccessors.GetAsync(turnContext, () => new SellItem(), cancellationToken);
+
+                await FillOutSellItemAsync(flow, item, turnContext, cancellationToken);
+                if (flow.LastQuestionAsked == SellFlow.Question.None)
+                {
+                    dialogState[turnContext.Activity.Recipient.Id] = "None";
+                    //db.Insert_tabBought_List(turnContext.Activity.Recipient.Id, item.iId, item.quantiy);
+                }
+>>>>>>> Stashed changes
             }
             else
             {
@@ -101,7 +124,7 @@ namespace Microsoft.BotBuilderSamples
     private static int itemNow = 0;
     protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
     {
-      dialogState[turnContext.Activity.Recipient.Id] = false;
+      dialogState[turnContext.Activity.Recipient.Id] = "None";
       foreach (var member in membersAdded)
       {
         if (member.Id != turnContext.Activity.Recipient.Id)
@@ -169,7 +192,7 @@ namespace Microsoft.BotBuilderSamples
                 var item = await userStateAccessors.GetAsync(turnContext, () => new BuyItem(), cancellationToken);
 
                 await FillOutBuyItemAsync(flow, item, turnContext, cancellationToken);
-                dialogState[turnContext.Activity.Recipient.Id] = true;
+                dialogState[turnContext.Activity.Recipient.Id] = "None";
                 //var qm = result.Entities.SingleOrDefault(s => s.Type == "Quantity math") ?? result.Entities.SingleOrDefault(s => s.Type == "Measure Quantity");
 
                 //var inum = result.Entities.SingleOrDefault(s => s.Type == "ItemNumber");
@@ -206,29 +229,38 @@ namespace Microsoft.BotBuilderSamples
       }
       else if (topIntent == "Sell")
       {
-        var mon = result.Entities.SingleOrDefault(s => s.Type == "builtin.currency");
-        var q = result.Entities.SingleOrDefault(s => s.Type == "Quantity math") ?? result.Entities.SingleOrDefault(s => s.Type == "Measure Quantity");
-        if (mon == null || q == null)
-        {
-          //dialog
-        }
-        else
-        {
-          int money = getNumberInString(mon.Entity);
-          int quantity = getNumberInString(q.Entity);
-          string other = result.Query;
-          foreach (var entity in result.Entities)
-          {
-            other = other.Replace(entity.Entity, "");
-          }
-          other = other.Replace(" ", "");
-          string name = "no name";
-          if (other.Length > 0)
-            name = other;
-          //db.Insert_tabItem(itemNow.ToString(), DateTime.Now.ToString(), "second hand", "[]", "on sell", quantity, name, "新竹市東區", turnContext.Activity.Recipient.Id, money);
-          // to do get location from user
-          itemNow++;
-        }
+                var conversationStateAccessors = ConversationState.CreateProperty<SellFlow>(nameof(SellFlow));
+                var flow = await conversationStateAccessors.GetAsync(turnContext, () => new SellFlow(), cancellationToken);
+
+                var userStateAccessors = UserState.CreateProperty<SellItem>(nameof(SellItem));
+                var item = await userStateAccessors.GetAsync(turnContext, () => new SellItem(), cancellationToken);
+
+                await FillOutSellItemAsync(flow, item, turnContext, cancellationToken);
+                dialogState[turnContext.Activity.Recipient.Id] = "Sell";
+
+        //var mon = result.Entities.SingleOrDefault(s => s.Type == "builtin.currency");
+        //var q = result.Entities.SingleOrDefault(s => s.Type == "Quantity math") ?? result.Entities.SingleOrDefault(s => s.Type == "Measure Quantity");
+        //if (mon == null || q == null)
+        //{
+        //  //dialog
+        //}
+        //else
+        //{
+        //  int money = getNumberInString(mon.Entity);
+        //  int quantity = getNumberInString(q.Entity);
+        //  string other = result.Query;
+        //  foreach (var entity in result.Entities)
+        //  {
+        //    other = other.Replace(entity.Entity, "");
+        //  }
+        //  other = other.Replace(" ", "");
+        //  string name = "no name";
+        //  if (other.Length > 0)
+        //    name = other;
+        //  //db.Insert_tabItem(itemNow.ToString(), DateTime.Now.ToString(), "second hand", "[]", "on sell", quantity, name, "新竹市東區", turnContext.Activity.Recipient.Id, money);
+        //  // to do get location from user
+        //  itemNow++;
+        //}
 
 
       }
@@ -512,6 +544,129 @@ namespace Microsoft.BotBuilderSamples
 
         //    return false;
         //}
+
+        private static async Task FillOutSellItemAsync(SellFlow flow, SellItem Item, ITurnContext turnContext, CancellationToken cancellationToken)
+        {
+            var input = turnContext.Activity.Text?.Trim();
+            string message;
+
+            switch (flow.LastQuestionAsked)
+            {
+                case SellFlow.Question.None:
+                    await turnContext.SendActivityAsync("您好，你要賣什麼東西?", null, null, cancellationToken);
+                    flow.LastQuestionAsked = SellFlow.Question.type;
+                    break;
+                case SellFlow.Question.imageSrc:
+                    if (ValidateID(input, out var image, out message))
+                    {
+                        Item.imageSrc = image;
+                        //await turnContext.SendActivityAsync($"Hi {profile.Name}.", null, null, cancellationToken);
+                        await turnContext.SendActivityAsync("?", null, null, cancellationToken);
+                        flow.LastQuestionAsked = SellFlow.Question.type;
+                        break;
+                    }
+                    else
+                    {
+                        await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
+                        break;
+                    }
+              case SellFlow.Question.type:
+                    if (ValidateType(input, out var Q, out message))
+                    {
+                        //await turnContext.SendActivityAsync("您好，你要賣什麼類型?", null, null, cancellationToken);
+                        ////await turnContext.SendActivitiesAsync(nameof(ChoicePrompt),
+                        ////    new PromptOptions
+                        ////    {
+                        ////        Prompt = MessageFactory.Text("Please enter your mode of transport."),
+                        ////        Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
+                        ////    }, cancellationToken);
+                        //var Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" });
+                        //var a = ChoiceFactory.ForChannel(turnContext.Activity.ChannelId, Choices, "What Facebook feature would you like to try? Here are some quick replies to choose from!");
+                        //await 
+                        flow.LastQuestionAsked = SellFlow.Question.None;
+                        break;
+                    }
+                    else
+                    {
+                        await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
+                        break;
+                    }
+                    //case SellFlow.Question.time:
+                    //if (ValidateQua(input, out var Q, out message))
+                    //{
+                    //    break;
+                    //}
+                    //else
+                    //{
+                    //    await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
+                    //    break;
+                    //}
+                    //case SellFlow.Question.discription:
+                    //if (ValidateQua(input, out var Q, out message))
+                    //{
+                    //    break;
+                    //}
+                    //else
+                    //{
+                    //    await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
+                    //    break;
+                    //}
+                    //case SellFlow.Question.location:
+                    //if (ValidateQua(input, out var Q, out message))
+                    //{
+                    //    break;
+                    //}
+                    //else
+                    //{
+                    //    await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
+                    //    break;
+                    //}
+                    //case SellFlow.Question.OwnerUserID:
+                    //if (ValidateQua(input, out var Q, out message))
+                    //{
+                    //    break;
+                    //}
+                    //else
+                    //{
+                    //    await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
+                    //    break;
+                    //}
+
+                    //case ConversationFlow.Question.Date:
+                    //    if (ValidateDate(input, out var date, out message))
+                    //    {
+                    //        profile.Date = date;
+                    //        await turnContext.SendActivityAsync($"Your cab ride to the airport is scheduled for {profile.Date}.");
+                    //        await turnContext.SendActivityAsync($"Thanks for completing the booking {profile.Name}.");
+                    //        await turnContext.SendActivityAsync($"Type anything to run the bot again.");
+                    //        flow.LastQuestionAsked = ConversationFlow.Question.None;
+                    //        profile = new UserProfile();
+                    //        break;
+                    //    }
+                    //    else
+                    //    {
+                    //        await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
+                    //        break;
+                    //    }
+            }
+        }
+
+        private static bool ValidateImage(string input, out string image, out string message)
+        {
+            image = null;
+            message = null;
+            image = Imgur.Imgur.UploadSrc(input);
+
+            return message is null;
+        }
+
+        private static bool ValidateType(string input, out string type, out string message)
+        {
+            type = "";
+            message = null;
+            var Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" });
+            return message is null;
+        }
     }
 
 }

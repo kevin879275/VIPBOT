@@ -7,9 +7,43 @@
         {
           "modelName": "Buy Action",
           "isRequired": false
+        }
+      ]
+    },
+    {
+      "name": "BuyWithID",
+      "features": [
+        {
+          "modelName": "number",
+          "isRequired": false
+        },
+        {
+          "modelName": "Buy Action",
+          "isRequired": false
         },
         {
           "modelName": "ItemNumber",
+          "isRequired": false
+        }
+      ]
+    },
+    {
+      "name": "BuyWithIDQuantity",
+      "features": [
+        {
+          "modelName": "number",
+          "isRequired": false
+        },
+        {
+          "modelName": "Buy Action",
+          "isRequired": false
+        },
+        {
+          "modelName": "ItemNumber",
+          "isRequired": false
+        },
+        {
+          "modelName": "Quantity math",
           "isRequired": false
         },
         {
@@ -33,6 +67,15 @@
     },
     {
       "name": "Sell",
+      "features": [
+        {
+          "modelName": "Sell Action",
+          "isRequired": false
+        }
+      ]
+    },
+    {
+      "name": "SellWithMoney",
       "features": [
         {
           "modelName": "Item",
@@ -259,37 +302,67 @@
       "entities": []
     },
     {
-      "text": "No001 x2",
+      "text": "下單",
       "intent": "Buy",
       "entities": []
     },
     {
-      "text": "下單 #400 兩組",
-      "intent": "Buy",
+      "text": "下單no20",
+      "intent": "BuyWithID",
+      "entities": []
+    },
+    {
+      "text": "出售",
+      "intent": "Sell",
       "entities": []
     },
     {
       "text": "滑鼠400元",
+      "intent": "SellWithMoney",
+      "entities": []
+    },
+    {
+      "text": "買",
+      "intent": "Buy",
+      "entities": []
+    },
+    {
+      "text": "買 #1 *2",
+      "intent": "BuyWithIDQuantity",
+      "entities": []
+    },
+    {
+      "text": "買#01",
+      "intent": "BuyWithID",
+      "entities": []
+    },
+    {
+      "text": "買No1",
+      "intent": "BuyWithID",
+      "entities": []
+    },
+    {
+      "text": "買No2五個",
+      "intent": "BuyWithIDQuantity",
+      "entities": []
+    },
+    {
+      "text": "賣",
       "intent": "Sell",
       "entities": []
     },
     {
-      "text": "買 #0001 *2",
-      "intent": "Buy",
-      "entities": []
-    },
-    {
-      "text": "買no500",
-      "intent": "Buy",
+      "text": "賣出",
+      "intent": "Sell",
       "entities": []
     },
     {
       "text": "賣鍵盤 500元",
-      "intent": "Sell",
+      "intent": "SellWithMoney",
       "entities": []
     },
     {
-      "text": "購 no1 400台",
+      "text": "購買",
       "intent": "Buy",
       "entities": []
     }

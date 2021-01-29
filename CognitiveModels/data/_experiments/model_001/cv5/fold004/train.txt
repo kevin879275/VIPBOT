@@ -1,10 +1,15 @@
 Label	Weight	Text
-l_BuySell	1	賣鍵盤 500元
-l_BuySell	1	買 #0001 *2
-l_BuySell	1	No001 x2
+l_BuySell	1	買#01
+l_BuySell	1	買No1
 l_BuySell	1	滑鼠400元
+l_BuySell	1	下單no20
+l_BuySell	1	買
 l_BuySell	1	999
-l_BuySell	1	買no500
+l_BuySell	1	購買
+l_BuySell	1	出售
+l_BuySell	1	買No2五個
+l_BuySell	1	賣出
+l_BuySell	1	賣鍵盤 500元
 q_BuySell	1	Hi
 q_BuySell	1	Hello
 q_BuySell	1	怎麼賣商品

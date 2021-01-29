@@ -2,15 +2,14 @@
   <MonoDevelop.Ide.ItemProperties.QnABot PreferredExecutionTarget="/Applications/Safari.app" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Bots/DispatchBot.cs">
     <Files>
-      <File FileName="UserProfile.cs" Line="11" Column="2" />
-      <File FileName="Bots/DispatchBot.cs" Line="388" Column="11" />
-      <File FileName="Directory.Build.props" Line="1" Column="1" />
-      <File FileName="BuyItem.cs" Line="1" Column="1" />
-      <File FileName="ConversationFlow.cs" Line="1" Column="1" />
-      <File FileName="Flow/SellFlow.cs" Line="1" Column="1" />
-      <File FileName="Flow/BuyFlow.cs" Line="11" Column="10" />
-      <File FileName="Bots/dispatchBot_chatStat.cs" Line="125" Column="8" />
-      <File FileName="Startup.cs" Line="1" Column="1" />
+      <File FileName="UserProfile.cs" Line="18" Column="2" />
+      <File FileName="Bots/DispatchBot.cs" Line="203" Column="12" />
+      <File FileName="Dialog/RootDialog.cs" Line="103" Column="49" />
+      <File FileName="Flow/SellFlow.cs" Line="12" Column="22" />
+      <File FileName="Flow/BuyItem.cs" Line="10" Column="1" />
+      <File FileName="Flow/BuyFlow.cs" Line="1" Column="1" />
+      <File FileName="Imgur.cs" Line="1" Column="1" />
+      <File FileName="Flow/ConversationFlow.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -20,6 +19,7 @@
               <Node name="Bots" expanded="True">
                 <Node name="DispatchBot.cs" selected="True" />
               </Node>
+              <Node name="Dialog" expanded="True" />
               <Node name="Flow" expanded="True" />
             </Node>
           </Node>
@@ -30,7 +30,9 @@
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/kevinge/Desktop/二手拍賣bot/Bots/DispatchBot.cs" relfile="Bots/DispatchBot.cs" line="159" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
 </Properties>

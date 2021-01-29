@@ -5,10 +5,14 @@
         // Identifies the last question asked.
         public enum Question
         {
-            Name,
-            Age,
-            Date,
-            None, // Our last action did not involve a question.
+            imageSrc,
+            type,
+            time,
+            discription,
+            location,
+            OwnerUserID,
+            price,
+            None,
         }
 
         // The last question asked.

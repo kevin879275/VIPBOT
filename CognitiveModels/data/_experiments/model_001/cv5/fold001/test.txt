@@ -1,4 +1,5 @@
 Label	Weight	Text
-l_BuySell	1	No001 x2
-l_BuySell	1	滑鼠400元
+l_BuySell	1	下單no20
+l_BuySell	1	買
+l_BuySell	1	999
 q_BuySell	1	Hello

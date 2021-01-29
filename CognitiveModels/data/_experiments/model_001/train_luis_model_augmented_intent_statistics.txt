@@ -1,4 +1,4 @@
 No	Intent	Utterance Count	Utterance Average Length	Utterance Maximum Length	Utterance Minimum Length	Utterance Length StdDev
-0	l_BuySell	8	7.625	10	3	2.50357
+0	l_BuySell	14	3.85714	8	1	2.34872
 1	q_BuySell	4	3.75	5	2	1.5
- 	__ALL__	12	6.33333	10	2	2.87096
+ 	__ALL__	18	3.83333	8	1	2.14887

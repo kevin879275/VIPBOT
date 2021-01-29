@@ -1,4 +1,5 @@
 Label	Weight	Text
-l_BuySell	1	999
-l_BuySell	1	買no500
+l_BuySell	1	購買
+l_BuySell	1	出售
+l_BuySell	1	買No2五個
 q_BuySell	1	怎麼賣商品

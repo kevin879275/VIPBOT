@@ -1,4 +1,5 @@
 Label	Weight	Text
-l_BuySell	1	購 no1 400台
-l_BuySell	1	下單 #400 兩組
+l_BuySell	1	下單
+l_BuySell	1	賣
+l_BuySell	1	買 #1 *2
 q_BuySell	1	怎麼買
