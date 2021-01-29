@@ -24,6 +24,7 @@
     <PackageReference Include="AdaptiveExpressions" Version="4.11.1" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
+    <PackageReference Include="Microsoft.Azure.CognitiveServices.Vision.ComputerVision" Version="6.0.0" />
   </ItemGroup>
 
     <ItemGroup>
@@ -37,6 +38,7 @@
 -->          <Folder Include="Flow\" /><!--      <Folder Include="CognitiveModels\" />
 -->    <Folder Include="CognitiveModels\data\" />
 <Folder Include="CognitiveModels\" /><!--      <Folder Include="CognitiveModels\" />
+-->    <!--      <Folder Include="CognitiveModels\" />
 -->    
 
 

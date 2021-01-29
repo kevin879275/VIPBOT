@@ -532,21 +532,11 @@ namespace Microsoft.BotBuilderSamples
             switch (flow.LastQuestionAsked)
             {
                 case SellFlow.Question.None:
-                    await turnContext.SendActivityAsync("您好，你要賣什麼東西(請上傳圖片)?", null, null, cancellationToken);
-                    flow.LastQuestionAsked = SellFlow.Question.imageSrc;
-
-                    break;
-                case SellFlow.Question.imageSrc:
-                    if (ValidateImage(input, out var image, out message))
+                    await turnContext.SendActivityAsync("您好，你要賣什麼類型?", null, null, cancellationToken);
+                    var reply = MessageFactory.Text("請選擇下列類型?");
+                    reply.SuggestedActions = new SuggestedActions()
                     {
-                        Item.imageSrc = image;
-                        Item.cvResults = await cvResult(image);
-                        await turnContext.SendActivityAsync("您好，你要賣什麼類型?", null, null, cancellationToken);
-                        Item.imageSrc = image;
-                        var reply = MessageFactory.Text("請選擇下列類型?");
-                        reply.SuggestedActions = new SuggestedActions()
-                        {
-                            Actions = new List<CardAction>()
+                        Actions = new List<CardAction>()
                             {
                                 new CardAction() { Title = "3C產品", Type = ActionTypes.ImBack, Value = "3C產品"},
                                 new CardAction() { Title = "電腦週邊", Type = ActionTypes.ImBack, Value = "電腦週邊"},
@@ -556,9 +546,17 @@ namespace Microsoft.BotBuilderSamples
                                 new CardAction() { Title = "票券", Type = ActionTypes.ImBack, Value = "票券"},
                                 new CardAction() { Title = "其他", Type = ActionTypes.ImBack, Value = "其他"},
                             },
-                        };
-                        flow.LastQuestionAsked = SellFlow.Question.type;
-                        await turnContext.SendActivityAsync(reply, cancellationToken);
+                    };
+                    await turnContext.SendActivityAsync(reply, cancellationToken);
+                    flow.LastQuestionAsked = SellFlow.Question.type;
+                    break;
+
+                case SellFlow.Question.type:
+                    if(ValidateType(input, out var type, out message))
+                    {
+                        Item.type = type;
+                        await turnContext.SendActivityAsync("您好，你要賣什麼東西(請上傳圖片)?", null, null, cancellationToken);
+                        flow.LastQuestionAsked = SellFlow.Question.imageSrc;
                         break;
                     }
                     else
@@ -566,11 +564,54 @@ namespace Microsoft.BotBuilderSamples
                         await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
                         break;
                     }
-                case SellFlow.Question.type:
-                    if (ValidateType(input, out var type, out message))
+                case SellFlow.Question.imageSrc:
+                    if (ValidateImage(turnContext.Activity.Attachments[0].ContentUrl, out var image, out message))
                     {
-                        Item.type = type;
-                        await turnContext.SendActivityAsync("您好，請稍微描述您的物品?", null, null, cancellationToken);
+                        Item.imageSrc = image;
+                        Item.cvResults = await cvResult(image);
+                        var o = Item.cvResults.Objects;
+                        var obj = MessageFactory.Text("您的物品是否為?");
+ 
+                            obj.SuggestedActions = new SuggestedActions()
+                            {
+                                Actions = new List<CardAction>()
+                            {
+                                    new CardAction() { Title = "其他", Type = ActionTypes.ImBack, Value = "其他"},
+                            },
+                            };
+                        foreach (var D_object in o)
+                        {
+                            obj.SuggestedActions.Actions.Add(new CardAction() { Title = D_object.ObjectProperty, Type = ActionTypes.ImBack, Value = D_object.ObjectProperty });
+                        }
+                        await turnContext.SendActivityAsync(obj, cancellationToken);
+                        flow.LastQuestionAsked = SellFlow.Question.name;
+                        break;
+                    }
+                    else
+                    {
+                        await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
+                        break;
+                    }
+                case SellFlow.Question.name:
+                    if (ValidateName(input, out var name, out message))
+                    {
+                        Item.name = name;
+                        var captions = Item.cvResults.Description.Captions;
+                        string c_text = captions[0].Text;
+                        var obj = MessageFactory.Text("請問您的物品描述是否為?");
+                        obj.SuggestedActions = new SuggestedActions()
+                        {
+                            Actions = new List<CardAction>()
+                            {
+                                //foreach (var D_object in o)
+                                //{
+                                    new CardAction() { Title = "是", Type = ActionTypes.ImBack, Value = "是"},
+                                //}
+                                    new CardAction() { Title = "否", Type = ActionTypes.ImBack, Value = "否"},
+                            },
+                        };
+                        await turnContext.SendActivityAsync(c_text, null, null, cancellationToken);
+                        await turnContext.SendActivityAsync(obj, cancellationToken);
                         flow.LastQuestionAsked = SellFlow.Question.discription;
                         break;
                     }
@@ -579,7 +620,6 @@ namespace Microsoft.BotBuilderSamples
                         await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
                         break;
                     }
-
                 case SellFlow.Question.discription:
                     if (ValidateDiscription(input, out var description, out message))
                     {
@@ -610,8 +650,8 @@ namespace Microsoft.BotBuilderSamples
                     if (ValidatePrice(input, out var price, out message))
                     {
                         Item.price = price;
-                        var reply = MessageFactory.Text("請確認您的商品?");
-                        reply.SuggestedActions = new SuggestedActions()
+                        var rep = MessageFactory.Text("請確認您的商品?");
+                        rep.SuggestedActions = new SuggestedActions()
                         {
                             Actions = new List<CardAction>()
                             {
@@ -620,7 +660,7 @@ namespace Microsoft.BotBuilderSamples
                             },
                         };
                         flow.LastQuestionAsked = SellFlow.Question.Check;
-                        await turnContext.SendActivityAsync(reply, cancellationToken);
+                        await turnContext.SendActivityAsync(rep, cancellationToken);
                         break;
                     }
                     else
@@ -649,10 +689,17 @@ namespace Microsoft.BotBuilderSamples
 
         private static bool ValidateImage(string input, out string image, out string message)
         {
-            image = null;
             message = null;
-            //image = Imgur.Imgur.UploadSrc(input);
+            image = Imgur.Imgur.UploadSrc(input);
+            if (image == "false") message = "圖片格式錯誤，請再試一次";
+            return message is null;
+        }
 
+        private static bool ValidateName(string input, out string Name, out string message)
+        {
+            Name = input.Trim();
+            message = null;
+            if (Name == "其他") message = "麻煩請輸入您的商品";
             return message is null;
         }
 
@@ -674,6 +721,10 @@ namespace Microsoft.BotBuilderSamples
             else
             {
                 discription = input.Trim();
+            }
+            if(discription == "否")
+            {
+                message = "請輸入您的物品描述";
             }
             return message is null;
         }
