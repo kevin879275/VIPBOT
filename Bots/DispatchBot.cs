@@ -653,22 +653,22 @@ namespace Microsoft.BotBuilderSamples
                     if (ValidatePrice(input, out var price, out message))
                     {
                         Item.price = price;
-                        //var rep = MessageFactory.Text("請確認您的商品?");
-                        
-                        //rep.SuggestedActions = new SuggestedActions()
-                        //{
-                        //    Actions = new List<CardAction>()
-                        //    {
-                        //        new CardAction() { Title = "是", Type = ActionTypes.ImBack, Value = "是"},
-                        //        new CardAction() { Title = "否", Type = ActionTypes.ImBack, Value = "否"},
-                        //    },
-                        //};
+                        var rep = MessageFactory.Text("請確認您的商品?");
+
+                        rep.SuggestedActions = new SuggestedActions()
+                        {
+                            Actions = new List<CardAction>()
+                            {
+                                new CardAction() { Title = "是", Type = ActionTypes.ImBack, Value = "是"},
+                                new CardAction() { Title = "否", Type = ActionTypes.ImBack, Value = "否"},
+                            },
+                        };
                         string json = getSellJson(Item);
                         //var joject = LineFunctions.SetCardWithString(json);
                         //IList<string> id = new[] { turnContext.Activity.Recipient.Id };
                         //await lineBot.PushJson(id,joject);
                         flow.LastQuestionAsked = SellFlow.Question.Check;
-                        //await turnContext.SendActivityAsync(rep, cancellationToken);
+                        await turnContext.SendActivityAsync(rep, cancellationToken);
                         break;
                     }
                     else
