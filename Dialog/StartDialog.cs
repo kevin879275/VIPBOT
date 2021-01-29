@@ -60,10 +60,12 @@ namespace Microsoft.BotBuilderSamples
     {
         public User profile;
         public StartConversationFlow flow;
+        private static SQL_Database db;
         public StartDialog()
         {
             profile = new User();
             flow = new StartConversationFlow();
+            db = new SQL_Database();
         }
 
         public async Task StartFlow(ITurnContext turnContext, CancellationToken cancellationToken)
@@ -94,6 +96,7 @@ namespace Microsoft.BotBuilderSamples
                 case StartConversationFlow.Question.Begin:
                     await turnContext.SendActivityAsync($"請輸入您的位置資訊", null, null, cancellationToken);
                     flow.LastQuestionAsked = StartConversationFlow.Question.Location;
+                    profile.UserId = turnContext.Activity.Recipient.Id;
                     break;
                 case StartConversationFlow.Question.Location:
                     if (ValidateLocation(turnContext, out var location))
@@ -113,6 +116,7 @@ namespace Microsoft.BotBuilderSamples
                     {
                         profile.Interest = interest;
                         flow.LastQuestionAsked = StartConversationFlow.Question.End;
+                        db.Insert_tabUser(profile.UserId, profile.Location, profile.Interest);
                         break;
                     }
                     else
@@ -133,6 +137,7 @@ namespace Microsoft.BotBuilderSamples
             {
                 location = JsonConvert.SerializeObject(channelData);
             }
+            location = $"新竹市東區";
             return location is not null;
         }
 

@@ -38,7 +38,7 @@ namespace Microsoft.BotBuilderSamples
     protected BotState UserState;
     //protected readonly StartDialog Dialog;
     private static Dictionary<string, bool> dialogState = new Dictionary<string, bool>();
-
+    private static Dictionary<string, StartDialog> askFirstState = new Dictionary<string, StartDialog>();
 
     private readonly string[] _cards = {
 
@@ -83,6 +83,10 @@ namespace Microsoft.BotBuilderSamples
                     db.Insert_tabBought_List(turnContext.Activity.Recipient.Id, item.iId, item.quantiy);
                 }
             }
+            else if (askFirstState[turnContext.Activity.Recipient.Id].flow.LastQuestionAsked != StartConversationFlow.Question.End)
+            {
+                await askFirstState[turnContext.Activity.Recipient.Id].StartFlow(turnContext, cancellationToken);
+            }
             else
             {
                 var recognizerResult = await _botServices.Dispatch.RecognizeAsync(turnContext, cancellationToken);
@@ -102,10 +106,11 @@ namespace Microsoft.BotBuilderSamples
       {
         if (member.Id != turnContext.Activity.Recipient.Id)
         {
-          await SendSuggestedActionsAsync(turnContext, cancellationToken);
-          db.Insert_tabUser(turnContext.Activity.Recipient.Id, "新竹市東區", "[\"天竺鼠車車\",\"車車天竺鼠\"]");
-          db.Insert_tabItem(itemNow.ToString(), "now", "cart", "", "selling", 5, "天竺鼠車車", "新竹市東區", turnContext.Activity.Recipient.Id, 99999);
-          itemNow++;
+            askFirstState[turnContext.Activity.Recipient.Id] = new StartDialog();
+            await SendFirstActionsAsync(turnContext, cancellationToken);
+            //db.Insert_tabUser(turnContext.Activity.Recipient.Id, "新竹市東區", "[\"天竺鼠車車\",\"車車天竺鼠\"]");
+            db.Insert_tabItem(itemNow.ToString(), "now", "cart", "", "selling", 5, "天竺鼠車車", "新竹市東區", turnContext.Activity.Recipient.Id, 99999);
+            itemNow++;
         }
       }
     }
@@ -113,11 +118,10 @@ namespace Microsoft.BotBuilderSamples
 
 
 
-    private static async Task SendSuggestedActionsAsync(ITurnContext turnContext, CancellationToken cancellationToken)
+    private static async Task SendFirstActionsAsync(ITurnContext turnContext, CancellationToken cancellationToken)
     {
         await turnContext.SendActivityAsync(MessageFactory.Text("您好，本機器人提供鄰近區域服務、物品買賣仲介。"), cancellationToken);
-        //var startPos = new StartDialog();
-        //await startPos.StartFlow(turnContext, ConversationState, UserState, cancellationToken);
+        await askFirstState[turnContext.Activity.Recipient.Id].StartFlow(turnContext, cancellationToken);
     }
 
     private int getNumberInString(string s)
