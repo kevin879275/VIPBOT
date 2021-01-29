@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "4xJNWL1jwru7iP8eazvD55gTHrzyutFag2+1sriwKlAXTL0eATrF+EgD/F+EB0BngcD9YktN0bqSu3mZOkuLkA==",
+  "dgSpecHash": "Z7zb8p72cbcA4HQ66UPObv8VLps0/UntYnm3q7CeTlSGmh6YOMgCsjlI/NhZNBWHgtRrhcjWKjw42qzje8P5GA==",
   "success": true,
   "projectFilePath": "C:\\Users\\ASUS\\Documents\\GitHub\\VIPBOT\\QnABot.csproj",
   "expectedPackageFiles": [
@@ -12,6 +12,7 @@
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\3.1.1\\microsoft.aspnetcore.jsonpatch.3.1.1.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\3.1.1\\microsoft.aspnetcore.mvc.newtonsoftjson.3.1.1.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.azure.cognitiveservices.language.luis.runtime\\2.1.0\\microsoft.azure.cognitiveservices.language.luis.runtime.2.1.0.nupkg.sha512",
+    "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.azure.cognitiveservices.vision.computervision\\6.0.0\\microsoft.azure.cognitiveservices.vision.computervision.6.0.0.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.bot.builder\\4.11.1\\microsoft.bot.builder.4.11.1.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.bot.builder.ai.luis\\4.11.1\\microsoft.bot.builder.ai.luis.4.11.1.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.bot.builder.ai.qna\\4.8.0\\microsoft.bot.builder.ai.qna.4.8.0.nupkg.sha512",
