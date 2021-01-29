@@ -152,13 +152,13 @@ namespace Microsoft.BotBuilderSamples
         private static int itemNow = 0;
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
-            string userID = getID(turnContext);
-            dialogState[userID] = "None";
+            
             foreach (var member in membersAdded)
             {
-                if (member.Id != userID)
+                if (member.Id != turnContext.Activity.Recipient.Id)
                 {
-                    askFirstState[userID] = new StartDialog();
+                    dialogState[member.Id] = "None";
+                    askFirstState[member.Id] = new StartDialog();
                     await SendFirstActionsAsync(turnContext, cancellationToken);
                     //db.Insert_tabUser(turnContext.Activity.Recipient.Id, "新竹市東區", "[\"天竺鼠車車\",\"車車天竺鼠\"]");
                     // db.Insert_tabItem(itemNow.ToString(), "now", "cart", "", "selling", 5, "天竺鼠車車", "新竹市東區", turnContext.Activity.Recipient.Id, 99999);
@@ -865,16 +865,7 @@ namespace Microsoft.BotBuilderSamples
 
         public static string getID(ITurnContext turnContext)
         {
-            if (turnContext.Activity.ChannelId != "line")
-            {
-                return turnContext.Activity.Recipient.Id;
-            }
-            else
-            {
-                var channelData = ((DelegatingTurnContext<IMessageActivity>)turnContext).Activity.ChannelData.ToString();
-                var msg = JsonConvert.DeserializeObject<LineAdapt>(channelData);
-                return msg.source.userId;
-            }
+            return turnContext.Activity.From.Id;
         }
         private static string getSellJson(SellItem item)
         {

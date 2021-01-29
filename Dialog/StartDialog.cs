@@ -99,21 +99,19 @@ namespace Microsoft.BotBuilderSamples
                 case StartConversationFlow.Question.Begin:
                     await turnContext.SendActivityAsync($"請輸入您的位置資訊", null, null, cancellationToken);
                     flow.LastQuestionAsked = StartConversationFlow.Question.Location;
-                    if(turnContext.Activity.ChannelId != "line")
-                    {
-                        profile.UserId = turnContext.Activity.Recipient.Id;
-                    }
-                    else
-                    {
-                        var channelData = ((DelegatingTurnContext<IMessageActivity>)turnContext).Activity.ChannelData.ToString();
-                        var msg = JsonConvert.DeserializeObject<LineAdapt>(channelData);
-                        profile.UserId = msg.source.userId;
-                    }
                     break;
                 case StartConversationFlow.Question.Location:
                     if (ValidateLocation(turnContext, out var location))
                     {
                         profile.location = location;
+                        if (turnContext.Activity.ChannelId != "line")
+                        {
+                            profile.UserId = turnContext.Activity.Recipient.Id;
+                        }
+                        else
+                        {
+                            profile.UserId = turnContext.Activity.From.Id;
+                        }
                         await turnContext.SendActivityAsync(reply, cancellationToken);
                         flow.LastQuestionAsked = StartConversationFlow.Question.Interest;
                         break;
