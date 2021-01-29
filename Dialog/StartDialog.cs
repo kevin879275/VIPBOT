@@ -63,14 +63,12 @@ namespace Microsoft.BotBuilderSamples
         public User profile;
         public StartConversationFlow flow;
         private static SQL_Database db;
-        private readonly ILogger _logger;
 
-        public StartDialog(ILogger<DispatchBot> logger)
+        public StartDialog()
         {
             profile = new User();
             flow = new StartConversationFlow();
             db = new SQL_Database();
-            _logger = logger;
         }
 
         public async Task StartFlow(ITurnContext turnContext, CancellationToken cancellationToken)
@@ -101,7 +99,16 @@ namespace Microsoft.BotBuilderSamples
                 case StartConversationFlow.Question.Begin:
                     await turnContext.SendActivityAsync($"請輸入您的位置資訊", null, null, cancellationToken);
                     flow.LastQuestionAsked = StartConversationFlow.Question.Location;
-                    profile.UserId = turnContext.Activity.Recipient.Id;
+                    if(turnContext.Activity.ChannelId != "line")
+                    {
+                        profile.UserId = turnContext.Activity.Recipient.Id;
+                    }
+                    else
+                    {
+                        var channelData = ((DelegatingTurnContext<IMessageActivity>)turnContext).Activity.ChannelData.ToString();
+                        var msg = JsonConvert.DeserializeObject<LineAdapt>(channelData);
+                        profile.UserId = msg.source.userId;
+                    }
                     break;
                 case StartConversationFlow.Question.Location:
                     if (ValidateLocation(turnContext, out var location))
@@ -149,12 +156,10 @@ namespace Microsoft.BotBuilderSamples
 
             //var channelData = ((ITurnContext<IMessageActivity>)turnContext).Activity.ChannelData;
             var channelData = ((DelegatingTurnContext<IMessageActivity>)turnContext).Activity.ChannelData.ToString();
-            _logger.LogInformation("Testing!!!!!! Channel data!", ((DelegatingTurnContext<IMessageActivity>)turnContext).Activity.ChannelData);
             try
             {
                 var msg = JsonConvert.DeserializeObject<LineLocation>(channelData);
                 var msgType = msg.message;
-                _logger.LogInformation("Testing!!!!!! msg", msgType);
                 if (msgType.Type == "location")
                 {
                     location = msgType;

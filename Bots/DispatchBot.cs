@@ -82,7 +82,8 @@ namespace Microsoft.BotBuilderSamples
         {
             // First, we use the dispatch model to determine which cognitive service (LUIS or QnA) to use.
             //await Dialog.BeginDialogAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
-            if (dialogState[turnContext.Activity.Recipient.Id] == "Buy")
+            string userID = getID(turnContext);
+            if (dialogState[userID] == "Buy")
             {
                 var conversationStateAccessors = ConversationState.CreateProperty<BuyFlow>(nameof(BuyFlow));
                 var flow = await conversationStateAccessors.GetAsync(turnContext, () => new BuyFlow(), cancellationToken);
@@ -93,20 +94,19 @@ namespace Microsoft.BotBuilderSamples
                 await FillOutBuyItemAsync(flow, item, turnContext, cancellationToken);
                 if (flow.LastQuestionAsked == BuyFlow.Question.None)
                 {
-                    dialogState[turnContext.Activity.Recipient.Id] = "None";
-                    string id = turnContext.Activity.Recipient.Id;
-                    int boughtAmount = db.Select_tabBought_List(id, item.iId);
+                    dialogState[userID] = "None";
+                    int boughtAmount = db.Select_tabBought_List(userID, item.iId);
                     if (boughtAmount > 0)
-                        db.update_Bought_List(id, item.iId, boughtAmount + item.quantiy);
+                        db.update_Bought_List(userID, item.iId, boughtAmount + item.quantiy);
                     else
-                        db.Insert_tabBought_List(id, item.iId, item.quantiy);
+                        db.Insert_tabBought_List(userID, item.iId, item.quantiy);
                 }
             }
-            else if (askFirstState[turnContext.Activity.Recipient.Id].flow.LastQuestionAsked != StartConversationFlow.Question.End)
+            else if (askFirstState[userID].flow.LastQuestionAsked != StartConversationFlow.Question.End)
             {
-                await askFirstState[turnContext.Activity.Recipient.Id].StartFlow(turnContext, cancellationToken);
+                await askFirstState[userID].StartFlow(turnContext, cancellationToken);
             }
-            else if (dialogState[turnContext.Activity.Recipient.Id] == "Sell")
+            else if (dialogState[userID] == "Sell")
             {
                 var conversationStateAccessors = ConversationState.CreateProperty<SellFlow>(nameof(SellFlow));
                 var flow = await conversationStateAccessors.GetAsync(turnContext, () => new SellFlow(), cancellationToken);
@@ -117,7 +117,7 @@ namespace Microsoft.BotBuilderSamples
                 await FillOutSellItemAsync(flow, item, turnContext, cancellationToken);
                 if (flow.LastQuestionAsked == SellFlow.Question.None)
                 {
-                    dialogState[turnContext.Activity.Recipient.Id] = "None";
+                    dialogState[userID] = "None";
                     db.Insert_tabItem(
                        itemNow.ToString(),
                        DateTime.Now.ToString(),
@@ -127,13 +127,13 @@ namespace Microsoft.BotBuilderSamples
                        item.quantity,
                        item.description,
                        item.location,
-                       turnContext.Activity.Recipient.Id,
+                       userID,
                        item.price,
                        item.name);
                     var tmp = new LineFunctions();
                     var msg = tmp.SetCard(item.imageSrc, "Name", item.quantity.ToString(), item.price.ToString(),
                         item.description, item.location, itemNow);
-                    var pushLst = getAccountList(askFirstState[turnContext.Activity.Recipient.Id].profile, item.type);
+                    var pushLst = getAccountList(askFirstState[userID].profile, item.type);
                     await lineBot.PushJson(pushLst, msg);
                     itemNow++;
                 }
@@ -152,12 +152,13 @@ namespace Microsoft.BotBuilderSamples
         private static int itemNow = 0;
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
-            dialogState[turnContext.Activity.Recipient.Id] = "None";
+            string userID = getID(turnContext);
+            dialogState[userID] = "None";
             foreach (var member in membersAdded)
             {
-                if (member.Id != turnContext.Activity.Recipient.Id)
+                if (member.Id != userID)
                 {
-                    askFirstState[turnContext.Activity.Recipient.Id] = new StartDialog(_logger);
+                    askFirstState[userID] = new StartDialog();
                     await SendFirstActionsAsync(turnContext, cancellationToken);
                     //db.Insert_tabUser(turnContext.Activity.Recipient.Id, "新竹市東區", "[\"天竺鼠車車\",\"車車天竺鼠\"]");
                     // db.Insert_tabItem(itemNow.ToString(), "now", "cart", "", "selling", 5, "天竺鼠車車", "新竹市東區", turnContext.Activity.Recipient.Id, 99999);
@@ -169,10 +170,11 @@ namespace Microsoft.BotBuilderSamples
 
 
 
-        private static async Task SendFirstActionsAsync(ITurnContext turnContext, CancellationToken cancellationToken)
+        public static async Task SendFirstActionsAsync(ITurnContext turnContext, CancellationToken cancellationToken)
         {
+            string id = getID(turnContext);
             await turnContext.SendActivityAsync(MessageFactory.Text("您好，本機器人提供鄰近區域服務、物品買賣仲介。"), cancellationToken);
-            await askFirstState[turnContext.Activity.Recipient.Id].StartFlow(turnContext, cancellationToken);
+            await askFirstState[id].StartFlow(turnContext, cancellationToken);
         }
 
         private int getNumberInString(string s)
@@ -203,6 +205,7 @@ namespace Microsoft.BotBuilderSamples
             // Retrieve LUIS result for Process Automation.
             var result = luisResult.ConnectedServiceResult;
             var topIntent = result.TopScoringIntent.Intent;
+            string userID = getID(turnContext);
 
             if (topIntent == "Number")
             {
@@ -218,7 +221,7 @@ namespace Microsoft.BotBuilderSamples
                 var item = await userStateAccessors.GetAsync(turnContext, () => new BuyItem(), cancellationToken);
 
                 await FillOutBuyItemAsync(flow, item, turnContext, cancellationToken);
-                dialogState[turnContext.Activity.Recipient.Id] = "Buy";
+                dialogState[userID] = "Buy";
                 //var qm = result.Entities.SingleOrDefault(s => s.Type == "Quantity math") ?? result.Entities.SingleOrDefault(s => s.Type == "Measure Quantity");
 
                 //var inum = result.Entities.SingleOrDefault(s => s.Type == "ItemNumber");
@@ -262,7 +265,7 @@ namespace Microsoft.BotBuilderSamples
                 var item = await userStateAccessors.GetAsync(turnContext, () => new SellItem(), cancellationToken);
 
                 await FillOutSellItemAsync(flow, item, turnContext, cancellationToken);
-                dialogState[turnContext.Activity.Recipient.Id] = "Sell";
+                dialogState[userID] = "Sell";
 
                 //var mon = result.Entities.SingleOrDefault(s => s.Type == "builtin.currency");
                 //var q = result.Entities.SingleOrDefault(s => s.Type == "Quantity math") ?? result.Entities.SingleOrDefault(s => s.Type == "Measure Quantity");
@@ -853,6 +856,20 @@ namespace Microsoft.BotBuilderSamples
 
             }
             return accountList;
+        }
+
+        public static string getID(ITurnContext turnContext)
+        {
+            if (turnContext.Activity.ChannelId != "line")
+            {
+                return turnContext.Activity.Recipient.Id;
+            }
+            else
+            {
+                var channelData = ((DelegatingTurnContext<IMessageActivity>)turnContext).Activity.ChannelData.ToString();
+                var msg = JsonConvert.DeserializeObject<LineAdapt>(channelData);
+                return msg.source.userId;
+            }
         }
     }
 

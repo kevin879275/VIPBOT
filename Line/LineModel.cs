@@ -3,6 +3,16 @@ using System.Text.Json.Serialization;
 
 namespace Microsoft.BotBuilderSamples
 {
+    public class LineAdapt
+    {
+        [JsonPropertyName("replyToken")]
+        public string replyToken { get; set; }
+        [JsonPropertyName("type")]
+        public string type { get; set; }
+        [JsonPropertyName("source")]
+        public Source source { get; set; }
+    }
+
     public class LineLocation
     {
         [JsonPropertyName("message")]
@@ -11,6 +21,8 @@ namespace Microsoft.BotBuilderSamples
         public string replyToken { get; set; }
         [JsonPropertyName("type")]
         public string type { get; set; }
+        [JsonPropertyName("source")]
+        public Source source { get; set; }
     }
 
     public class LineImage
@@ -21,6 +33,13 @@ namespace Microsoft.BotBuilderSamples
         public string replyToken { get; set; }
         [JsonPropertyName("type")]
         public string type { get; set; }
+        public Source source { get; set; }
+    }
+
+    public class Source
+    {
+        public string type { get; set; }
+        public string userId { get; set; }
     }
 
     public class Image
