@@ -3,13 +3,13 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="Bots/DispatchBot.cs">
     <Files>
       <File FileName="UserProfile.cs" Line="18" Column="2" />
-      <File FileName="Bots/DispatchBot.cs" Line="203" Column="12" />
       <File FileName="Dialog/RootDialog.cs" Line="103" Column="49" />
       <File FileName="Flow/SellFlow.cs" Line="12" Column="22" />
       <File FileName="Flow/BuyItem.cs" Line="10" Column="1" />
       <File FileName="Flow/BuyFlow.cs" Line="1" Column="1" />
       <File FileName="Imgur.cs" Line="1" Column="1" />
       <File FileName="Flow/ConversationFlow.cs" Line="1" Column="1" />
+      <File FileName="Bots/DispatchBot.cs" Line="42" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">

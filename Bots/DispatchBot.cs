@@ -38,13 +38,8 @@ namespace Microsoft.BotBuilderSamples
 
     protected BotState UserState;
     //protected readonly StartDialog Dialog;
-<<<<<<< Updated upstream
-    private static Dictionary<string, bool> dialogState = new Dictionary<string, bool>();
     private static Dictionary<string, StartDialog> askFirstState = new Dictionary<string, StartDialog>();
-=======
     private static Dictionary<string, string> dialogState = new Dictionary<string, string>();
-
->>>>>>> Stashed changes
 
     private readonly string[] _cards = {
 
@@ -89,11 +84,10 @@ namespace Microsoft.BotBuilderSamples
                     db.Insert_tabBought_List(turnContext.Activity.Recipient.Id, item.iId, item.quantiy);
                 }
             }
-<<<<<<< Updated upstream
             else if (askFirstState[turnContext.Activity.Recipient.Id].flow.LastQuestionAsked != StartConversationFlow.Question.End)
             {
                 await askFirstState[turnContext.Activity.Recipient.Id].StartFlow(turnContext, cancellationToken);
-=======
+            }
             else if (dialogState[turnContext.Activity.Recipient.Id] == "Sell")
             {
                 var conversationStateAccessors = ConversationState.CreateProperty<SellFlow>(nameof(SellFlow));
@@ -108,7 +102,6 @@ namespace Microsoft.BotBuilderSamples
                     dialogState[turnContext.Activity.Recipient.Id] = "None";
                     //db.Insert_tabBought_List(turnContext.Activity.Recipient.Id, item.iId, item.quantiy);
                 }
->>>>>>> Stashed changes
             }
             else
             {
