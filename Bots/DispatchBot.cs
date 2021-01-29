@@ -556,6 +556,7 @@ namespace Microsoft.BotBuilderSamples
                         await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
                         break;
                     }
+
                 case SellFlow.Question.discription:
                     if (ValidateDiscription(input, out var description, out message))
                     {
@@ -569,7 +570,19 @@ namespace Microsoft.BotBuilderSamples
                         await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
                         break;
                     }
-
+                case SellFlow.Question.Qua:
+                    if (ValidateQua(input, out var Qua, out message))
+                    {
+                        Item.quantity = Qua;
+                        await turnContext.SendActivityAsync("您好，請稍微描述您的物品?", null, null, cancellationToken);
+                        flow.LastQuestionAsked = SellFlow.Question.discription;
+                        break;
+                    }
+                    else
+                    {
+                        await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
+                        break;
+                    }
                 case SellFlow.Question.price:
                     if (ValidatePrice(input, out var price, out message))
                     {
@@ -641,7 +654,42 @@ namespace Microsoft.BotBuilderSamples
             }
             return message is null;
         }
+        private static bool ValidateQua(string input, out int Qua, out string message)
+        {
+            Qua = 0;
+            message = null;
+            // Try to recognize the input as a number. This works for responses such as "twelve" as well as "12".
+            try
+            {
+                // Attempt to convert the Recognizer result to an integer. This works for "a dozen", "twelve", "12", and so on.
+                // The recognizer returns a list of potential recognition results, if any.
 
+                var results = NumberRecognizer.RecognizeNumber(input, Culture.English);
+
+                foreach (var result in results)
+                {
+                    // The result resolution is a dictionary, where the "value" entry contains the processed string.
+                    if (result.Resolution.TryGetValue("value", out var value))
+                    {
+                        Qua = Convert.ToInt32(value);
+                        if (Qua > 0)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            message = "商品數量需大於0";
+                            break;
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                message = "商品數量需大於0";
+            }
+            return message is null;
+        }
         private static bool ValidatePrice(string input, out int price, out string message)
         {
             price = 0;
