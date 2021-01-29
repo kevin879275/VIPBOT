@@ -18,6 +18,9 @@
     <PackageReference Include="Microsoft.Bot.Builder.AI.Luis" Version="4.11.1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
+    <PackageReference Include="AdaptiveExpressions" Version="4.11.1" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
   </ItemGroup>
 
     <ItemGroup>
@@ -30,7 +33,8 @@
       <Folder Include="cards\" /><!--      <Folder Include="CognitiveModels\" />
 -->          <Folder Include="Flow\" /><!--      <Folder Include="CognitiveModels\" />
 -->    <Folder Include="CognitiveModels\data\" />
-<Folder Include="CognitiveModels\" />
+<Folder Include="CognitiveModels\" /><!--      <Folder Include="CognitiveModels\" />
+-->    
 
 
 <!--      <Folder Include="CognitiveModels\" />
