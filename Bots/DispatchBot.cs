@@ -32,7 +32,7 @@ namespace Microsoft.BotBuilderSamples
 
     private static readonly HttpClient client = new HttpClient();
     private static SQL_Database db = new SQL_Database();
-
+    private static LineMsgBot lineBot = new LineMsgBot();
 
     protected BotState ConversationState;
 
@@ -100,7 +100,19 @@ namespace Microsoft.BotBuilderSamples
                 if (flow.LastQuestionAsked == SellFlow.Question.None)
                 {
                     dialogState[turnContext.Activity.Recipient.Id] = "None";
-                    //db.Insert_tabBought_List(turnContext.Activity.Recipient.Id, item.iId, item.quantiy);
+                    //db.Insert_tabItem(
+                    //    itemNow.ToString(), 
+                    //    DateTime.Now.ToString(), 
+                    //    item.type, 
+                    //    item.imageSrc, 
+                    //    "on sell", 
+                    //    quantity, 
+                    //    name, 
+                    //    "新竹市東區", 
+                    //    turnContext.Activity.Recipient.Id, 
+                    //    money);
+                    itemNow++;
+
                 }
             }
             else

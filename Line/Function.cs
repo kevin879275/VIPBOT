@@ -25,8 +25,8 @@ namespace Microsoft.BotBuilderSamples
                 default:
                     break;
             }
-
         }
+
     }
 
 }
