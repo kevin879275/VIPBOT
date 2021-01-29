@@ -52,15 +52,11 @@ namespace Microsoft.BotBuilderSamples
         //Path.Combine (".", "Cards", "Covid19Status.json"),
         //Path.Combine (".", "Cards", "GlobalStatus.json"),
     };
-        public static Task<ImageAnalysis> ImgDescriptions(string imgurl)
+
+        public static Task<ImageAnalysis> cvResult(string imgurl)
         {
             return cv.AnalyzeImageAsync(imgurl, new List<VisualFeatureTypes?>(){
-            VisualFeatureTypes.Description
-          });
-        }
-        public static Task<ImageAnalysis> ImgObjects(string imgurl)
-        {
-            return cv.AnalyzeImageAsync(imgurl, new List<VisualFeatureTypes?>(){
+              VisualFeatureTypes.Description,
             VisualFeatureTypes.Objects
           });
         }
@@ -155,8 +151,8 @@ namespace Microsoft.BotBuilderSamples
                     askFirstState[turnContext.Activity.Recipient.Id] = new StartDialog();
                     await SendFirstActionsAsync(turnContext, cancellationToken);
                     //db.Insert_tabUser(turnContext.Activity.Recipient.Id, "新竹市東區", "[\"天竺鼠車車\",\"車車天竺鼠\"]");
-                    db.Insert_tabItem(itemNow.ToString(), "now", "cart", "", "selling", 5, "天竺鼠車車", "新竹市東區", turnContext.Activity.Recipient.Id, 99999);
-                    itemNow++;
+                    // db.Insert_tabItem(itemNow.ToString(), "now", "cart", "", "selling", 5, "天竺鼠車車", "新竹市東區", turnContext.Activity.Recipient.Id, 99999);
+                    // itemNow++;
                 }
             }
         }
@@ -531,11 +527,13 @@ namespace Microsoft.BotBuilderSamples
                 case SellFlow.Question.None:
                     await turnContext.SendActivityAsync("您好，你要賣什麼東西(請上傳圖片)?", null, null, cancellationToken);
                     flow.LastQuestionAsked = SellFlow.Question.imageSrc;
+
                     break;
                 case SellFlow.Question.imageSrc:
                     if (ValidateImage(input, out var image, out message))
                     {
                         Item.imageSrc = image;
+                        Item.cvResults = await cvResult(image);
                         await turnContext.SendActivityAsync("您好，你要賣什麼類型?", null, null, cancellationToken);
                         Item.imageSrc = image;
                         var reply = MessageFactory.Text("請選擇下列類型?");

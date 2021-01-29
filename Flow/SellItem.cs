@@ -1,3 +1,5 @@
+using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
+using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
 namespace Microsoft.BotBuilderSamples
 {
 
@@ -14,5 +16,6 @@ namespace Microsoft.BotBuilderSamples
         public string name { get; set; }
         public int quantity { get; set; }
         public int price { get; set; }
+        public ImageAnalysis cvResults { get; set; }
     }
 }
