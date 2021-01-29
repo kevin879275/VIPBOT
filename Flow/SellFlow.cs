@@ -11,6 +11,7 @@
             discription,
             location,
             OwnerUserID,
+            Qua,
             price,
             Check,
             None,
