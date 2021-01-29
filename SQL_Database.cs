@@ -57,21 +57,23 @@ namespace Microsoft.BotBuilderSamples
                 (
                     id  nvarchar(40) PRIMARY KEY,
                     Location    nvarchar(128),
-                    InterestType    nvarchar(128)
+                    InterestType    nvarchar(128),
+                    latitude    FLOAT,
+                    longitude   FLOAT
                 );
 
                 CREATE TABLE tabItem
                 (
                     id  nvarchar(40) PRIMARY KEY,
                     --Time    DATETIME,
-                    Time    VARCHAR(20),
-                    Type    VARCHAR(20),
+                    Time    nvarchar(20),
+                    Type    nvarchar(20),
                     --img     IMAGE,  
-                    img     VARCHAR(20),
-                    status  VARCHAR(20),
+                    img     nvarchar(20),
+                    status  nvarchar(20),
                     Count   INT NOT NULL,
-                    Description     VARCHAR(120),
-                    Location    VARCHAR(120),
+                    Description     nvarchar(120),
+                    Location    nvarchar(300),
                     User_id nvarchar(40),
                     piece INT
                 );
@@ -93,6 +95,8 @@ namespace Microsoft.BotBuilderSamples
         string user_id,
         string Loaction,
         string InterestType,
+        float latitude,
+        float longitude,
         string tsqlSourceCode = sql_cmd_Insert_tabUser)
     {
       using (connection = new SqlConnection(cb.ConnectionString))
@@ -103,6 +107,8 @@ namespace Microsoft.BotBuilderSamples
           command.Parameters.AddWithValue("@value1", user_id);
           command.Parameters.AddWithValue("@value2", Loaction);
           command.Parameters.AddWithValue("@value3", InterestType);
+          command.Parameters.AddWithValue("@value4", latitude);
+          command.Parameters.AddWithValue("@value5", longitude);
           int rowsAffected = command.ExecuteNonQuery();
           Console.WriteLine(rowsAffected + " = rows affected.");
         }
@@ -195,9 +201,9 @@ namespace Microsoft.BotBuilderSamples
 
 
     private const string sql_cmd_Insert_tabUser = @"
-                INSERT INTO tabUser (id, Location, InterestType)
+                INSERT INTO tabUser (id, Location, InterestType, latitude, longitude)
                 VALUES
-                    (@value1, @value2, @value3)
+                    (@value1, @value2, @value3, @value4, @value5)
             ";
 
 
@@ -232,16 +238,13 @@ namespace Microsoft.BotBuilderSamples
                 WHERE User_id=@User_id AND Item_id=@Item_id;
             ";
 
-
-    public byte[] GetPictureData(string imagepath)
-    {
-      FileStream file = new FileStream(imagepath, FileMode.Open);
-      byte[] by = new byte[file.Length];
-      file.Read(by, 0, by.Length);
-      file.Close();
-      return by;
-    }
-
+        public const string sql_cmd_select_tabUser_coordinate = @"
+                
+                SELECT
+                    latitude,
+                    longitude
+                FROM tabUser
+            ";
 
 
     private const string sql_cmd_Update_tabItem = @"
@@ -258,24 +261,6 @@ namespace Microsoft.BotBuilderSamples
                 
             ";
 
-
-    static private string Build_5_Tsql_DeleteJoin = @"
-                DECLARE @DName2  nvarchar(128);
-                SET @DName2 = @csharpParmDepartmentName;  --'Legal';
-
-                -- Right size the Legal department.
-                DELETE empl
-                FROM
-                    tabEmployee   as empl
-                INNER JOIN
-                    tabDepartment as dept ON dept.DepartmentCode = empl.DepartmentCode
-                WHERE
-                    dept.DepartmentName = @DName2
-
-                -- Disband the Legal department.
-                DELETE tabDepartment
-                    WHERE DepartmentName = @DName2;
-            ";
 
 
     public int Select_tabBought_List(string user_id, string item_id, string tsql = sql_cmd_select_tabBought_List)
@@ -339,6 +324,38 @@ namespace Microsoft.BotBuilderSamples
         return value;
       }
     }
-  }
+
+        public float[] Select_tabUser_coordinate(string tsql = sql_cmd_select_tabUser_coordinate)
+        {
+            using (connection = new SqlConnection(cb.ConnectionString))
+            {
+                connection.Open();
+                Console.WriteLine();
+                Console.WriteLine("=================================");
+                Console.WriteLine("Select value from table");
+                float[] coordinate = new float[2];
+
+                using (var command = new SqlCommand(tsql, connection))
+                {
+                    int rowsAffected = command.ExecuteNonQuery();
+                    Console.WriteLine(rowsAffected + " = rows affected.");
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+
+                        while (reader.Read())
+                        {
+                            coordinate[0] = reader.GetFloat(0);
+                            coordinate[1] = reader.GetFloat(1);
+
+                            Console.WriteLine(coordinate[0]);
+                            Console.WriteLine(coordinate[1]);
+                        }
+                    }
+                }
+                return coordinate;
+            }
+        }
+    }
 }
 
