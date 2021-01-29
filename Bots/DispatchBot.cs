@@ -121,12 +121,16 @@ namespace Microsoft.BotBuilderSamples
                        "selling",
                        item.quantity,
                        item.description,
-                       "新竹市東區",
+                       item.location,
                        turnContext.Activity.Recipient.Id,
                        item.price,
                        item.name);
+                    var tmp = new LineFunctions();
+                    var msg = tmp.SetCard(item.imageSrc, "Name", item.quantity.ToString(), item.price.ToString(),
+                        item.description, item.location, itemNow);
+                    var pushLst = getAccountList(askFirstState[turnContext.Activity.Recipient.Id].profile, item.type);
+                    await lineBot.PushJson(pushLst, msg);
                     itemNow++;
-
                 }
             }
             else
@@ -170,8 +174,6 @@ namespace Microsoft.BotBuilderSamples
         {
             return Int32.Parse(Regex.Match(s, @"\d+").Value);
         }
-
-
 
         private async Task DispatchToTopIntentAsync(ITurnContext<IMessageActivity> turnContext, string intent, RecognizerResult recognizerResult, CancellationToken cancellationToken)
         {
@@ -778,6 +780,23 @@ namespace Microsoft.BotBuilderSamples
             var d = R * c;
 
             return d;
+        }
+
+        private List<string> getAccountList(User me, string itemType)
+        {
+            List<string> accountList = new List<string>();
+            var userList = db.Select_tabUser();
+            foreach(User user in userList)
+            {
+                if (user.UserId == me.UserId) continue;
+                double dis = getDistance(me.location.Latitude, me.location.Longitude, user.location.Latitude, user.location.Longitude);
+                if (dis < 1F + 1e-9F || (itemType != "其他" && itemType == user.Interest && dis < 5F + 1e-9F))
+                {
+                    accountList.Add(user.UserId);
+                }
+
+            }
+            return accountList;
         }
     }
 

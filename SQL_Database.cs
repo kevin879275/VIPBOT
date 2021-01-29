@@ -241,9 +241,11 @@ namespace Microsoft.BotBuilderSamples
                 WHERE User_id=@User_id AND Item_id=@Item_id;
             ";
 
-        public const string sql_cmd_select_tabUser_coordinate = @"
+        public const string sql_cmd_select_tabUser = @"
                 
                 SELECT
+                    id,
+                    InterestType,
                     latitude,
                     longitude
                 FROM tabUser
@@ -328,7 +330,7 @@ namespace Microsoft.BotBuilderSamples
       }
     }
 
-        public float[] Select_tabUser_coordinate(string tsql = sql_cmd_select_tabUser_coordinate)
+        public List<User> Select_tabUser(string tsql = sql_cmd_select_tabUser)
         {
             using (connection = new SqlConnection(cb.ConnectionString))
             {
@@ -336,7 +338,8 @@ namespace Microsoft.BotBuilderSamples
                 Console.WriteLine();
                 Console.WriteLine("=================================");
                 Console.WriteLine("Select value from table");
-                float[] coordinate = new float[2];
+                User user = new User();
+                List<User> arr = new List<User>();
 
                 using (var command = new SqlCommand(tsql, connection))
                 {
@@ -348,15 +351,21 @@ namespace Microsoft.BotBuilderSamples
 
                         while (reader.Read())
                         {
-                            coordinate[0] = reader.GetFloat(0);
-                            coordinate[1] = reader.GetFloat(1);
+                            user.UserId = reader.GetString(0);
+                            user.Interest = reader.GetString(1);
+                            user.location.Latitude = reader.GetFloat(2);
+                            user.location.Longitude = reader.GetFloat(3);
 
-                            Console.WriteLine(coordinate[0]);
-                            Console.WriteLine(coordinate[1]);
+                            Console.WriteLine(user.UserId);
+                            Console.WriteLine(user.Interest);
+                            Console.WriteLine(user.location.Latitude);
+                            Console.WriteLine(user.location.Longitude);
+
+                            arr.Add(user);
                         }
                     }
                 }
-                return coordinate;
+                return arr;
             }
         }
     }

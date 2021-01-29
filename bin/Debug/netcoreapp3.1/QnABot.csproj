@@ -12,7 +12,8 @@
      <PackageReference Include="EasiestImgur" Version="1.0.0" />
      <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
      <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
-     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.1" />   
+     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.1" />
+     <PackageReference Include="Microsoft.Azure.CognitiveServices.Vision.ComputerVision" Version="6.0.0" />   
 <!--     <Publish Condition="'%(PackageReference.Version)' == ''">true</Publish>
 -->
     <PackageReference Include="Microsoft.Bot.Builder.AI.QnA" Version="4.8.0" />

@@ -29,6 +29,7 @@
           "Microsoft.AspNet.WebApi.Client": "5.2.7",
           "Microsoft.AspNet.WebApi.Core": "5.2.7",
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "3.1.1",
+          "Microsoft.Azure.CognitiveServices.Vision.ComputerVision": "6.0.0",
           "Microsoft.Bot.Builder.AI.Luis": "4.11.1",
           "Microsoft.Bot.Builder.AI.QnA": "4.8.0",
           "Microsoft.Bot.Builder.Integration.AspNet.Core": "4.8.0",
@@ -446,6 +447,23 @@
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.Azure.CognitiveServices.Language.LUIS.dll": {}
+        }
+      },
+      "Microsoft.Azure.CognitiveServices.Vision.ComputerVision/6.0.0": {
+        "dependencies": {
+          "Microsoft.Rest.ClientRuntime": "2.3.21",
+          "Microsoft.Rest.ClientRuntime.Azure": "3.3.19",
+          "Newtonsoft.Json": "12.0.3",
+          "System.Net.Http": "4.3.4"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Azure.CognitiveServices.Vision.ComputerVision.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.20.50903"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Azure.CognitiveServices.Vision.ComputerVision.dll": {}
         }
       },
       "Microsoft.Bot.Builder/4.11.1": {
@@ -3782,6 +3800,13 @@
       "sha512": "sha512-8r62mdTtgrn2storrAKjX4c+GzweMuwIxINM9nPWKmFSRLNQQU3Ak1cneqAOEiONY3zkqJtF9ik6uuVbxDH9Qw==",
       "path": "microsoft.azure.cognitiveservices.language.luis.runtime/2.1.0",
       "hashPath": "microsoft.azure.cognitiveservices.language.luis.runtime.2.1.0.nupkg.sha512"
+    },
+    "Microsoft.Azure.CognitiveServices.Vision.ComputerVision/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7uLnrag+Tqiky7aobktqitfPNEYC2Rcc6qeAm3V4iOOsRDYKISaRN7V82wXLdvfCs0CvtyYuJo3MGalChhIufQ==",
+      "path": "microsoft.azure.cognitiveservices.vision.computervision/6.0.0",
+      "hashPath": "microsoft.azure.cognitiveservices.vision.computervision.6.0.0.nupkg.sha512"
     },
     "Microsoft.Bot.Builder/4.11.1": {
       "type": "package",

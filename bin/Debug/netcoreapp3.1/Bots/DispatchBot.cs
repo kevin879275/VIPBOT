@@ -7,6 +7,8 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
+using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 
@@ -26,47 +28,58 @@ using Microsoft.Bot.Builder.Dialogs.Choices;
 namespace Microsoft.BotBuilderSamples
 {
 
-  public class DispatchBot : ActivityHandler { 
-    private readonly ILogger<DispatchBot> _logger;
-    private readonly IBotServices _botServices;
+    public class DispatchBot : ActivityHandler
+    {
+        private readonly ILogger<DispatchBot> _logger;
+        private readonly IBotServices _botServices;
 
-    private static readonly HttpClient client = new HttpClient();
-    private static SQL_Database db = new SQL_Database();
+        private static readonly HttpClient client = new HttpClient();
+        private static SQL_Database db = new SQL_Database();
 
+        public static ComputerVisionClient cv = new ComputerVisionClient(new ApiKeyServiceClientCredentials("6681cfc712a947ef876d46adb7187ab1")) { Endpoint = "https://vipcv.cognitiveservices.azure.com/" };
 
-    protected BotState ConversationState;
+        private static LineMsgBot lineBot = new LineMsgBot();
 
-    protected BotState UserState;
-    //protected readonly StartDialog Dialog;
-    private static Dictionary<string, StartDialog> askFirstState = new Dictionary<string, StartDialog>();
-    private static Dictionary<string, string> dialogState = new Dictionary<string, string>();
+        protected BotState ConversationState;
 
-    private readonly string[] _cards = {
+        protected BotState UserState;
+        //protected readonly StartDialog Dialog;
+        private static Dictionary<string, StartDialog> askFirstState = new Dictionary<string, StartDialog>();
+        private static Dictionary<string, string> dialogState = new Dictionary<string, string>();
+
+        private readonly string[] _cards = {
 
         //Path.Combine (".", "Cards", "Covid19Status.json"),
         //Path.Combine (".", "Cards", "GlobalStatus.json"),
     };
 
-    public DispatchBot(IBotServices botServices, ILogger<DispatchBot> logger ,ConversationState conversationState, UserState userState)
-    {
-      _logger = logger;
-      _botServices = botServices;
-      ConversationState = conversationState;
-      UserState = userState;
-    }
+        public static Task<ImageAnalysis> cvResult(string imgurl)
+        {
+            return cv.AnalyzeImageAsync(imgurl, new List<VisualFeatureTypes?>(){
+              VisualFeatureTypes.Description,
+            VisualFeatureTypes.Objects
+          });
+        }
+        public DispatchBot(IBotServices botServices, ILogger<DispatchBot> logger, ConversationState conversationState, UserState userState)
+        {
+            _logger = logger;
+            _botServices = botServices;
+            ConversationState = conversationState;
+            UserState = userState;
+        }
 
 
-    public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default)
-    {
-      await base.OnTurnAsync(turnContext, cancellationToken);
+        public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default)
+        {
+            await base.OnTurnAsync(turnContext, cancellationToken);
 
-      // Save any state changes that might have occurred during the turn.
-      await ConversationState.SaveChangesAsync(turnContext, false, cancellationToken);
-      await UserState.SaveChangesAsync(turnContext, false, cancellationToken);
-    }
+            // Save any state changes that might have occurred during the turn.
+            await ConversationState.SaveChangesAsync(turnContext, false, cancellationToken);
+            await UserState.SaveChangesAsync(turnContext, false, cancellationToken);
+        }
 
-    protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
-    {
+        protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
+        {
             // First, we use the dispatch model to determine which cognitive service (LUIS or QnA) to use.
             //await Dialog.BeginDialogAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
             if (dialogState[turnContext.Activity.Recipient.Id] == "Buy")
@@ -100,7 +113,24 @@ namespace Microsoft.BotBuilderSamples
                 if (flow.LastQuestionAsked == SellFlow.Question.None)
                 {
                     dialogState[turnContext.Activity.Recipient.Id] = "None";
-                    //db.Insert_tabBought_List(turnContext.Activity.Recipient.Id, item.iId, item.quantiy);
+                    db.Insert_tabItem(
+                       itemNow.ToString(),
+                       DateTime.Now.ToString(),
+                       item.type,
+                       item.imageSrc,
+                       "selling",
+                       item.quantity,
+                       item.description,
+                       item.location,
+                       turnContext.Activity.Recipient.Id,
+                       item.price,
+                       item.name);
+                    var tmp = new LineFunctions();
+                    var msg = tmp.SetCard(item.imageSrc, "Name", item.quantity.ToString(), item.price.ToString(),
+                        item.description, item.location, itemNow);
+                    var pushLst = getAccountList(askFirstState[turnContext.Activity.Recipient.Id].profile, item.type);
+                    await lineBot.PushJson(pushLst, msg);
+                    itemNow++;
                 }
             }
             else
@@ -113,70 +143,68 @@ namespace Microsoft.BotBuilderSamples
                 await DispatchToTopIntentAsync(turnContext, topIntent.intent, recognizerResult, cancellationToken);
             }
         }
-    
-    private static int itemNow = 0;
-    protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
-    {
-      dialogState[turnContext.Activity.Recipient.Id] = "None";
-      foreach (var member in membersAdded)
-      {
-        if (member.Id != turnContext.Activity.Recipient.Id)
+
+        private static int itemNow = 0;
+        protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
-            askFirstState[turnContext.Activity.Recipient.Id] = new StartDialog();
-            await SendFirstActionsAsync(turnContext, cancellationToken);
-            //db.Insert_tabUser(turnContext.Activity.Recipient.Id, "新竹市東區", "[\"天竺鼠車車\",\"車車天竺鼠\"]");
-            db.Insert_tabItem(itemNow.ToString(), "now", "cart", "", "selling", 5, "天竺鼠車車", "新竹市東區", turnContext.Activity.Recipient.Id, 99999);
-            itemNow++;
+            dialogState[turnContext.Activity.Recipient.Id] = "None";
+            foreach (var member in membersAdded)
+            {
+                if (member.Id != turnContext.Activity.Recipient.Id)
+                {
+                    askFirstState[turnContext.Activity.Recipient.Id] = new StartDialog();
+                    await SendFirstActionsAsync(turnContext, cancellationToken);
+                    //db.Insert_tabUser(turnContext.Activity.Recipient.Id, "新竹市東區", "[\"天竺鼠車車\",\"車車天竺鼠\"]");
+                    // db.Insert_tabItem(itemNow.ToString(), "now", "cart", "", "selling", 5, "天竺鼠車車", "新竹市東區", turnContext.Activity.Recipient.Id, 99999);
+                    // itemNow++;
+                }
+            }
         }
-      }
-    }
 
 
 
 
-    private static async Task SendFirstActionsAsync(ITurnContext turnContext, CancellationToken cancellationToken)
-    {
-        await turnContext.SendActivityAsync(MessageFactory.Text("您好，本機器人提供鄰近區域服務、物品買賣仲介。"), cancellationToken);
-        await askFirstState[turnContext.Activity.Recipient.Id].StartFlow(turnContext, cancellationToken);
-    }
+        private static async Task SendFirstActionsAsync(ITurnContext turnContext, CancellationToken cancellationToken)
+        {
+            await turnContext.SendActivityAsync(MessageFactory.Text("您好，本機器人提供鄰近區域服務、物品買賣仲介。"), cancellationToken);
+            await askFirstState[turnContext.Activity.Recipient.Id].StartFlow(turnContext, cancellationToken);
+        }
 
-    private int getNumberInString(string s)
-    {
-      return Int32.Parse(Regex.Match(s, @"\d+").Value);
-    }
+        private int getNumberInString(string s)
+        {
+            return Int32.Parse(Regex.Match(s, @"\d+").Value);
+        }
 
+        private async Task DispatchToTopIntentAsync(ITurnContext<IMessageActivity> turnContext, string intent, RecognizerResult recognizerResult, CancellationToken cancellationToken)
+        {
+            switch (intent)
+            {
+                case "l_BuySell":
+                    await ProcessVipBotAsync(turnContext, recognizerResult.Properties["luisResult"] as LuisResult, cancellationToken);
+                    break;
+                case "q_BuySell":
+                    await ProcessSampleQnAAsync(turnContext, cancellationToken);
+                    break;
+                default:
+                    _logger.LogInformation($"機器人無法辨識您");
+                    await turnContext.SendActivityAsync(MessageFactory.Text($"機器人無法辨識您"), cancellationToken);
+                    break;
+            }
+        }
 
+        private async Task ProcessVipBotAsync(ITurnContext<IMessageActivity> turnContext, LuisResult luisResult, CancellationToken cancellationToken)
+        {
 
-    private async Task DispatchToTopIntentAsync(ITurnContext<IMessageActivity> turnContext, string intent, RecognizerResult recognizerResult, CancellationToken cancellationToken)
-    {
-      switch (intent)
-      {
-        case "l_BuySell":
-          await ProcessVipBotAsync(turnContext, recognizerResult.Properties["luisResult"] as LuisResult, cancellationToken);
-          break;
-        case "q_BuySell":
-          await ProcessSampleQnAAsync(turnContext, cancellationToken);
-          break;
-        default:
-          _logger.LogInformation($"機器人無法辨識您");
-          await turnContext.SendActivityAsync(MessageFactory.Text($"機器人無法辨識您"), cancellationToken);
-          break;
-      }
-    }
+            // Retrieve LUIS result for Process Automation.
+            var result = luisResult.ConnectedServiceResult;
+            var topIntent = result.TopScoringIntent.Intent;
 
-    private async Task ProcessVipBotAsync(ITurnContext<IMessageActivity> turnContext, LuisResult luisResult, CancellationToken cancellationToken)
-    {
+            if (topIntent == "Number")
+            {
 
-      // Retrieve LUIS result for Process Automation.
-      var result = luisResult.ConnectedServiceResult;
-      var topIntent = result.TopScoringIntent.Intent;
-
-      if (topIntent == "Number")
-      {
-
-      }
-      else if (topIntent == "Buy")
-      {
+            }
+            else if (topIntent == "Buy")
+            {
 
                 var conversationStateAccessors = ConversationState.CreateProperty<BuyFlow>(nameof(BuyFlow));
                 var flow = await conversationStateAccessors.GetAsync(turnContext, () => new BuyFlow(), cancellationToken);
@@ -189,39 +217,39 @@ namespace Microsoft.BotBuilderSamples
                 //var qm = result.Entities.SingleOrDefault(s => s.Type == "Quantity math") ?? result.Entities.SingleOrDefault(s => s.Type == "Measure Quantity");
 
                 //var inum = result.Entities.SingleOrDefault(s => s.Type == "ItemNumber");
-        //if (qm == null || inum == null)
-        //{
-        //  dialogState[turnContext.Activity.Recipient.Id] = true;
-        //  //await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
-        //}
-        //else
-        //{
-        //  int q = getNumberInString(qm.Entity);
-        //  int inu = getNumberInString(inum.Entity);
+                //if (qm == null || inum == null)
+                //{
+                //  dialogState[turnContext.Activity.Recipient.Id] = true;
+                //  //await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
+                //}
+                //else
+                //{
+                //  int q = getNumberInString(qm.Entity);
+                //  int inu = getNumberInString(inum.Entity);
 
-        //  string uid = turnContext.Activity.Recipient.Id;
-          //int amount = db.Select_tabItem(inu.ToString());
-          //if (amount == 0)
-          //{
-          //  turnContext.SendActivityAsync(MessageFactory.Text("沒有這個物品id優!!!"));
-          //  return;
-          //}
+                //  string uid = turnContext.Activity.Recipient.Id;
+                //int amount = db.Select_tabItem(inu.ToString());
+                //if (amount == 0)
+                //{
+                //  turnContext.SendActivityAsync(MessageFactory.Text("沒有這個物品id優!!!"));
+                //  return;
+                //}
 
-          //if (q <= amount)
-          //{
-          //  db.Insert_tabBought_List(uid, inu.ToString(), q);
-          //  int remain = amount - q;
-          //  string sta = remain > 0 ? "on sell" : "sold";
-          //  db.update_tabItem(sta, inu.ToString(), remain);
+                //if (q <= amount)
+                //{
+                //  db.Insert_tabBought_List(uid, inu.ToString(), q);
+                //  int remain = amount - q;
+                //  string sta = remain > 0 ? "on sell" : "sold";
+                //  db.update_tabItem(sta, inu.ToString(), remain);
 
-          //turnContext.SendActivityAsync(MessageFactory.Text($"庫存剩餘:{db.Select_tabItem(inu.ToString())}"));
-          //}
-          //else
-          //      turnContext.SendActivityAsync(MessageFactory.Text("庫存不足瞜!!!"));
+                //turnContext.SendActivityAsync(MessageFactory.Text($"庫存剩餘:{db.Select_tabItem(inu.ToString())}"));
+                //}
+                //else
+                //      turnContext.SendActivityAsync(MessageFactory.Text("庫存不足瞜!!!"));
 
-      }
-      else if (topIntent == "Sell")
-      {
+            }
+            else if (topIntent == "Sell")
+            {
                 var conversationStateAccessors = ConversationState.CreateProperty<SellFlow>(nameof(SellFlow));
                 var flow = await conversationStateAccessors.GetAsync(turnContext, () => new SellFlow(), cancellationToken);
 
@@ -231,134 +259,134 @@ namespace Microsoft.BotBuilderSamples
                 await FillOutSellItemAsync(flow, item, turnContext, cancellationToken);
                 dialogState[turnContext.Activity.Recipient.Id] = "Sell";
 
-        //var mon = result.Entities.SingleOrDefault(s => s.Type == "builtin.currency");
-        //var q = result.Entities.SingleOrDefault(s => s.Type == "Quantity math") ?? result.Entities.SingleOrDefault(s => s.Type == "Measure Quantity");
-        //if (mon == null || q == null)
-        //{
-        //  //dialog
-        //}
-        //else
-        //{
-        //  int money = getNumberInString(mon.Entity);
-        //  int quantity = getNumberInString(q.Entity);
-        //  string other = result.Query;
-        //  foreach (var entity in result.Entities)
-        //  {
-        //    other = other.Replace(entity.Entity, "");
-        //  }
-        //  other = other.Replace(" ", "");
-        //  string name = "no name";
-        //  if (other.Length > 0)
-        //    name = other;
-        //  //db.Insert_tabItem(itemNow.ToString(), DateTime.Now.ToString(), "second hand", "[]", "on sell", quantity, name, "新竹市東區", turnContext.Activity.Recipient.Id, money);
-        //  // to do get location from user
-        //  itemNow++;
-        //}
+                //var mon = result.Entities.SingleOrDefault(s => s.Type == "builtin.currency");
+                //var q = result.Entities.SingleOrDefault(s => s.Type == "Quantity math") ?? result.Entities.SingleOrDefault(s => s.Type == "Measure Quantity");
+                //if (mon == null || q == null)
+                //{
+                //  //dialog
+                //}
+                //else
+                //{
+                //  int money = getNumberInString(mon.Entity);
+                //  int quantity = getNumberInString(q.Entity);
+                //  string other = result.Query;
+                //  foreach (var entity in result.Entities)
+                //  {
+                //    other = other.Replace(entity.Entity, "");
+                //  }
+                //  other = other.Replace(" ", "");
+                //  string name = "no name";
+                //  if (other.Length > 0)
+                //    name = other;
+                //  //db.Insert_tabItem(itemNow.ToString(), DateTime.Now.ToString(), "second hand", "[]", "on sell", quantity, name, "新竹市東區", turnContext.Activity.Recipient.Id, money);
+                //  // to do get location from user
+                //  itemNow++;
+                //}
 
 
-      }
-      else
-      {
-        _logger.LogInformation($"Luis unrecognized intent.");
-        await turnContext.SendActivityAsync(MessageFactory.Text($"機器人無法辨識您的輸入!"), cancellationToken);
-      }
-    }
-
-    private async Task ProcessSampleQnAAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
-    {
-      _logger.LogInformation("ProcessSampleQnAAsync");
-
-      var results = await _botServices.SampleQnA.GetAnswersAsync(turnContext);
-      if (results.Any())
-      {
-        await turnContext.SendActivityAsync(MessageFactory.Text(results.First().Answer), cancellationToken);
-      }
-      else
-      {
-        await turnContext.SendActivityAsync(MessageFactory.Text("抱歉! 機器人無法回答您的問題"), cancellationToken);
-      }
-    }
-
-
-    private static Attachment CreateAdaptiveCardAttachment(string filePath)
-    {
-      var adaptiveCardJson = File.ReadAllText(filePath);
-      var adaptiveCardAttachment = new Attachment()
-      {
-        ContentType = "application/vnd.microsoft.card.adaptive",
-        Content = JsonConvert.DeserializeObject(adaptiveCardJson),
-      };
-      return adaptiveCardAttachment;
-    }
-
-    private static JObject readFileforUpdate_jobj(string filepath)
-    {
-      var json = File.ReadAllText(filepath);
-      var jobj = JsonConvert.DeserializeObject(json);
-      JObject Jobj_card = JObject.FromObject(jobj) as JObject;
-      return Jobj_card;
-    }
-
-    private static Attachment UpdateAdaptivecardAttachment(JObject updateAttch)
-    {
-      var adaptiveCardAttch = new Attachment()
-      {
-        ContentType = "application/vnd.microsoft.card.adaptive",
-        Content = JsonConvert.DeserializeObject(updateAttch.ToString()),
-      };
-      return adaptiveCardAttch;
-    }
-
-    private static List<Repo> ProcessRepo(string Url)
-    {
-      var webRequest = WebRequest.Create(Url) as HttpWebRequest;
-      List<Repo> repositories = new List<Repo>();
-      webRequest.ContentType = "application/json";
-      webRequest.UserAgent = "User-Agent";
-      using (var s = webRequest.GetResponse().GetResponseStream())
-      {
-        using (var sr = new StreamReader(s))
-        {
-          var contributorsAsJson = sr.ReadToEnd();
-          repositories = JsonConvert.DeserializeObject<List<Repo>>(contributorsAsJson);
+            }
+            else
+            {
+                _logger.LogInformation($"Luis unrecognized intent.");
+                await turnContext.SendActivityAsync(MessageFactory.Text($"機器人無法辨識您的輸入!"), cancellationToken);
+            }
         }
-      }
-      return repositories;
-    }
 
-    // private static List<RepoWorld> ProcessRepoWorld (string Url) {
-    //     var webRequest = WebRequest.Create (Url) as HttpWebRequest;
-    //     List<RepoWorld> repositories = new List<RepoWorld> ();
-    //     webRequest.ContentType = "application/json";
-    //     webRequest.UserAgent = "User-Agent";
-    //     using (var s = webRequest.GetResponse ().GetResponseStream ()) {
-    //         using (var sr = new StreamReader (s)) {
-    //             var contributorsAsJson = sr.ReadToEnd ();
-    //             repositories = JsonConvert.DeserializeObject<List<RepoWorld>> (contributorsAsJson);
-    //         }
-    //     }
-    //     return repositories;
-    // }
-
-    private static JObject ProcessRepoWorldJ(string Url)
-    {
-      var webRequest = WebRequest.Create(Url) as HttpWebRequest;
-      JObject repositories = new JObject();
-      webRequest.ContentType = "application/json";
-      webRequest.UserAgent = "User-Agent";
-      using (var s = webRequest.GetResponse().GetResponseStream())
-      {
-        using (var sr = new StreamReader(s))
+        private async Task ProcessSampleQnAAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
-          var contributorsAsJson = sr.ReadToEnd();
-          var jobj = JsonConvert.DeserializeObject(contributorsAsJson);
-          JObject Jobj_card = JObject.FromObject(jobj) as JObject;
+            _logger.LogInformation("ProcessSampleQnAAsync");
 
-          repositories = JObject.Parse(contributorsAsJson);
+            var results = await _botServices.SampleQnA.GetAnswersAsync(turnContext);
+            if (results.Any())
+            {
+                await turnContext.SendActivityAsync(MessageFactory.Text(results.First().Answer), cancellationToken);
+            }
+            else
+            {
+                await turnContext.SendActivityAsync(MessageFactory.Text("抱歉! 機器人無法回答您的問題"), cancellationToken);
+            }
         }
-      }
-      return repositories;
-    }
+
+
+        private static Attachment CreateAdaptiveCardAttachment(string filePath)
+        {
+            var adaptiveCardJson = File.ReadAllText(filePath);
+            var adaptiveCardAttachment = new Attachment()
+            {
+                ContentType = "application/vnd.microsoft.card.adaptive",
+                Content = JsonConvert.DeserializeObject(adaptiveCardJson),
+            };
+            return adaptiveCardAttachment;
+        }
+
+        private static JObject readFileforUpdate_jobj(string filepath)
+        {
+            var json = File.ReadAllText(filepath);
+            var jobj = JsonConvert.DeserializeObject(json);
+            JObject Jobj_card = JObject.FromObject(jobj) as JObject;
+            return Jobj_card;
+        }
+
+        private static Attachment UpdateAdaptivecardAttachment(JObject updateAttch)
+        {
+            var adaptiveCardAttch = new Attachment()
+            {
+                ContentType = "application/vnd.microsoft.card.adaptive",
+                Content = JsonConvert.DeserializeObject(updateAttch.ToString()),
+            };
+            return adaptiveCardAttch;
+        }
+
+        private static List<Repo> ProcessRepo(string Url)
+        {
+            var webRequest = WebRequest.Create(Url) as HttpWebRequest;
+            List<Repo> repositories = new List<Repo>();
+            webRequest.ContentType = "application/json";
+            webRequest.UserAgent = "User-Agent";
+            using (var s = webRequest.GetResponse().GetResponseStream())
+            {
+                using (var sr = new StreamReader(s))
+                {
+                    var contributorsAsJson = sr.ReadToEnd();
+                    repositories = JsonConvert.DeserializeObject<List<Repo>>(contributorsAsJson);
+                }
+            }
+            return repositories;
+        }
+
+        // private static List<RepoWorld> ProcessRepoWorld (string Url) {
+        //     var webRequest = WebRequest.Create (Url) as HttpWebRequest;
+        //     List<RepoWorld> repositories = new List<RepoWorld> ();
+        //     webRequest.ContentType = "application/json";
+        //     webRequest.UserAgent = "User-Agent";
+        //     using (var s = webRequest.GetResponse ().GetResponseStream ()) {
+        //         using (var sr = new StreamReader (s)) {
+        //             var contributorsAsJson = sr.ReadToEnd ();
+        //             repositories = JsonConvert.DeserializeObject<List<RepoWorld>> (contributorsAsJson);
+        //         }
+        //     }
+        //     return repositories;
+        // }
+
+        private static JObject ProcessRepoWorldJ(string Url)
+        {
+            var webRequest = WebRequest.Create(Url) as HttpWebRequest;
+            JObject repositories = new JObject();
+            webRequest.ContentType = "application/json";
+            webRequest.UserAgent = "User-Agent";
+            using (var s = webRequest.GetResponse().GetResponseStream())
+            {
+                using (var sr = new StreamReader(s))
+                {
+                    var contributorsAsJson = sr.ReadToEnd();
+                    var jobj = JsonConvert.DeserializeObject(contributorsAsJson);
+                    JObject Jobj_card = JObject.FromObject(jobj) as JObject;
+
+                    repositories = JObject.Parse(contributorsAsJson);
+                }
+            }
+            return repositories;
+        }
         private static async Task FillOutBuyItemAsync(BuyFlow flow, BuyItem Item, ITurnContext turnContext, CancellationToken cancellationToken)
         {
             var input = turnContext.Activity.Text?.Trim();
@@ -400,22 +428,22 @@ namespace Microsoft.BotBuilderSamples
                         break;
                     }
 
-                //case ConversationFlow.Question.Date:
-                //    if (ValidateDate(input, out var date, out message))
-                //    {
-                //        profile.Date = date;
-                //        await turnContext.SendActivityAsync($"Your cab ride to the airport is scheduled for {profile.Date}.");
-                //        await turnContext.SendActivityAsync($"Thanks for completing the booking {profile.Name}.");
-                //        await turnContext.SendActivityAsync($"Type anything to run the bot again.");
-                //        flow.LastQuestionAsked = ConversationFlow.Question.None;
-                //        profile = new UserProfile();
-                //        break;
-                //    }
-                //    else
-                //    {
-                //        await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
-                //        break;
-                //    }
+                    //case ConversationFlow.Question.Date:
+                    //    if (ValidateDate(input, out var date, out message))
+                    //    {
+                    //        profile.Date = date;
+                    //        await turnContext.SendActivityAsync($"Your cab ride to the airport is scheduled for {profile.Date}.");
+                    //        await turnContext.SendActivityAsync($"Thanks for completing the booking {profile.Name}.");
+                    //        await turnContext.SendActivityAsync($"Type anything to run the bot again.");
+                    //        flow.LastQuestionAsked = ConversationFlow.Question.None;
+                    //        profile = new UserProfile();
+                    //        break;
+                    //    }
+                    //    else
+                    //    {
+                    //        await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
+                    //        break;
+                    //    }
             }
         }
 
@@ -479,13 +507,13 @@ namespace Microsoft.BotBuilderSamples
                             message = "輸入大於0";
                             break;
                         }
-                    
+
                     }
                 }
             }
             catch
             {
-                message = "I'm sorry, I could not interpret that as an age. Please enter an age between 18 and 120.";
+                message = "輸入大於0";
             }
 
             return message is null;
@@ -499,16 +527,17 @@ namespace Microsoft.BotBuilderSamples
             switch (flow.LastQuestionAsked)
             {
                 case SellFlow.Question.None:
-                    await turnContext.SendActivityAsync("您好，你要賣什麼東西?", null, null, cancellationToken);
+                    await turnContext.SendActivityAsync("您好，你要賣什麼東西(請上傳圖片)?", null, null, cancellationToken);
                     flow.LastQuestionAsked = SellFlow.Question.imageSrc;
+
                     break;
                 case SellFlow.Question.imageSrc:
                     if (ValidateImage(input, out var image, out message))
                     {
                         Item.imageSrc = image;
+                        Item.cvResults = await cvResult(image);
                         await turnContext.SendActivityAsync("您好，你要賣什麼類型?", null, null, cancellationToken);
                         Item.imageSrc = image;
-                        //await turnContext.SendActivityAsync($"Hi {profile.Name}.", null, null, cancellationToken);
                         var reply = MessageFactory.Text("請選擇下列類型?");
                         reply.SuggestedActions = new SuggestedActions()
                         {
@@ -520,6 +549,7 @@ namespace Microsoft.BotBuilderSamples
                                 new CardAction() { Title = "樂器", Type = ActionTypes.ImBack, Value = "樂器"},
                                 new CardAction() { Title = "書籍", Type = ActionTypes.ImBack, Value = "書籍"},
                                 new CardAction() { Title = "票券", Type = ActionTypes.ImBack, Value = "票券"},
+                                new CardAction() { Title = "其他", Type = ActionTypes.ImBack, Value = "其他"},
                             },
                         };
                         flow.LastQuestionAsked = SellFlow.Question.type;
@@ -531,7 +561,7 @@ namespace Microsoft.BotBuilderSamples
                         await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
                         break;
                     }
-              case SellFlow.Question.type:
+                case SellFlow.Question.type:
                     if (ValidateType(input, out var type, out message))
                     {
                         Item.type = type;
@@ -544,11 +574,12 @@ namespace Microsoft.BotBuilderSamples
                         await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
                         break;
                     }
+
                 case SellFlow.Question.discription:
                     if (ValidateDiscription(input, out var description, out message))
                     {
                         Item.description = description;
-                        await turnContext.SendActivityAsync("您的定價為多少呢?", null, null, cancellationToken);
+                        await turnContext.SendActivityAsync("商品數量為多少呢?", null, null, cancellationToken);
                         flow.LastQuestionAsked = SellFlow.Question.price;
                         break;
                     }
@@ -557,7 +588,19 @@ namespace Microsoft.BotBuilderSamples
                         await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
                         break;
                     }
-
+                case SellFlow.Question.Qua:
+                    if (ValidateQua(input, out var Qua, out message))
+                    {
+                        Item.quantity = Qua;
+                        await turnContext.SendActivityAsync("請定價您的物品?", null, null, cancellationToken);
+                        flow.LastQuestionAsked = SellFlow.Question.discription;
+                        break;
+                    }
+                    else
+                    {
+                        await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
+                        break;
+                    }
                 case SellFlow.Question.price:
                     if (ValidatePrice(input, out var price, out message))
                     {
@@ -583,6 +626,8 @@ namespace Microsoft.BotBuilderSamples
                 case SellFlow.Question.Check:
                     if (ValidateCheck(input, out var check, out message))
                     {
+                        Item.ownerUserId = turnContext.Activity.Recipient.Id;
+                        Item.time = DateTime.Now.ToString();
                         await turnContext.SendActivityAsync("感謝您，物品已成功登錄", null, null, cancellationToken);
                         Item = new SellItem();
                         flow.LastQuestionAsked = SellFlow.Question.None;
@@ -627,7 +672,42 @@ namespace Microsoft.BotBuilderSamples
             }
             return message is null;
         }
+        private static bool ValidateQua(string input, out int Qua, out string message)
+        {
+            Qua = 0;
+            message = null;
+            // Try to recognize the input as a number. This works for responses such as "twelve" as well as "12".
+            try
+            {
+                // Attempt to convert the Recognizer result to an integer. This works for "a dozen", "twelve", "12", and so on.
+                // The recognizer returns a list of potential recognition results, if any.
 
+                var results = NumberRecognizer.RecognizeNumber(input, Culture.English);
+
+                foreach (var result in results)
+                {
+                    // The result resolution is a dictionary, where the "value" entry contains the processed string.
+                    if (result.Resolution.TryGetValue("value", out var value))
+                    {
+                        Qua = Convert.ToInt32(value);
+                        if (Qua > 0)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            message = "商品數量需大於0";
+                            break;
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                message = "商品數量需大於0";
+            }
+            return message is null;
+        }
         private static bool ValidatePrice(string input, out int price, out string message)
         {
             price = 0;
@@ -660,7 +740,7 @@ namespace Microsoft.BotBuilderSamples
             }
             catch
             {
-                message = "I'm sorry, I could not interpret that as an age. Please enter an age between 18 and 120.";
+                message = "商品金額需大於0";
             }
             return message is null;
         }
@@ -668,7 +748,7 @@ namespace Microsoft.BotBuilderSamples
         {
             message = null;
             check = input;
-            if(check == "是")
+            if (check == "是")
             {
 
             }
@@ -700,6 +780,23 @@ namespace Microsoft.BotBuilderSamples
             var d = R * c;
 
             return d;
+        }
+
+        private List<string> getAccountList(User me, string itemType)
+        {
+            List<string> accountList = new List<string>();
+            var userList = db.Select_tabUser();
+            foreach(User user in userList)
+            {
+                if (user.UserId == me.UserId) continue;
+                double dis = getDistance(me.location.Latitude, me.location.Longitude, user.location.Latitude, user.location.Longitude);
+                if (dis < 1F + 1e-9F || (itemType != "其他" && itemType == user.Interest && dis < 5F + 1e-9F))
+                {
+                    accountList.Add(user.UserId);
+                }
+
+            }
+            return accountList;
         }
     }
 

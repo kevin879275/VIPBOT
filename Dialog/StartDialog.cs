@@ -81,7 +81,6 @@ namespace Microsoft.BotBuilderSamples
 
                 Actions = new List<CardAction>()
                 {
-                    new CardAction() { Title = $"打工機會", Type = ActionTypes.ImBack, Value = $"打工機會"},
                     new CardAction() { Title = $"3C產品", Type = ActionTypes.ImBack, Value = $"3C產品"},
                     new CardAction() { Title = $"電腦周邊", Type = ActionTypes.ImBack, Value = $"電腦周邊"},
                     new CardAction() { Title = $"食品", Type = ActionTypes.ImBack, Value = $"食品"},
