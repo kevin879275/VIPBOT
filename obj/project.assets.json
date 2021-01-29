@@ -8036,13 +8036,15 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
       "EasiestImgur >= 1.0.0",
+      "Microsoft.AspNet.WebApi.Client >= 5.2.7",
       "Microsoft.AspNet.WebApi.Core >= 5.2.7",
       "Microsoft.AspNetCore.Mvc.NewtonsoftJson >= 3.1.1",
       "Microsoft.Bot.Builder.AI.Luis >= 4.11.1",
       "Microsoft.Bot.Builder.AI.QnA >= 4.8.0",
       "Microsoft.Bot.Builder.Integration.AspNet.Core >= 4.8.0",
       "System.Data.SqlClient >= 4.8.2",
-      "System.Drawing.Common >= 5.0.0"
+      "System.Drawing.Common >= 5.0.0",
+      "System.Net.Http >= 4.3.4"
     ]
   },
   "packageFolders": {
@@ -8088,6 +8090,10 @@
             "target": "Package",
             "version": "[1.0.0, )"
           },
+          "Microsoft.AspNet.WebApi.Client": {
+            "target": "Package",
+            "version": "[5.2.7, )"
+          },
           "Microsoft.AspNet.WebApi.Core": {
             "target": "Package",
             "version": "[5.2.7, )"
@@ -8115,6 +8121,10 @@
           "System.Drawing.Common": {
             "target": "Package",
             "version": "[5.0.0, )"
+          },
+          "System.Net.Http": {
+            "target": "Package",
+            "version": "[4.3.4, )"
           }
         },
         "imports": [

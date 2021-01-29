@@ -45,7 +45,7 @@ namespace Microsoft.BotBuilderSamples
             }
         }
 
-        public async Task<HttpStatusCode> PushJobj(IList<string> userId, JObject msg)
+        public async Task<HttpStatusCode> PushJson(IList<string> userId, JObject msg)
         {
             try
             {
