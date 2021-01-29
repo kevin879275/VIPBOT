@@ -8035,6 +8035,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
+      "AdaptiveExpressions >= 4.11.1",
       "EasiestImgur >= 1.0.0",
       "Microsoft.AspNet.WebApi.Client >= 5.2.7",
       "Microsoft.AspNet.WebApi.Core >= 5.2.7",
@@ -8043,31 +8044,28 @@
       "Microsoft.Bot.Builder.AI.QnA >= 4.8.0",
       "Microsoft.Bot.Builder.Integration.AspNet.Core >= 4.8.0",
       "System.Data.SqlClient >= 4.8.2",
-      "System.Drawing.Common >= 5.0.0",
-      "System.Net.Http >= 4.3.4"
+      "System.Drawing.Common >= 5.0.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ASUS\\.nuget\\packages\\": {}
+    "/Users/kevinge/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ASUS\\Documents\\GitHub\\VIPBOT\\QnABot.csproj",
+      "projectUniqueName": "/Users/kevinge/Desktop/二手拍賣bot/QnABot.csproj",
       "projectName": "QnABot",
-      "projectPath": "C:\\Users\\ASUS\\Documents\\GitHub\\VIPBOT\\QnABot.csproj",
-      "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ASUS\\Documents\\GitHub\\VIPBOT\\obj\\",
+      "projectPath": "/Users/kevinge/Desktop/二手拍賣bot/QnABot.csproj",
+      "packagesPath": "/Users/kevinge/.nuget/packages/",
+      "outputPath": "/Users/kevinge/Desktop/二手拍賣bot/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/kevinge/.config/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -8086,6 +8084,10 @@
       "netcoreapp3.1": {
         "targetAlias": "netcoreapp3.1",
         "dependencies": {
+          "AdaptiveExpressions": {
+            "target": "Package",
+            "version": "[4.11.1, )"
+          },
           "EasiestImgur": {
             "target": "Package",
             "version": "[1.0.0, )"
@@ -8121,10 +8123,6 @@
           "System.Drawing.Common": {
             "target": "Package",
             "version": "[5.0.0, )"
-          },
-          "System.Net.Http": {
-            "target": "Package",
-            "version": "[4.3.4, )"
           }
         },
         "imports": [
@@ -8145,7 +8143,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.102/RuntimeIdentifierGraph.json"
       }
     }
   },
@@ -8154,7 +8152,7 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "已使用 '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' 而非專案目標架構 '.NETCoreApp,Version=v3.1' 還原了套件 'Microsoft.AspNet.WebApi.Core 5.2.7'。此套件與您的專案並非完全相容。",
+      "message": "Package 'Microsoft.AspNet.WebApi.Core 5.2.7' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
       "libraryId": "Microsoft.AspNet.WebApi.Core",
       "targetGraphs": [
         ".NETCoreApp,Version=v3.1"

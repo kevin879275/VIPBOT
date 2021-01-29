@@ -1,26 +1,24 @@
 ﻿<Properties StartupConfiguration="{011BF8E5-6C91-4D05-A1CB-4AD6637DA400}|Default">
   <MonoDevelop.Ide.ItemProperties.QnABot PreferredExecutionTarget="/Applications/Safari.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Flow/ConversationFlow.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Line/LineMessageWork.cs">
     <Files>
       <File FileName="UserProfile.cs" Line="18" Column="2" />
       <File FileName="Dialog/RootDialog.cs" Line="1" Column="1" />
-      <File FileName="Flow/SellFlow.cs" Line="1" Column="1" />
+      <File FileName="Flow/SellFlow.cs" Line="4" Column="6" />
       <File FileName="Flow/ConversationFlow.cs" Line="1" Column="1" />
-      <File FileName="Bots/DispatchBot.cs" Line="566" Column="47" />
+      <File FileName="Bots/DispatchBot.cs" Line="639" Column="44" />
       <File FileName="Dialog/StartDialog.cs" Line="37" Column="12" />
       <File FileName="CognitiveModels/Summary.html" Line="1" Column="1" />
+      <File FileName="../../../../usr/local/share/dotnet/sdk/5.0.102/Sdks/Microsoft.NET.Sdk/targets/Microsoft.PackageDependencyResolution.targets" Line="241" Column="5" />
+      <File FileName="Line/LineMessageWork.cs" Line="9" Column="18" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="QnABot" expanded="True">
-            <Node name="QnABot" expanded="True">
-              <Node name="Bots" expanded="True" />
+            <Node name="QnABot" expanded="True" selected="True">
               <Node name="CognitiveModels" expanded="True" />
-              <Node name="Dialog" expanded="True" />
-              <Node name="Flow" expanded="True">
-                <Node name="ConversationFlow.cs" selected="True" />
-              </Node>
+              <Node name="Line" expanded="True" />
             </Node>
           </Node>
         </State>
