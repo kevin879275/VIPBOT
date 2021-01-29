@@ -1,160 +1,160 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Bot.Builder;
-using Microsoft.Bot.Builder.Dialogs;
-using Microsoft.Bot.Builder.Dialogs.Choices;
-using Microsoft.Bot.Connector;
-using Microsoft.Bot.Schema;
-using Newtonsoft.Json;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Threading;
+//using System.Threading.Tasks;
+//using Microsoft.Bot.Builder;
+//using Microsoft.Bot.Builder.Dialogs;
+//using Microsoft.Bot.Builder.Dialogs.Choices;
+//using Microsoft.Bot.Connector;
+//using Microsoft.Bot.Schema;
+//using Newtonsoft.Json;
 
-namespace Microsoft.BotBuilderSamples
-{
-    //public class StartDialog : ComponentDialog
-    //{
-    //    private readonly IStatePropertyAccessor<User> _userAccessor;
+//namespace Microsoft.BotBuilderSamples
+//{
+//    //public class StartDialog : ComponentDialog
+//    //{
+//    //    private readonly IStatePropertyAccessor<User> _userAccessor;
 
-    //    public StartDialog(UserState userState)
-    //        : base(nameof(StartDialog))
-    //    {
-    //        _userAccessor = userState.CreateProperty<User>("User");
+//    //    public StartDialog(UserState userState)
+//    //        : base(nameof(StartDialog))
+//    //    {
+//    //        _userAccessor = userState.CreateProperty<User>("User");
 
-    //        // This array defines how the Waterfall will execute.
-    //        var waterfallSteps = new WaterfallStep[]
-    //        {
-    //            LocationStepAsync,
-    //            InterestStepAsync,
-    //        };
+//    //        // This array defines how the Waterfall will execute.
+//    //        var waterfallSteps = new WaterfallStep[]
+//    //        {
+//    //            LocationStepAsync,
+//    //            InterestStepAsync,
+//    //        };
 
-    //        // Add named dialogs to the DialogSet. These names are saved in the dialog state.
-    //        AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallSteps));
-    //        AddDialog(new ChoicePrompt(nameof(ChoicePrompt)));
-    //        AddDialog(new TextPrompt(nameof(TextPrompt)));
+//    //        // Add named dialogs to the DialogSet. These names are saved in the dialog state.
+//    //        AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallSteps));
+//    //        AddDialog(new ChoicePrompt(nameof(ChoicePrompt)));
+//    //        AddDialog(new TextPrompt(nameof(TextPrompt)));
 
-    //        // The initial child Dialog to run.
-    //        InitialDialogId = nameof(WaterfallDialog);
-    //    }
+//    //        // The initial child Dialog to run.
+//    //        InitialDialogId = nameof(WaterfallDialog);
+//    //    }
 
-    //    private static async Task<DialogTurnResult> LocationStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-    //    {
-    //        return await stepContext.PromptAsync(nameof(TextPrompt),
-    //            new PromptOptions
-    //            {
-    //                Prompt = MessageFactory.Text("½Ð¿ï¾Ü±zªº¦ì¸m¸ê°T"),
-    //            }, cancellationToken);
-    //    }
+//    //    private static async Task<DialogTurnResult> LocationStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+//    //    {
+//    //        return await stepContext.PromptAsync(nameof(TextPrompt),
+//    //            new PromptOptions
+//    //            {
+//    //                Prompt = MessageFactory.Text("ï¿½Ð¿ï¿½Ü±zï¿½ï¿½ï¿½ï¿½mï¿½ï¿½T"),
+//    //            }, cancellationToken);
+//    //    }
 
-    //    private static async Task<DialogTurnResult> InterestStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-    //    {
-    //        return await stepContext.PromptAsync(nameof(ChoicePrompt),
-    //            new PromptOptions
-    //            {
-    //                Prompt = MessageFactory.Text("³]©w±zªº±À¼½¶µ¥Ø"),
-    //                Choices = ChoiceFactory.ToChoices(new List<string> { "¥´¤u¾÷·|", "3C²£«~", "¹q¸£©PÃä", "­¹«~", "¼Ö¾¹", "®ÑÄy", "²¼¨é" }),
-    //            }, cancellationToken);
-    //    }
+//    //    private static async Task<DialogTurnResult> InterestStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+//    //    {
+//    //        return await stepContext.PromptAsync(nameof(ChoicePrompt),
+//    //            new PromptOptions
+//    //            {
+//    //                Prompt = MessageFactory.Text("ï¿½]ï¿½wï¿½zï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"),
+//    //                Choices = ChoiceFactory.ToChoices(new List<string> { "ï¿½ï¿½ï¿½uï¿½ï¿½ï¿½|", "3Cï¿½ï¿½ï¿½~", "ï¿½qï¿½ï¿½ï¿½Pï¿½ï¿½", "ï¿½ï¿½ï¿½~", "ï¿½Ö¾ï¿½", "ï¿½ï¿½ï¿½y", "ï¿½ï¿½ï¿½ï¿½" }),
+//    //            }, cancellationToken);
+//    //    }
 
-    //}
-    public class StartDialog
-    {
-        public async Task StartFlow(ITurnContext<IMessageActivity> turnContext, ConversationState _conversationState, UserState _userState, CancellationToken cancellationToken)
-        {
-            var conversationStateAccessors = _conversationState.CreateProperty<StartConversationFlow>(nameof(StartConversationFlow));
-            var flow = await conversationStateAccessors.GetAsync(turnContext, () => new StartConversationFlow(), cancellationToken);
+//    //}
+//    public class StartDialog
+//    {
+//        public async Task StartFlow(ITurnContext<IMessageActivity> turnContext, ConversationState _conversationState, UserState  _userState, CancellationToken cancellationToken)
+//        {
+//            //var conversationStateAccessors = _conversationState.CreateProperty<StartConversationFlow>(nameof(StartConversationFlow));
+//            //var flow = await conversationStateAccessors.GetAsync(turnContext, () => new StartConversationFlow(), cancellationToken);
 
-            var userStateAccessors = _userState.CreateProperty<User>(nameof(User));
-            var profile = await userStateAccessors.GetAsync(turnContext, () => new User(), cancellationToken);
+//            //var userStateAccessors = _userState.CreateProperty<User>(nameof(User));
+//            //var profile = await userStateAccessors.GetAsync(turnContext, () => new User(), cancellationToken);
 
-            await FillOutUserAsync(flow, profile, turnContext, cancellationToken);
+//            //await FillOutUserAsync(flow, profile, turnContext, cancellationToken);
 
-            // Save changes.
-            await _conversationState.SaveChangesAsync(turnContext, false, cancellationToken);
-            await _userState.SaveChangesAsync(turnContext, false, cancellationToken);
-        }
+//            //// Save changes.
+//            //await _conversationState.SaveChangesAsync(turnContext, false, cancellationToken);
+//            //await _userState.SaveChangesAsync(turnContext, false, cancellationToken);
+//        }
 
-        private async Task FillOutUserAsync(StartConversationFlow flow, User profile, ITurnContext turnContext, CancellationToken cancellationToken)
-        {
-            var reply = MessageFactory.Text("½Ð¿ï¾Ü±zªº±À¼½¶µ¥Ø");
-            reply.SuggestedActions = new SuggestedActions()
-            {
+//        private async Task FillOutUserAsync(StartConversationFlow flow, User profile, ITurnContext turnContext, CancellationToken cancellationToken)
+//        {
+//            var reply = MessageFactory.Text("ï¿½Ð¿ï¿½Ü±zï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+//            reply.SuggestedActions = new SuggestedActions()
+//            {
 
-                Actions = new List<CardAction>()
-                {
-                    new CardAction() { Title = "¥´¤u¾÷·|", Type = ActionTypes.ImBack, Value = "¥´¤u¾÷·|"},
-                    new CardAction() { Title = "3C²£«~", Type = ActionTypes.ImBack, Value = "3C²£«~"},
-                    new CardAction() { Title = "¹q¸£©PÃä", Type = ActionTypes.ImBack, Value = "¹q¸£©PÃä"},
-                    new CardAction() { Title = "­¹«~", Type = ActionTypes.ImBack, Value = "­¹«~"},
-                    new CardAction() { Title = "¼Ö¾¹", Type = ActionTypes.ImBack, Value = "¼Ö¾¹"},
-                    new CardAction() { Title = "®ÑÄy", Type = ActionTypes.ImBack, Value = "®ÑÄy"},
-                    new CardAction() { Title = "²¼¨é", Type = ActionTypes.ImBack, Value = "²¼¨é"},
-                },
-            };
+//                Actions = new List<CardAction>()
+//                {
+//                    new CardAction() { Title = "ï¿½ï¿½ï¿½uï¿½ï¿½ï¿½|", Type = ActionTypes.ImBack, Value = "ï¿½ï¿½ï¿½uï¿½ï¿½ï¿½|"},
+//                    new CardAction() { Title = "3Cï¿½ï¿½ï¿½~", Type = ActionTypes.ImBack, Value = "3Cï¿½ï¿½ï¿½~"},
+//                    new CardAction() { Title = "ï¿½qï¿½ï¿½ï¿½Pï¿½ï¿½", Type = ActionTypes.ImBack, Value = "ï¿½qï¿½ï¿½ï¿½Pï¿½ï¿½"},
+//                    new CardAction() { Title = "ï¿½ï¿½ï¿½~", Type = ActionTypes.ImBack, Value = "ï¿½ï¿½ï¿½~"},
+//                    new CardAction() { Title = "ï¿½Ö¾ï¿½", Type = ActionTypes.ImBack, Value = "ï¿½Ö¾ï¿½"},
+//                    new CardAction() { Title = "ï¿½ï¿½ï¿½y", Type = ActionTypes.ImBack, Value = "ï¿½ï¿½ï¿½y"},
+//                    new CardAction() { Title = "ï¿½ï¿½ï¿½ï¿½", Type = ActionTypes.ImBack, Value = "ï¿½ï¿½ï¿½ï¿½"},
+//                },
+//            };
 
-            switch (flow.LastQuestionAsked)
-            {
-                case StartConversationFlow.Question.Begin:
-                    await turnContext.SendActivityAsync("½Ð¿ï¾Ü±zªº¦ì¸m¸ê°T", null, null, cancellationToken);
-                    flow.LastQuestionAsked = StartConversationFlow.Question.Location;
-                    break;
-                case StartConversationFlow.Question.Location:
-                    if (ValidateLocation(turnContext, out var location))
-                    {
-                        profile.Location = location;
-                        await turnContext.SendActivityAsync(reply, cancellationToken);
-                        flow.LastQuestionAsked = StartConversationFlow.Question.Interest;
-                        break;
-                    }
-                    else
-                    {
-                        await turnContext.SendActivityAsync($"«Ü©êºp¡A½Ð¨Ï¥Î¥¿½Tªº¦ì¸m¸ê°T", null, null, cancellationToken);
-                        break;
-                    }
-                case StartConversationFlow.Question.Interest:
-                    if (ValidateInterest(turnContext, out var interest))
-                    {
-                        profile.Interest = interest;
-                        flow.LastQuestionAsked = StartConversationFlow.Question.End;
-                        break;
-                    }
-                    else
-                    {
-                        reply.Text = "«Ü©êºp¡A½Ð¦b³]©w¤@¦¸";
-                        await turnContext.SendActivityAsync(reply, cancellationToken);
-                        break;
-                    }
-            }
-        }
+//            switch (flow.LastQuestionAsked)
+//            {
+//                case StartConversationFlow.Question.Begin:
+//                    await turnContext.SendActivityAsync("ï¿½Ð¿ï¿½Ü±zï¿½ï¿½ï¿½ï¿½mï¿½ï¿½T", null, null, cancellationToken);
+//                    flow.LastQuestionAsked = StartConversationFlow.Question.Location;
+//                    break;
+//                case StartConversationFlow.Question.Location:
+//                    if (ValidateLocation(turnContext, out var location))
+//                    {
+//                        profile.Location = location;
+//                        await turnContext.SendActivityAsync(reply, cancellationToken);
+//                        flow.LastQuestionAsked = StartConversationFlow.Question.Interest;
+//                        break;
+//                    }
+//                    else
+//                    {
+//                        await turnContext.SendActivityAsync($"ï¿½Ü©ï¿½pï¿½Aï¿½Ð¨Ï¥Î¥ï¿½ï¿½Tï¿½ï¿½ï¿½ï¿½mï¿½ï¿½T", null, null, cancellationToken);
+//                        break;
+//                    }
+//                case StartConversationFlow.Question.Interest:
+//                    if (ValidateInterest(turnContext, out var interest))
+//                    {
+//                        profile.Interest = interest;
+//                        flow.LastQuestionAsked = StartConversationFlow.Question.End;
+//                        break;
+//                    }
+//                    else
+//                    {
+//                        reply.Text = "ï¿½Ü©ï¿½pï¿½Aï¿½Ð¦bï¿½]ï¿½wï¿½@ï¿½ï¿½";
+//                        await turnContext.SendActivityAsync(reply, cancellationToken);
+//                        break;
+//                    }
+//            }
+//        }
 
-        private bool ValidateLocation(ITurnContext turnContext, out string location)
-        {
-            location = null;
-            var channelData = ((ITurnContext<IMessageActivity>)turnContext).Activity.ChannelData;
-            string msgType = channelData["type"];
-            if (msgType == "location")
-            {
-                location = JsonConvert.SerializeObject(channelData);
-            }
-            return location is not null;
-        }
+//        private bool ValidateLocation(ITurnContext turnContext, out string location)
+//        {
+//            location = null;
+//            var channelData = ((ITurnContext<IMessageActivity>)turnContext).Activity.ChannelData;
+//            string msgType = channelData["type"];
+//            if (msgType == "location")
+//            {
+//                location = JsonConvert.SerializeObject(channelData);
+//            }
+//            return location is not null;
+//        }
 
-        private bool ValidateInterest(ITurnContext turnContext, out string interest)
-        {
-            interest = null;
-            Dictionary<string, string> interestDict =
-            new Dictionary<string, string>()
-            {
-                {"¥´¤u¾÷·|", "¥´¤u¾÷·|"}, {"3C²£«~", "3C²£«~"},
-                {"¹q¸£©PÃä", "¹q¸£©PÃä"}, {"­¹«~", "­¹«~"},
-                {"¼Ö¾¹", "¼Ö¾¹"}, {"®ÑÄy", "®ÑÄy"},
-                {"²¼¨é", "²¼¨é"}
-            };
-            if (interestDict.ContainsKey(turnContext.Activity.Text))
-            {
-                interest = turnContext.Activity.Text;
-            }
-            return interest is not null;
-        }
+//        private bool ValidateInterest(ITurnContext turnContext, out string interest)
+//        {
+//            interest = null;
+//            Dictionary<string, string> interestDict =
+//            new Dictionary<string, string>()
+//            {
+//                {"ï¿½ï¿½ï¿½uï¿½ï¿½ï¿½|", "ï¿½ï¿½ï¿½uï¿½ï¿½ï¿½|"}, {"3Cï¿½ï¿½ï¿½~", "3Cï¿½ï¿½ï¿½~"},
+//                {"ï¿½qï¿½ï¿½ï¿½Pï¿½ï¿½", "ï¿½qï¿½ï¿½ï¿½Pï¿½ï¿½"}, {"ï¿½ï¿½ï¿½~", "ï¿½ï¿½ï¿½~"},
+//                {"ï¿½Ö¾ï¿½", "ï¿½Ö¾ï¿½"}, {"ï¿½ï¿½ï¿½y", "ï¿½ï¿½ï¿½y"},
+//                {"ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½"}
+//            };
+//            if (interestDict.ContainsKey(turnContext.Activity.Text))
+//            {
+//                interest = turnContext.Activity.Text;
+//            }
+//            return interest is not null;
+//        }
 
-    }
-}
+//    }
+//}

@@ -1,28 +1,27 @@
 ﻿<Properties StartupConfiguration="{011BF8E5-6C91-4D05-A1CB-4AD6637DA400}|Default">
   <MonoDevelop.Ide.ItemProperties.QnABot PreferredExecutionTarget="/Applications/Safari.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Bots/DispatchBot.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="UserProfile.cs">
     <Files>
-      <File FileName="Bots/DispatchBot.cs" Line="21" Column="1" IsPinned="True" />
-      <File FileName="Dialog/QnAMakerBaseDialog.cs" Line="77" Column="33" IsPinned="True" />
+      <File FileName="Dialog/QnAMakerBaseDialog.cs" Line="114" Column="67" IsPinned="True" />
+      <File FileName="Controllers/BotController.cs" Line="32" Column="1" IsPinned="True" />
       <File FileName="Bots/QnABot.cs" Line="41" Column="10" />
-      <File FileName="BotServices.cs" Line="1" Column="1" />
-      <File FileName="IBotServices.cs" Line="1" Column="1" />
-      <File FileName="Dialog/RootDialog.cs" Line="95" Column="1" />
-      <File FileName="SQL_Database.cs" Line="1" Column="1" />
-      <File FileName="Startup.cs" Line="83" Column="25" />
       <File FileName="appsettings.json" Line="1" Column="1" />
-      <File FileName="Controllers/BotController.cs" Line="32" Column="1" />
+      <File FileName="Bots/DispatchBot.cs" Line="88" Column="1" />
+      <File FileName="Dialog/StartDialog.cs" Line="22" Column="1" />
+      <File FileName="Startup.cs" Line="104" Column="61" />
+      <File FileName="Dialog/RootDialog.cs" Line="22" Column="1" />
+      <File FileName="ConversationFlow.cs" Line="16" Column="6" />
+      <File FileName="UserProfile.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="QnABot" expanded="True">
             <Node name="QnABot" expanded="True">
-              <Node name="Bots" expanded="True">
-                <Node name="DispatchBot.cs" selected="True" />
-              </Node>
+              <Node name="Bots" expanded="True" />
               <Node name="Controllers" expanded="True" />
               <Node name="Dialog" expanded="True" />
+              <Node name="UserProfile.cs" selected="True" />
             </Node>
           </Node>
         </State>
@@ -32,24 +31,7 @@
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Catchpoint exceptionName="System.Exception" includeSubclasses="True" />
-      <Catchpoint exceptionName="System.Exception" includeSubclasses="True" />
-      <Breakpoint enabled="false" file="/Users/kevinge/Desktop/二手拍賣bot/Bots/DispatchBot.cs" relfile="Bots/DispatchBot.cs" line="38" column="1" />
-      <Breakpoint enabled="false" file="/Users/kevinge/Desktop/二手拍賣bot/Bots/DispatchBot.cs" relfile="Bots/DispatchBot.cs" line="146" column="1" />
-      <Breakpoint enabled="false" file="/Users/kevinge/Desktop/二手拍賣bot/Dialog/RootDialog.cs" relfile="Dialog/RootDialog.cs" line="95" column="1" />
-      <Breakpoint enabled="false" file="/Users/kevinge/Desktop/二手拍賣bot/Dialog/RootDialog.cs" relfile="Dialog/RootDialog.cs" line="105" column="1" />
-      <Breakpoint enabled="false" file="/Users/kevinge/Desktop/二手拍賣bot/Dialog/RootDialog.cs" relfile="Dialog/RootDialog.cs" line="112" column="1" />
-      <Breakpoint enabled="false" file="/Users/kevinge/Desktop/二手拍賣bot/Dialog/RootDialog.cs" relfile="Dialog/RootDialog.cs" line="123" column="1" />
-      <Breakpoint enabled="false" file="/Users/kevinge/Desktop/二手拍賣bot/Dialog/RootDialog.cs" relfile="Dialog/RootDialog.cs" line="144" column="1" />
-      <Breakpoint enabled="false" file="/Users/kevinge/Desktop/二手拍賣bot/Dialog/RootDialog.cs" relfile="Dialog/RootDialog.cs" line="172" column="1" />
-      <Breakpoint enabled="false" file="/Users/kevinge/Desktop/二手拍賣bot/Dialog/RootDialog.cs" relfile="Dialog/RootDialog.cs" line="180" column="1" />
-      <Breakpoint enabled="false" file="/Users/kevinge/Desktop/二手拍賣bot/Dialog/RootDialog.cs" relfile="Dialog/RootDialog.cs" line="225" column="1" />
-      <Breakpoint enabled="false" file="/Users/kevinge/Desktop/二手拍賣bot/Dialog/RootDialog.cs" relfile="Dialog/RootDialog.cs" line="230" column="1" />
-      <Breakpoint enabled="false" file="/Users/kevinge/Desktop/二手拍賣bot/Dialog/RootDialog.cs" relfile="Dialog/RootDialog.cs" line="250" column="1" />
-      <Breakpoint enabled="false" file="/Users/kevinge/Desktop/二手拍賣bot/Bots/DispatchBot.cs" relfile="Bots/DispatchBot.cs" line="71" column="1" />
-      <Breakpoint file="/Users/kevinge/Desktop/二手拍賣bot/Bots/DispatchBot.cs" relfile="Bots/DispatchBot.cs" line="30" column="1" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
 </Properties>
