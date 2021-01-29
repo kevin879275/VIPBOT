@@ -403,7 +403,6 @@ D:/synchronization/Synchronization/MyProject/C#/VIPBOT/bin/Debug/netcoreapp3.1/r
 /Users/kevinge/Desktop/二手拍賣bot/bin/Debug/netcoreapp3.1/BotServices.cs
 /Users/kevinge/Desktop/二手拍賣bot/bin/Debug/netcoreapp3.1/ConfigurationCredentialProvider.cs
 /Users/kevinge/Desktop/二手拍賣bot/bin/Debug/netcoreapp3.1/Controllers/BotController.cs
-/Users/kevinge/Desktop/二手拍賣bot/bin/Debug/netcoreapp3.1/ConversationFlow.cs
 /Users/kevinge/Desktop/二手拍賣bot/bin/Debug/netcoreapp3.1/Dialog/QnAMakerBaseDialog.cs
 /Users/kevinge/Desktop/二手拍賣bot/bin/Debug/netcoreapp3.1/Dialog/RootDialog.cs
 /Users/kevinge/Desktop/二手拍賣bot/bin/Debug/netcoreapp3.1/Dialog/StartDialog.cs
@@ -493,3 +492,10 @@ D:/synchronization/Synchronization/MyProject/C#/VIPBOT/bin/Debug/netcoreapp3.1/r
 /Users/kevinge/Desktop/二手拍賣bot/obj/Debug/netcoreapp3.1/QnABot.dll
 /Users/kevinge/Desktop/二手拍賣bot/obj/Debug/netcoreapp3.1/QnABot.pdb
 /Users/kevinge/Desktop/二手拍賣bot/obj/Debug/netcoreapp3.1/QnABot.genruntimeconfig.cache
+/Users/kevinge/Desktop/二手拍賣bot/obj/Debug/netcoreapp3.1/QnABot.csprojAssemblyReference.cache
+/Users/kevinge/Desktop/二手拍賣bot/bin/Debug/netcoreapp3.1/Bots/dispatchBot_chatStat.cs
+/Users/kevinge/Desktop/二手拍賣bot/bin/Debug/netcoreapp3.1/ChatState.cs
+/Users/kevinge/Desktop/二手拍賣bot/bin/Debug/netcoreapp3.1/Flow/BuyFlow.cs
+/Users/kevinge/Desktop/二手拍賣bot/bin/Debug/netcoreapp3.1/Flow/BuyItem.cs
+/Users/kevinge/Desktop/二手拍賣bot/bin/Debug/netcoreapp3.1/Flow/ConversationFlow.cs
+/Users/kevinge/Desktop/二手拍賣bot/bin/Debug/netcoreapp3.1/Flow/SellFlow.cs

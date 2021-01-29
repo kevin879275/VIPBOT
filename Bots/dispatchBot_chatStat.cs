@@ -148,7 +148,7 @@ namespace Microsoft.BotBuilderSamples
     private static async Task SendSuggestedActionsAsync(ITurnContext turnContext, CancellationToken cancellationToken)
     {
       await turnContext.SendActivityAsync(MessageFactory.Text("您好，本機器人提供鄰近區域服務、物品買賣仲介。"), cancellationToken);
-      var startPos = new StartDialog();
+      //var startPos = new StartDialog();
       // await startPos.StartFlow(turnContext, ConversationState, UserState, cancellationToken);
     }
 
@@ -192,39 +192,40 @@ namespace Microsoft.BotBuilderSamples
       }
       else if (topIntent == "Buy")
       {
-        var qm = result.Entities.SingleOrDefault(s => s.Type == "Quantity math") ?? result.Entities.SingleOrDefault(s => s.Type == "Measure Quantity");
 
-        var inum = result.Entities.SingleOrDefault(s => s.Type == "ItemNumber");
-        if (qm == null || inum == null)
-        {
-          dialogState[turnContext.Activity.Recipient.Id] = true;
-          await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
-        }
-        else
-        {
-          int q = getNumberInString(qm.Entity);
-          int inu = getNumberInString(inum.Entity);
+        //var qm = result.Entities.SingleOrDefault(s => s.Type == "Quantity math") ?? result.Entities.SingleOrDefault(s => s.Type == "Measure Quantity");
 
-          string uid = turnContext.Activity.Recipient.Id;
-          int amount = db.Select_tabItem(inu.ToString());
-          if (amount == 0)
-          {
-            await turnContext.SendActivityAsync(MessageFactory.Text("沒有這個物品id優!!!"));
-            return;
-          }
+        //var inum = result.Entities.SingleOrDefault(s => s.Type == "ItemNumber");
+        //if (qm == null || inum == null)
+        //{
+        //  dialogState[turnContext.Activity.Recipient.Id] = true;
+        //  await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
+        //}
+        //else
+        //{
+        //  int q = getNumberInString(qm.Entity);
+        //  int inu = getNumberInString(inum.Entity);
 
-          if (q <= amount)
-          {
-            db.Insert_tabBought_List(uid, inu.ToString(), q);
-            int remain = amount - q;
-            string sta = remain > 0 ? "on sell" : "sold";
-            db.update_tabItem(sta, inu.ToString(), remain);
+        //  string uid = turnContext.Activity.Recipient.Id;
+        //  int amount = db.Select_tabItem(inu.ToString());
+        //  if (amount == 0)
+        //  {
+        //    await turnContext.SendActivityAsync(MessageFactory.Text("沒有這個物品id優!!!"));
+        //    return;
+        //  }
 
-            await turnContext.SendActivityAsync(MessageFactory.Text($"庫存剩餘:{db.Select_tabItem(inu.ToString())}"));
-          }
-          else
-            await turnContext.SendActivityAsync(MessageFactory.Text("庫存不足瞜!!!"));
-        }
+        //  if (q <= amount)
+        //  {
+        //    db.Insert_tabBought_List(uid, inu.ToString(), q);
+        //    int remain = amount - q;
+        //    string sta = remain > 0 ? "on sell" : "sold";
+        //    db.update_tabItem(sta, inu.ToString(), remain);
+
+        //    await turnContext.SendActivityAsync(MessageFactory.Text($"庫存剩餘:{db.Select_tabItem(inu.ToString())}"));
+        //  }
+        //  else
+        //    await turnContext.SendActivityAsync(MessageFactory.Text("庫存不足瞜!!!"));
+        //}
 
       }
       else if (topIntent == "Sell")
