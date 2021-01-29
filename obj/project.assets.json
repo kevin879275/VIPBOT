@@ -113,6 +113,21 @@
           "lib/netstandard2.0/Microsoft.Azure.CognitiveServices.Language.LUIS.dll": {}
         }
       },
+      "Microsoft.Azure.CognitiveServices.Vision.ComputerVision/6.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Rest.ClientRuntime": "[2.3.20, 3.0.0)",
+          "Microsoft.Rest.ClientRuntime.Azure": "[3.3.18, 4.0.0)",
+          "Newtonsoft.Json": "10.0.3",
+          "System.Net.Http": "4.3.4"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Azure.CognitiveServices.Vision.ComputerVision.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Azure.CognitiveServices.Vision.ComputerVision.dll": {}
+        }
+      },
       "Microsoft.Bot.Builder/4.11.1": {
         "type": "package",
         "dependencies": {
@@ -2580,6 +2595,23 @@
         "lib/netstandard2.0/Microsoft.Azure.CognitiveServices.Language.LUIS.xml",
         "microsoft.azure.cognitiveservices.language.luis.runtime.2.1.0.nupkg.sha512",
         "microsoft.azure.cognitiveservices.language.luis.runtime.nuspec"
+      ]
+    },
+    "Microsoft.Azure.CognitiveServices.Vision.ComputerVision/6.0.0": {
+      "sha512": "7uLnrag+Tqiky7aobktqitfPNEYC2Rcc6qeAm3V4iOOsRDYKISaRN7V82wXLdvfCs0CvtyYuJo3MGalChhIufQ==",
+      "type": "package",
+      "path": "microsoft.azure.cognitiveservices.vision.computervision/6.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "CHANGELOG.md",
+        "lib/net452/Microsoft.Azure.CognitiveServices.Vision.ComputerVision.dll",
+        "lib/net461/Microsoft.Azure.CognitiveServices.Vision.ComputerVision.dll",
+        "lib/netstandard1.4/Microsoft.Azure.CognitiveServices.Vision.ComputerVision.dll",
+        "lib/netstandard2.0/Microsoft.Azure.CognitiveServices.Vision.ComputerVision.dll",
+        "microsoft.azure.cognitiveservices.vision.computervision.6.0.0.nupkg.sha512",
+        "microsoft.azure.cognitiveservices.vision.computervision.nuspec",
+        "pkgicon.png"
       ]
     },
     "Microsoft.Bot.Builder/4.11.1": {
@@ -8040,6 +8072,7 @@
       "Microsoft.AspNet.WebApi.Client >= 5.2.7",
       "Microsoft.AspNet.WebApi.Core >= 5.2.7",
       "Microsoft.AspNetCore.Mvc.NewtonsoftJson >= 3.1.1",
+      "Microsoft.Azure.CognitiveServices.Vision.ComputerVision >= 6.0.0",
       "Microsoft.Bot.Builder.AI.Luis >= 4.11.1",
       "Microsoft.Bot.Builder.AI.QnA >= 4.8.0",
       "Microsoft.Bot.Builder.Integration.AspNet.Core >= 4.8.0",
@@ -8048,19 +8081,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ASUS\\.nuget\\packages\\": {}
+    "C:\\Users\\Gevin\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ASUS\\Documents\\GitHub\\VIPBOT\\QnABot.csproj",
+      "projectUniqueName": "C:\\Users\\Gevin\\source\\repos\\VIPBOT\\QnABot.csproj",
       "projectName": "QnABot",
-      "projectPath": "C:\\Users\\ASUS\\Documents\\GitHub\\VIPBOT\\QnABot.csproj",
-      "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ASUS\\Documents\\GitHub\\VIPBOT\\obj\\",
+      "projectPath": "C:\\Users\\Gevin\\source\\repos\\VIPBOT\\QnABot.csproj",
+      "packagesPath": "C:\\Users\\Gevin\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Gevin\\source\\repos\\VIPBOT\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Gevin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -8105,6 +8142,10 @@
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
             "target": "Package",
             "version": "[3.1.1, )"
+          },
+          "Microsoft.Azure.CognitiveServices.Vision.ComputerVision": {
+            "target": "Package",
+            "version": "[6.0.0, )"
           },
           "Microsoft.Bot.Builder.AI.Luis": {
             "target": "Package",
