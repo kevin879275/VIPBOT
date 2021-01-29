@@ -679,7 +679,7 @@ namespace Microsoft.BotBuilderSamples
                     {
                         Item.description = description;
                         await turnContext.SendActivityAsync("商品數量為多少呢?", null, null, cancellationToken);
-                        flow.LastQuestionAsked = SellFlow.Question.price;
+                        flow.LastQuestionAsked = SellFlow.Question.Qua;
                         break;
                     }
                     else
@@ -692,7 +692,7 @@ namespace Microsoft.BotBuilderSamples
                     {
                         Item.quantity = Qua;
                         await turnContext.SendActivityAsync("請定價您的物品", null, null, cancellationToken);
-                        flow.LastQuestionAsked = SellFlow.Question.discription;
+                        flow.LastQuestionAsked = SellFlow.Question.price;
                         break;
                     }
                     else
@@ -714,7 +714,7 @@ namespace Microsoft.BotBuilderSamples
                                 new CardAction() { Title = "否", Type = ActionTypes.ImBack, Value = "否"},
                             },
                         };
-                        string json = getSellJson(Item);
+                        // string json = getSellJson(Item);
                         //var joject = LineFunctions.SetCardWithString(json);
                         //IList<string> id = new[] { turnContext.Activity.Recipient.Id };
                         //await lineBot.PushJson(id,joject);
@@ -730,7 +730,7 @@ namespace Microsoft.BotBuilderSamples
                 case SellFlow.Question.Check:
                     if (ValidateCheck(input, out var check, out message))
                     {
-                        Item.ownerUserId = turnContext.Activity.Recipient.Id;
+                        Item.ownerUserId = getID(turnContext);
                         Item.time = DateTime.Now.ToString();
                         Item.location = askFirstState[getID(turnContext)].profile.location.ToString();
                         await turnContext.SendActivityAsync("感謝您，物品已成功登錄", null, null, cancellationToken);
