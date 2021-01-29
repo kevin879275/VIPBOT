@@ -583,6 +583,8 @@ namespace Microsoft.BotBuilderSamples
                 case SellFlow.Question.Check:
                     if (ValidateCheck(input, out var check, out message))
                     {
+                        Item.ownerUserId = turnContext.Activity.Recipient.Id;
+                        Item.time = DateTime.Now.ToString();
                         await turnContext.SendActivityAsync("感謝您，物品已成功登錄", null, null, cancellationToken);
                         Item = new SellItem();
                         flow.LastQuestionAsked = SellFlow.Question.None;
