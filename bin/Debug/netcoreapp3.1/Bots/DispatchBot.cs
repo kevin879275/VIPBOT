@@ -38,8 +38,8 @@ namespace Microsoft.BotBuilderSamples
 
     protected BotState UserState;
     //protected readonly StartDialog Dialog;
+    private static Dictionary<string, StartDialog> askFirstState = new Dictionary<string, StartDialog>();
     private static Dictionary<string, string> dialogState = new Dictionary<string, string>();
-
 
     private readonly string[] _cards = {
 
@@ -84,6 +84,10 @@ namespace Microsoft.BotBuilderSamples
                     db.Insert_tabBought_List(turnContext.Activity.Recipient.Id, item.iId, item.quantiy);
                 }
             }
+            else if (askFirstState[turnContext.Activity.Recipient.Id].flow.LastQuestionAsked != StartConversationFlow.Question.End)
+            {
+                await askFirstState[turnContext.Activity.Recipient.Id].StartFlow(turnContext, cancellationToken);
+            }
             else if (dialogState[turnContext.Activity.Recipient.Id] == "Sell")
             {
                 var conversationStateAccessors = ConversationState.CreateProperty<SellFlow>(nameof(SellFlow));
@@ -118,10 +122,11 @@ namespace Microsoft.BotBuilderSamples
       {
         if (member.Id != turnContext.Activity.Recipient.Id)
         {
-          await SendSuggestedActionsAsync(turnContext, cancellationToken);
-          db.Insert_tabUser(turnContext.Activity.Recipient.Id, "新竹市東區", "[\"天竺鼠車車\",\"車車天竺鼠\"]");
-          db.Insert_tabItem(itemNow.ToString(), "now", "cart", "", "selling", 5, "天竺鼠車車", "新竹市東區", turnContext.Activity.Recipient.Id, 99999);
-          itemNow++;
+            askFirstState[turnContext.Activity.Recipient.Id] = new StartDialog();
+            await SendFirstActionsAsync(turnContext, cancellationToken);
+            //db.Insert_tabUser(turnContext.Activity.Recipient.Id, "新竹市東區", "[\"天竺鼠車車\",\"車車天竺鼠\"]");
+            db.Insert_tabItem(itemNow.ToString(), "now", "cart", "", "selling", 5, "天竺鼠車車", "新竹市東區", turnContext.Activity.Recipient.Id, 99999);
+            itemNow++;
         }
       }
     }
@@ -129,11 +134,10 @@ namespace Microsoft.BotBuilderSamples
 
 
 
-    private static async Task SendSuggestedActionsAsync(ITurnContext turnContext, CancellationToken cancellationToken)
+    private static async Task SendFirstActionsAsync(ITurnContext turnContext, CancellationToken cancellationToken)
     {
         await turnContext.SendActivityAsync(MessageFactory.Text("您好，本機器人提供鄰近區域服務、物品買賣仲介。"), cancellationToken);
-        //var startPos = new StartDialog();
-        //await startPos.StartFlow(turnContext, ConversationState, UserState, cancellationToken);
+        await askFirstState[turnContext.Activity.Recipient.Id].StartFlow(turnContext, cancellationToken);
     }
 
     private int getNumberInString(string s)
@@ -181,7 +185,7 @@ namespace Microsoft.BotBuilderSamples
                 var item = await userStateAccessors.GetAsync(turnContext, () => new BuyItem(), cancellationToken);
 
                 await FillOutBuyItemAsync(flow, item, turnContext, cancellationToken);
-                dialogState[turnContext.Activity.Recipient.Id] = "None";
+                dialogState[turnContext.Activity.Recipient.Id] = "Buy";
                 //var qm = result.Entities.SingleOrDefault(s => s.Type == "Quantity math") ?? result.Entities.SingleOrDefault(s => s.Type == "Measure Quantity");
 
                 //var inum = result.Entities.SingleOrDefault(s => s.Type == "ItemNumber");
@@ -562,16 +566,29 @@ namespace Microsoft.BotBuilderSamples
               case SellFlow.Question.type:
                     if (ValidateType(input, out var Q, out message))
                     {
-                        //await turnContext.SendActivityAsync("您好，你要賣什麼類型?", null, null, cancellationToken);
-                        ////await turnContext.SendActivitiesAsync(nameof(ChoicePrompt),
-                        ////    new PromptOptions
-                        ////    {
-                        ////        Prompt = MessageFactory.Text("Please enter your mode of transport."),
-                        ////        Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
-                        ////    }, cancellationToken);
-                        //var Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" });
-                        //var a = ChoiceFactory.ForChannel(turnContext.Activity.ChannelId, Choices, "What Facebook feature would you like to try? Here are some quick replies to choose from!");
-                        //await 
+                        await turnContext.SendActivityAsync("您好，你要賣什麼類型?", null, null, cancellationToken);
+                        //await turnContext.SendActivitiesAsync(nameof(ChoicePrompt),
+                        //    new PromptOptions
+                        //    {
+                        //        Prompt = MessageFactory.Text("Please enter your mode of transport."),
+                        //        Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
+                        //    }, cancellationToken);
+                        var reply = MessageFactory.Text("What is your favorite color?");
+
+                        reply.SuggestedActions = new SuggestedActions()
+                        {
+                            Actions = new List<CardAction>()
+                            {
+                                new CardAction() { Title = "Red", Type = ActionTypes.ImBack, Value = "Red", Image = "https://via.placeholder.com/20/FF0000?text=R", ImageAltText = "R" },
+                                new CardAction() { Title = "Yellow", Type = ActionTypes.ImBack, Value = "Yellow", Image = "https://via.placeholder.com/20/FFFF00?text=Y", ImageAltText = "Y" },
+                                new CardAction() { Title = "Blue", Type = ActionTypes.ImBack, Value = "Blue", Image = "https://via.placeholder.com/20/0000FF?text=B", ImageAltText = "B"   },
+                            },
+                        };
+                        await turnContext.SendActivityAsync(reply, cancellationToken);
+
+                       // var Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" });
+                       // var a = ChoiceFactory.ForChannel(turnContext.Activity.ChannelId, Choices, "What Facebook feature would you like to try? Here are some quick replies to choose from!");
+                       //await turnContext.SendActivitiesAsync(a, cancellationToken);
                         flow.LastQuestionAsked = SellFlow.Question.None;
                         break;
                     }

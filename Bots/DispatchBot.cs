@@ -185,7 +185,7 @@ namespace Microsoft.BotBuilderSamples
                 var item = await userStateAccessors.GetAsync(turnContext, () => new BuyItem(), cancellationToken);
 
                 await FillOutBuyItemAsync(flow, item, turnContext, cancellationToken);
-                dialogState[turnContext.Activity.Recipient.Id] = "None";
+                dialogState[turnContext.Activity.Recipient.Id] = "Buy";
                 //var qm = result.Entities.SingleOrDefault(s => s.Type == "Quantity math") ?? result.Entities.SingleOrDefault(s => s.Type == "Measure Quantity");
 
                 //var inum = result.Entities.SingleOrDefault(s => s.Type == "ItemNumber");
@@ -566,16 +566,29 @@ namespace Microsoft.BotBuilderSamples
               case SellFlow.Question.type:
                     if (ValidateType(input, out var Q, out message))
                     {
-                        //await turnContext.SendActivityAsync("您好，你要賣什麼類型?", null, null, cancellationToken);
-                        ////await turnContext.SendActivitiesAsync(nameof(ChoicePrompt),
-                        ////    new PromptOptions
-                        ////    {
-                        ////        Prompt = MessageFactory.Text("Please enter your mode of transport."),
-                        ////        Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
-                        ////    }, cancellationToken);
-                        //var Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" });
-                        //var a = ChoiceFactory.ForChannel(turnContext.Activity.ChannelId, Choices, "What Facebook feature would you like to try? Here are some quick replies to choose from!");
-                        //await 
+                        await turnContext.SendActivityAsync("您好，你要賣什麼類型?", null, null, cancellationToken);
+                        //await turnContext.SendActivitiesAsync(nameof(ChoicePrompt),
+                        //    new PromptOptions
+                        //    {
+                        //        Prompt = MessageFactory.Text("Please enter your mode of transport."),
+                        //        Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
+                        //    }, cancellationToken);
+                        var reply = MessageFactory.Text("What is your favorite color?");
+
+                        reply.SuggestedActions = new SuggestedActions()
+                        {
+                            Actions = new List<CardAction>()
+                            {
+                                new CardAction() { Title = "Red", Type = ActionTypes.ImBack, Value = "Red", Image = "https://via.placeholder.com/20/FF0000?text=R", ImageAltText = "R" },
+                                new CardAction() { Title = "Yellow", Type = ActionTypes.ImBack, Value = "Yellow", Image = "https://via.placeholder.com/20/FFFF00?text=Y", ImageAltText = "Y" },
+                                new CardAction() { Title = "Blue", Type = ActionTypes.ImBack, Value = "Blue", Image = "https://via.placeholder.com/20/0000FF?text=B", ImageAltText = "B"   },
+                            },
+                        };
+                        await turnContext.SendActivityAsync(reply, cancellationToken);
+
+                       // var Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" });
+                       // var a = ChoiceFactory.ForChannel(turnContext.Activity.ChannelId, Choices, "What Facebook feature would you like to try? Here are some quick replies to choose from!");
+                       //await turnContext.SendActivitiesAsync(a, cancellationToken);
                         flow.LastQuestionAsked = SellFlow.Question.None;
                         break;
                     }
