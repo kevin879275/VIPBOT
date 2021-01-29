@@ -769,7 +769,7 @@ namespace Microsoft.BotBuilderSamples
             }
             catch
             {
-                message = "商品數量需大於0";
+                message = "無法辨識商品數量";
             }
             return message is null;
         }
@@ -805,7 +805,7 @@ namespace Microsoft.BotBuilderSamples
             }
             catch
             {
-                message = "商品金額需大於0";
+                message = "無法辨識商品金額";
             }
             return message is null;
         }
