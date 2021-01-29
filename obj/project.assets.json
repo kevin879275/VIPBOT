@@ -8081,23 +8081,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Gevin\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\ASUS\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Gevin\\source\\repos\\VIPBOT\\QnABot.csproj",
+      "projectUniqueName": "C:\\Users\\ASUS\\Documents\\GitHub\\VIPBOT\\QnABot.csproj",
       "projectName": "QnABot",
-      "projectPath": "C:\\Users\\Gevin\\source\\repos\\VIPBOT\\QnABot.csproj",
-      "packagesPath": "C:\\Users\\Gevin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Gevin\\source\\repos\\VIPBOT\\obj\\",
+      "projectPath": "C:\\Users\\ASUS\\Documents\\GitHub\\VIPBOT\\QnABot.csproj",
+      "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ASUS\\Documents\\GitHub\\VIPBOT\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Gevin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

@@ -66,6 +66,15 @@ namespace Microsoft.BotBuilderSamples
             _botServices = botServices;
             ConversationState = conversationState;
             UserState = userState;
+
+            var users = db.Select_tabUser();
+            foreach (var ele in users)
+            {
+                dialogState[ele.UserId] = "None";
+                askFirstState[ele.UserId] = new StartDialog();
+                askFirstState[ele.UserId].flow.LastQuestionAsked = StartConversationFlow.Question.End;
+
+            }
         }
 
 
@@ -131,7 +140,7 @@ namespace Microsoft.BotBuilderSamples
                        item.price,
                        item.name);
                     var tmp = new LineFunctions();
-                    var msg = tmp.SetCard(item.imageSrc, "Name", item.quantity.ToString(), item.price.ToString(),
+                    var msg = tmp.SetCard(item.imageSrc, item.name, item.quantity.ToString(), item.price.ToString(),
                         item.description, item.location, itemNow);
                     var pushLst = getAccountList(askFirstState[userID].profile, item.type);
                     await lineBot.PushJson(pushLst, msg);
@@ -152,13 +161,13 @@ namespace Microsoft.BotBuilderSamples
         private static int itemNow = 0;
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
-            string userID = getID(turnContext);
-            dialogState[userID] = "None";
+
             foreach (var member in membersAdded)
             {
-                if (member.Id != userID)
+                if (member.Id != turnContext.Activity.Recipient.Id)
                 {
-                    askFirstState[userID] = new StartDialog();
+                    dialogState[member.Id] = "None";
+                    askFirstState[member.Id] = new StartDialog();
                     await SendFirstActionsAsync(turnContext, cancellationToken);
                     //db.Insert_tabUser(turnContext.Activity.Recipient.Id, "新竹市東區", "[\"天竺鼠車車\",\"車車天竺鼠\"]");
                     db.Insert_tabItem(itemNow.ToString(), "now", "cart", "img", "selling", 5, "天竺鼠車車", "新竹市東區", turnContext.Activity.Recipient.Id, 99999, "天竺鼠");
@@ -643,7 +652,7 @@ namespace Microsoft.BotBuilderSamples
                         Item.name = name;
                         var captions = Item.cvResults.Description.Captions;
                         string c_text = captions[0].Text;
-                        var obj = MessageFactory.Text("請問您的物品描述是否為?");
+                        var obj = MessageFactory.Text("請問您的物品描述是否為");
                         obj.SuggestedActions = new SuggestedActions()
                         {
                             Actions = new List<CardAction>()
@@ -682,7 +691,7 @@ namespace Microsoft.BotBuilderSamples
                     if (ValidateQua(input, out var Qua, out message))
                     {
                         Item.quantity = Qua;
-                        await turnContext.SendActivityAsync("請定價您的物品?", null, null, cancellationToken);
+                        await turnContext.SendActivityAsync("請定價您的物品", null, null, cancellationToken);
                         flow.LastQuestionAsked = SellFlow.Question.discription;
                         break;
                     }
@@ -695,22 +704,22 @@ namespace Microsoft.BotBuilderSamples
                     if (ValidatePrice(input, out var price, out message))
                     {
                         Item.price = price;
-                        //var rep = MessageFactory.Text("請確認您的商品?");
+                        var rep = MessageFactory.Text("請確認您的商品?");
 
-                        //rep.SuggestedActions = new SuggestedActions()
-                        //{
-                        //    Actions = new List<CardAction>()
-                        //    {
-                        //        new CardAction() { Title = "是", Type = ActionTypes.ImBack, Value = "是"},
-                        //        new CardAction() { Title = "否", Type = ActionTypes.ImBack, Value = "否"},
-                        //    },
-                        //};
+                        rep.SuggestedActions = new SuggestedActions()
+                        {
+                            Actions = new List<CardAction>()
+                            {
+                                new CardAction() { Title = "是", Type = ActionTypes.ImBack, Value = "是"},
+                                new CardAction() { Title = "否", Type = ActionTypes.ImBack, Value = "否"},
+                            },
+                        };
                         string json = getSellJson(Item);
                         //var joject = LineFunctions.SetCardWithString(json);
                         //IList<string> id = new[] { turnContext.Activity.Recipient.Id };
                         //await lineBot.PushJson(id,joject);
                         flow.LastQuestionAsked = SellFlow.Question.Check;
-                        //await turnContext.SendActivityAsync(rep, cancellationToken);
+                        await turnContext.SendActivityAsync(rep, cancellationToken);
                         break;
                     }
                     else
@@ -811,7 +820,7 @@ namespace Microsoft.BotBuilderSamples
             }
             catch
             {
-                message = "商品數量需大於0";
+                message = "無法辨識商品數量";
             }
             return message is null;
         }
@@ -847,7 +856,7 @@ namespace Microsoft.BotBuilderSamples
             }
             catch
             {
-                message = "商品金額需大於0";
+                message = "無法辨識商品金額";
             }
             return message is null;
         }
@@ -907,16 +916,7 @@ namespace Microsoft.BotBuilderSamples
 
         public static string getID(ITurnContext turnContext)
         {
-            if (turnContext.Activity.ChannelId != "line")
-            {
-                return turnContext.Activity.Recipient.Id;
-            }
-            else
-            {
-                var channelData = ((DelegatingTurnContext<IMessageActivity>)turnContext).Activity.ChannelData.ToString();
-                var msg = JsonConvert.DeserializeObject<LineAdapt>(channelData);
-                return msg.source.userId;
-            }
+            return turnContext.Activity.From.Id;
         }
         private static string getSellJson(SellItem item)
         {
