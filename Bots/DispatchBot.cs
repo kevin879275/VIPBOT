@@ -219,6 +219,7 @@ namespace Microsoft.BotBuilderSamples
 
                 await FillOutBuyItemAsync(flow, item, turnContext, cancellationToken);
                 dialogState[turnContext.Activity.Recipient.Id] = "Buy";
+
                 //var qm = result.Entities.SingleOrDefault(s => s.Type == "Quantity math") ?? result.Entities.SingleOrDefault(s => s.Type == "Measure Quantity");
 
                 //var inum = result.Entities.SingleOrDefault(s => s.Type == "ItemNumber");
@@ -251,6 +252,40 @@ namespace Microsoft.BotBuilderSamples
                 //}
                 //else
                 //      turnContext.SendActivityAsync(MessageFactory.Text("庫存不足瞜!!!"));
+
+            }
+            else if (topIntent == "BuyWithID")
+            {
+                var conversationStateAccessors = ConversationState.CreateProperty<BuyFlow>(nameof(BuyFlow));
+                var flow = await conversationStateAccessors.GetAsync(turnContext, () => new BuyFlow(), cancellationToken);
+
+                var userStateAccessors = UserState.CreateProperty<BuyItem>(nameof(BuyItem));
+                var item = await userStateAccessors.GetAsync(turnContext, () => new BuyItem(), cancellationToken);
+                item.iId = getNumberInString(result.Entities.SingleOrDefault(s => s.Type == "ItemNumber").Entity).ToString();
+                flow.LastQuestionAsked = BuyFlow.Question.WID;
+                await FillOutBuyItemAsync(flow, item, turnContext, cancellationToken);
+                dialogState[turnContext.Activity.Recipient.Id] = "Buy";
+
+
+            }
+            else if (topIntent == "BuyWithIDQuantity")
+            {
+                var conversationStateAccessors = ConversationState.CreateProperty<BuyFlow>(nameof(BuyFlow));
+                var flow = await conversationStateAccessors.GetAsync(turnContext, () => new BuyFlow(), cancellationToken);
+
+                var userStateAccessors = UserState.CreateProperty<BuyItem>(nameof(BuyItem));
+                var item = await userStateAccessors.GetAsync(turnContext, () => new BuyItem(), cancellationToken);
+
+
+
+                flow.LastQuestionAsked = BuyFlow.Question.WIDQ;
+                item.iId = getNumberInString(result.Entities.SingleOrDefault(s => s.Type == "ItemNumber").Entity).ToString();
+                EntityModel e = (result.Entities.SingleOrDefault(s => s.Type == "Quantity math") ?? result.Entities.SingleOrDefault(s => s.Type == "Measure Quantity"));
+                item.quantiy = getNumberInString(e.Entity);
+                await FillOutBuyItemAsync(flow, item, turnContext, cancellationToken);
+                dialogState[turnContext.Activity.Recipient.Id] = "Buy";
+
+
 
             }
             else if (topIntent == "Sell")
@@ -403,6 +438,7 @@ namespace Microsoft.BotBuilderSamples
                     await turnContext.SendActivityAsync("您好，你要買什麼東西?", null, null, cancellationToken);
                     flow.LastQuestionAsked = BuyFlow.Question.ID;
                     break;
+
                 case BuyFlow.Question.ID:
                     if (ValidateID(input, out var ID, out message))
                     {
@@ -417,6 +453,13 @@ namespace Microsoft.BotBuilderSamples
                         await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
                         break;
                     }
+                case BuyFlow.Question.WID:
+                    await turnContext.SendActivityAsync("數量多少?", null, null, cancellationToken);
+                    flow.LastQuestionAsked = BuyFlow.Question.Qua;
+                    break;
+                case BuyFlow.Question.WIDQ:
+                    await turnContext.SendActivityAsync("感謝您的購買!", null, null, cancellationToken);
+                    break;
                 case BuyFlow.Question.Qua:
                     if (ValidateQua(input, out var Q, out message, Item.iId))
                     {

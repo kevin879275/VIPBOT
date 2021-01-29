@@ -6,6 +6,8 @@
         public enum Question
         {
             ID,
+            WID,
+            WIDQ,
             Qua,
             None, // Our last action did not involve a question.
         }
