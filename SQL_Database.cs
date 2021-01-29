@@ -195,8 +195,28 @@ namespace Microsoft.BotBuilderSamples
       }
     }
 
+        public void update_Bought_List(
+        string User_id,
+        string Item_id,
+        int Bought_quantity,
+        string tsqlSourceCode = sql_cmd_update_tabBought_list)
+        {
+            using (connection = new SqlConnection(cb.ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand(tsqlSourceCode, connection))
+                {
+                    command.Parameters.AddWithValue("@value1", User_id);
+                    command.Parameters.AddWithValue("@value2", Item_id);
+                    command.Parameters.AddWithValue("@value3", Bought_quantity);
+                    int rowsAffected = command.ExecuteNonQuery();
+                    Console.WriteLine(rowsAffected + " = rows affected.");
+                }
+            }
+        }
 
-    private const string sql_cmd_DeleteTables = @" 
+
+        private const string sql_cmd_DeleteTables = @" 
                 DROP TABLE IF EXISTS tabBought_List;
                 DROP TABLE IF EXISTS tabItem;
                 DROP TABLE IF EXISTS tabUser;
@@ -239,6 +259,17 @@ namespace Microsoft.BotBuilderSamples
                     Bought_quantity
                 FROM tabBought_List
                 WHERE User_id=@User_id AND Item_id=@Item_id;
+            ";
+
+        public const string sql_cmd_update_tabBought_list = @"
+            DECLARE @user_id nvarchar(40) = @value1;
+            DECLARE @item_id nvarchar(40) = @value2
+            DECLARE @bought_quantity INT = @value3;
+            UPDATE tabBought_list
+            SET
+                Bought_quantity += @bought_quantity
+            FROM tabBought_list
+            WHERE User_id=@user_id AND Item_id=@item_id
             ";
 
         public const string sql_cmd_select_tabUser_coordinate = @"
