@@ -1,25 +1,26 @@
 ﻿<Properties StartupConfiguration="{011BF8E5-6C91-4D05-A1CB-4AD6637DA400}|Default">
   <MonoDevelop.Ide.ItemProperties.QnABot PreferredExecutionTarget="/Applications/Safari.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="appsettings.json">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Flow/ConversationFlow.cs">
     <Files>
       <File FileName="UserProfile.cs" Line="18" Column="2" />
-      <File FileName="Dialog/RootDialog.cs" />
-      <File FileName="Flow/SellFlow.cs" />
-      <File FileName="Flow/ConversationFlow.cs" />
-      <File FileName="Bots/DispatchBot.cs" Line="162" Column="4" />
-      <File FileName="Dialog/StartDialog.cs" />
+      <File FileName="Dialog/RootDialog.cs" Line="1" Column="1" />
+      <File FileName="Flow/SellFlow.cs" Line="1" Column="1" />
+      <File FileName="Flow/ConversationFlow.cs" Line="1" Column="1" />
+      <File FileName="Bots/DispatchBot.cs" Line="566" Column="47" />
+      <File FileName="Dialog/StartDialog.cs" Line="37" Column="12" />
       <File FileName="CognitiveModels/Summary.html" Line="1" Column="1" />
-      <File FileName="CognitiveModels/VIPDispatch.dispatch" Line="12" Column="8" />
-      <File FileName="CognitiveModels/VIPDispatch.json" Line="1" Column="1" />
-      <File FileName="appsettings.json" Line="17" Column="2" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="QnABot" expanded="True">
             <Node name="QnABot" expanded="True">
+              <Node name="Bots" expanded="True" />
               <Node name="CognitiveModels" expanded="True" />
-              <Node name="appsettings.json" selected="True" />
+              <Node name="Dialog" expanded="True" />
+              <Node name="Flow" expanded="True">
+                <Node name="ConversationFlow.cs" selected="True" />
+              </Node>
             </Node>
           </Node>
         </State>
@@ -30,9 +31,8 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/kevinge/Desktop/二手拍賣bot/Bots/DispatchBot.cs" relfile="Bots/DispatchBot.cs" line="152" column="1" />
-      <Breakpoint file="/Users/kevinge/Desktop/二手拍賣bot/Bots/DispatchBot.cs" relfile="Bots/DispatchBot.cs" line="174" column="1" />
       <Breakpoint file="/Users/kevinge/Desktop/二手拍賣bot/CognitiveModels/VIPDispatch.dispatch" relfile="CognitiveModels/VIPDispatch.dispatch" line="12" column="1" />
+      <Catchpoint exceptionName="System.Exception" includeSubclasses="True" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />

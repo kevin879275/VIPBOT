@@ -491,53 +491,6 @@ namespace Microsoft.BotBuilderSamples
             return message is null;
         }
 
-        //private static bool ValidateDate(string input, out string date, out string message)
-        //{
-        //    date = null;
-        //    message = null;
-
-        //    // Try to recognize the input as a date-time. This works for responses such as "11/14/2018", "9pm", "tomorrow", "Sunday at 5pm", and so on.
-        //    // The recognizer returns a list of potential recognition results, if any.
-        //    try
-        //    {
-        //        var results = DateTimeRecognizer.RecognizeDateTime(input, Culture.English);
-
-        //        // Check whether any of the recognized date-times are appropriate,
-        //        // and if so, return the first appropriate date-time. We're checking for a value at least an hour in the future.
-        //        var earliest = DateTime.Now.AddHours(1.0);
-
-        //        foreach (var result in results)
-        //        {
-        //            // The result resolution is a dictionary, where the "values" entry contains the processed input.
-        //            var resolutions = result.Resolution["values"] as List<Dictionary<string, string>>;
-
-        //            foreach (var resolution in resolutions)
-        //            {
-        //                // The processed input contains a "value" entry if it is a date-time value, or "start" and
-        //                // "end" entries if it is a date-time range.
-        //                if (resolution.TryGetValue("value", out var dateString)
-        //                    || resolution.TryGetValue("start", out dateString))
-        //                {
-        //                    if (DateTime.TryParse(dateString, out var candidate)
-        //                        && earliest < candidate)
-        //                    {
-        //                        date = candidate.ToShortDateString();
-        //                        return true;
-        //                    }
-        //                }
-        //            }
-        //        }
-
-        //        message = "I'm sorry, please enter a date at least an hour out.";
-        //    }
-        //    catch
-        //    {
-        //        message = "I'm sorry, I could not interpret that as an appropriate date. Please enter a date at least an hour out.";
-        //    }
-
-        //    return false;
-        //}
-
         private static async Task FillOutSellItemAsync(SellFlow flow, SellItem Item, ITurnContext turnContext, CancellationToken cancellationToken)
         {
             var input = turnContext.Activity.Text?.Trim();
@@ -547,15 +500,30 @@ namespace Microsoft.BotBuilderSamples
             {
                 case SellFlow.Question.None:
                     await turnContext.SendActivityAsync("您好，你要賣什麼東西?", null, null, cancellationToken);
-                    flow.LastQuestionAsked = SellFlow.Question.type;
+                    flow.LastQuestionAsked = SellFlow.Question.imageSrc;
                     break;
                 case SellFlow.Question.imageSrc:
-                    if (ValidateID(input, out var image, out message))
+                    if (ValidateImage(input, out var image, out message))
                     {
                         Item.imageSrc = image;
+                        await turnContext.SendActivityAsync("您好，你要賣什麼類型?", null, null, cancellationToken);
+                        Item.imageSrc = image;
                         //await turnContext.SendActivityAsync($"Hi {profile.Name}.", null, null, cancellationToken);
-                        await turnContext.SendActivityAsync("?", null, null, cancellationToken);
+                        var reply = MessageFactory.Text("請選擇下列類型?");
+                        reply.SuggestedActions = new SuggestedActions()
+                        {
+                            Actions = new List<CardAction>()
+                            {
+                                new CardAction() { Title = "3C產品", Type = ActionTypes.ImBack, Value = "3C產品"},
+                                new CardAction() { Title = "電腦週邊", Type = ActionTypes.ImBack, Value = "電腦週邊"},
+                                new CardAction() { Title = "食品", Type = ActionTypes.ImBack, Value = "食品"},
+                                new CardAction() { Title = "樂器", Type = ActionTypes.ImBack, Value = "樂器"},
+                                new CardAction() { Title = "書籍", Type = ActionTypes.ImBack, Value = "書籍"},
+                                new CardAction() { Title = "票券", Type = ActionTypes.ImBack, Value = "票券"},
+                            },
+                        };
                         flow.LastQuestionAsked = SellFlow.Question.type;
+                        await turnContext.SendActivityAsync(reply, cancellationToken);
                         break;
                     }
                     else
@@ -564,32 +532,11 @@ namespace Microsoft.BotBuilderSamples
                         break;
                     }
               case SellFlow.Question.type:
-                    if (ValidateType(input, out var Q, out message))
+                    if (ValidateType(input, out var type, out message))
                     {
-                        await turnContext.SendActivityAsync("您好，你要賣什麼類型?", null, null, cancellationToken);
-                        //await turnContext.SendActivitiesAsync(nameof(ChoicePrompt),
-                        //    new PromptOptions
-                        //    {
-                        //        Prompt = MessageFactory.Text("Please enter your mode of transport."),
-                        //        Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
-                        //    }, cancellationToken);
-                        var reply = MessageFactory.Text("What is your favorite color?");
-
-                        reply.SuggestedActions = new SuggestedActions()
-                        {
-                            Actions = new List<CardAction>()
-                            {
-                                new CardAction() { Title = "Red", Type = ActionTypes.ImBack, Value = "Red", Image = "https://via.placeholder.com/20/FF0000?text=R", ImageAltText = "R" },
-                                new CardAction() { Title = "Yellow", Type = ActionTypes.ImBack, Value = "Yellow", Image = "https://via.placeholder.com/20/FFFF00?text=Y", ImageAltText = "Y" },
-                                new CardAction() { Title = "Blue", Type = ActionTypes.ImBack, Value = "Blue", Image = "https://via.placeholder.com/20/0000FF?text=B", ImageAltText = "B"   },
-                            },
-                        };
-                        await turnContext.SendActivityAsync(reply, cancellationToken);
-
-                       // var Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" });
-                       // var a = ChoiceFactory.ForChannel(turnContext.Activity.ChannelId, Choices, "What Facebook feature would you like to try? Here are some quick replies to choose from!");
-                       //await turnContext.SendActivitiesAsync(a, cancellationToken);
-                        flow.LastQuestionAsked = SellFlow.Question.None;
+                        Item.type = type;
+                        await turnContext.SendActivityAsync("您好，請稍微描述您的物品?", null, null, cancellationToken);
+                        flow.LastQuestionAsked = SellFlow.Question.discription;
                         break;
                     }
                     else
@@ -597,63 +544,56 @@ namespace Microsoft.BotBuilderSamples
                         await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
                         break;
                     }
-                    //case SellFlow.Question.time:
-                    //if (ValidateQua(input, out var Q, out message))
-                    //{
-                    //    break;
-                    //}
-                    //else
-                    //{
-                    //    await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
-                    //    break;
-                    //}
-                    //case SellFlow.Question.discription:
-                    //if (ValidateQua(input, out var Q, out message))
-                    //{
-                    //    break;
-                    //}
-                    //else
-                    //{
-                    //    await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
-                    //    break;
-                    //}
-                    //case SellFlow.Question.location:
-                    //if (ValidateQua(input, out var Q, out message))
-                    //{
-                    //    break;
-                    //}
-                    //else
-                    //{
-                    //    await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
-                    //    break;
-                    //}
-                    //case SellFlow.Question.OwnerUserID:
-                    //if (ValidateQua(input, out var Q, out message))
-                    //{
-                    //    break;
-                    //}
-                    //else
-                    //{
-                    //    await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
-                    //    break;
-                    //}
+                case SellFlow.Question.discription:
+                    if (ValidateDiscription(input, out var description, out message))
+                    {
+                        Item.description = description;
+                        await turnContext.SendActivityAsync("您的定價為多少呢?", null, null, cancellationToken);
+                        flow.LastQuestionAsked = SellFlow.Question.price;
+                        break;
+                    }
+                    else
+                    {
+                        await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
+                        break;
+                    }
 
-                    //case ConversationFlow.Question.Date:
-                    //    if (ValidateDate(input, out var date, out message))
-                    //    {
-                    //        profile.Date = date;
-                    //        await turnContext.SendActivityAsync($"Your cab ride to the airport is scheduled for {profile.Date}.");
-                    //        await turnContext.SendActivityAsync($"Thanks for completing the booking {profile.Name}.");
-                    //        await turnContext.SendActivityAsync($"Type anything to run the bot again.");
-                    //        flow.LastQuestionAsked = ConversationFlow.Question.None;
-                    //        profile = new UserProfile();
-                    //        break;
-                    //    }
-                    //    else
-                    //    {
-                    //        await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
-                    //        break;
-                    //    }
+                case SellFlow.Question.price:
+                    if (ValidatePrice(input, out var price, out message))
+                    {
+                        Item.price = price;
+                        var reply = MessageFactory.Text("請確認您的商品?");
+                        reply.SuggestedActions = new SuggestedActions()
+                        {
+                            Actions = new List<CardAction>()
+                            {
+                                new CardAction() { Title = "是", Type = ActionTypes.ImBack, Value = "是"},
+                                new CardAction() { Title = "否", Type = ActionTypes.ImBack, Value = "否"},
+                            },
+                        };
+                        flow.LastQuestionAsked = SellFlow.Question.Check;
+                        await turnContext.SendActivityAsync(reply, cancellationToken);
+                        break;
+                    }
+                    else
+                    {
+                        await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
+                        break;
+                    }
+                case SellFlow.Question.Check:
+                    if (ValidateCheck(input, out var check, out message))
+                    {
+                        await turnContext.SendActivityAsync("感謝您，物品已成功登錄", null, null, cancellationToken);
+                        Item = new SellItem();
+                        flow.LastQuestionAsked = SellFlow.Question.None;
+                        break;
+                    }
+                    else
+                    {
+                        flow.LastQuestionAsked = SellFlow.Question.None;
+                        await turnContext.SendActivityAsync(message ?? "I'm sorry, I didn't understand that.", null, null, cancellationToken);
+                        break;
+                    }
             }
         }
 
@@ -661,7 +601,7 @@ namespace Microsoft.BotBuilderSamples
         {
             image = null;
             message = null;
-            image = Imgur.Imgur.UploadSrc(input);
+            //image = Imgur.Imgur.UploadSrc(input);
 
             return message is null;
         }
@@ -670,10 +610,74 @@ namespace Microsoft.BotBuilderSamples
         {
             type = "";
             message = null;
-            var Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" });
             return message is null;
         }
 
+        private static bool ValidateDiscription(string input, out string discription, out string message)
+        {
+            discription = "";
+            message = null;
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                message = "請至少輸入一個字";
+            }
+            else
+            {
+                discription = input.Trim();
+            }
+            return message is null;
+        }
+
+        private static bool ValidatePrice(string input, out int price, out string message)
+        {
+            price = 0;
+            message = null;
+            // Try to recognize the input as a number. This works for responses such as "twelve" as well as "12".
+            try
+            {
+                // Attempt to convert the Recognizer result to an integer. This works for "a dozen", "twelve", "12", and so on.
+                // The recognizer returns a list of potential recognition results, if any.
+
+                var results = NumberRecognizer.RecognizeNumber(input, Culture.English);
+
+                foreach (var result in results)
+                {
+                    // The result resolution is a dictionary, where the "value" entry contains the processed string.
+                    if (result.Resolution.TryGetValue("value", out var value))
+                    {
+                        price = Convert.ToInt32(value);
+                        if (price > 0)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            message = "商品金額需大於0";
+                            break;
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                message = "I'm sorry, I could not interpret that as an age. Please enter an age between 18 and 120.";
+            }
+            return message is null;
+        }
+        private static bool ValidateCheck(string input, out string check, out string message)
+        {
+            message = null;
+            check = input;
+            if(check == "是")
+            {
+
+            }
+            else
+            {
+                message = "交易已取消";
+            }
+            return message is null;
+        }
         private static double getDistance(float lat1, float long1, float lat2, float long2)
         {
             var R = 6371;

@@ -12,6 +12,7 @@
             location,
             OwnerUserID,
             price,
+            Check,
             None,
         }
 

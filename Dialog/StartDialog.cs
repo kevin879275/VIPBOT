@@ -116,7 +116,7 @@ namespace Microsoft.BotBuilderSamples
                     {
                         profile.Interest = interest;
                         flow.LastQuestionAsked = StartConversationFlow.Question.End;
-                        db.Insert_tabUser(profile.UserId, profile.Location, profile.Interest);
+                        //db.Insert_tabUser(profile.UserId, profile.Location, profile.Interest);
                         break;
                     }
                     else
