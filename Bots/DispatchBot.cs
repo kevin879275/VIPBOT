@@ -561,7 +561,7 @@ namespace Microsoft.BotBuilderSamples
                     if (ValidateDiscription(input, out var description, out message))
                     {
                         Item.description = description;
-                        await turnContext.SendActivityAsync("您的定價為多少呢?", null, null, cancellationToken);
+                        await turnContext.SendActivityAsync("商品數量為多少呢?", null, null, cancellationToken);
                         flow.LastQuestionAsked = SellFlow.Question.price;
                         break;
                     }
@@ -574,7 +574,7 @@ namespace Microsoft.BotBuilderSamples
                     if (ValidateQua(input, out var Qua, out message))
                     {
                         Item.quantity = Qua;
-                        await turnContext.SendActivityAsync("您好，請稍微描述您的物品?", null, null, cancellationToken);
+                        await turnContext.SendActivityAsync("請定價您的物品?", null, null, cancellationToken);
                         flow.LastQuestionAsked = SellFlow.Question.discription;
                         break;
                     }
