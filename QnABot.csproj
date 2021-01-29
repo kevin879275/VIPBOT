@@ -10,6 +10,8 @@
 <!--    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.19"><PrivateAssets Condition="'%(PackageReference.Version)' == ''">all</PrivateAssets>
 -->
      <PackageReference Include="EasiestImgur" Version="1.0.0" />
+     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
+     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
      <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.1" />   
 <!--     <Publish Condition="'%(PackageReference.Version)' == ''">true</Publish>
 -->

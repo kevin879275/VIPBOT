@@ -101,7 +101,7 @@ namespace Microsoft.BotBuilderSamples
                 case StartConversationFlow.Question.Location:
                     if (ValidateLocation(turnContext, out var location))
                     {
-                        profile.Location = location;
+                        profile.location = location;
                         await turnContext.SendActivityAsync(reply, cancellationToken);
                         flow.LastQuestionAsked = StartConversationFlow.Question.Interest;
                         break;
@@ -116,7 +116,12 @@ namespace Microsoft.BotBuilderSamples
                     {
                         profile.Interest = interest;
                         flow.LastQuestionAsked = StartConversationFlow.Question.End;
-                        db.Insert_tabUser(profile.UserId, profile.Location, profile.Interest);
+                        db.Insert_tabUser(
+                            profile.UserId,
+                            profile.location.Address, 
+                            profile.Interest,
+                            profile.location.Latitude, 
+                            profile.location.Longitude);
                         break;
                     }
                     else
@@ -128,16 +133,28 @@ namespace Microsoft.BotBuilderSamples
             }
         }
 
-        private bool ValidateLocation(ITurnContext turnContext, out string location)
+        private bool ValidateLocation(ITurnContext turnContext, out Location location)
         {
             location = null;
             var channelData = ((ITurnContext<IMessageActivity>)turnContext).Activity.ChannelData;
             string msgType = channelData["type"];
             if (msgType == "location")
             {
-                location = JsonConvert.SerializeObject(channelData);
+                location = new Location
+                {
+                    Type = channelData["type"],
+                    Address = channelData["address"],
+                    Latitude = channelData["latitude"],
+                    Longitude = channelData["longitude"],
+                };
             }
-            location = $"新竹市東區";
+            location = new Location
+            {
+                Type = "location",
+                Address = "新竹市東區",
+                Latitude = 35.688806F,
+                Longitude = 139.701739F,
+            };
             return location is not null;
         }
 

@@ -13,6 +13,6 @@
     {
         public string UserId { get; set; }
         public string Interest { get; set; }
-        public string Location { get; set; }
+        public Location location { get; set; }
     }
 }

@@ -25,9 +25,9 @@ namespace Microsoft.BotBuilderSamples
         [JsonPropertyName("address")]
         public string Address { get; set; }
         [JsonPropertyName("latitude")]
-        public decimal Latitude { get; set; }
+        public float Latitude { get; set; }
         [JsonPropertyName("longitude")]
-        public decimal Longitude { get; set; }
+        public float Longitude { get; set; }
     }
 
     public class Text

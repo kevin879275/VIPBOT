@@ -673,6 +673,30 @@ namespace Microsoft.BotBuilderSamples
             var Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" });
             return message is null;
         }
+
+        private static double getDistance(float lat1, float long1, float lat2, float long2)
+        {
+            var R = 6371;
+
+            double rad(double x)
+            {
+                return x * Math.PI / 180;
+            }
+
+            var dLat = rad(lat2 - lat1);
+
+            var dLong = rad(long2 - long1);
+
+            var a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+                    Math.Cos(rad(lat1)) * Math.Cos(rad(lat2)) *
+                    Math.Sin(dLong / 2) * Math.Sin(dLong / 2);
+
+            var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+
+            var d = R * c;
+
+            return d;
+        }
     }
 
 }
