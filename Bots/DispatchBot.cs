@@ -31,9 +31,9 @@ namespace Microsoft.BotBuilderSamples
     private static SQL_Database db = new SQL_Database();
 
 
-    protected readonly BotState ConversationState;
+    protected BotState ConversationState;
 
-    protected readonly BotState UserState;
+    protected BotState UserState;
     protected readonly Microsoft.Bot.Builder.Dialogs.Dialog Dialog;
     private static Dictionary<string, bool> dialogState = new Dictionary<string, bool>();
 
@@ -91,7 +91,7 @@ namespace Microsoft.BotBuilderSamples
         {
           await SendSuggestedActionsAsync(turnContext, cancellationToken);
           db.Insert_tabUser(turnContext.Activity.Recipient.Id, "新竹市東區", "[\"天竺鼠車車\",\"車車天竺鼠\"]");
-          db.Insert_tabItem(itemNow.ToString(), "now", "cart", "", "selling", 5, "天竺鼠車車", "新竹市東區", turnContext.Activity.Recipient.Id, 99999);
+          //db.Insert_tabItem(itemNow.ToString(), "now", "cart", "", "selling", 5, "天竺鼠車車", "新竹市東區", turnContext.Activity.Recipient.Id, 99999);
           itemNow++;
         }
       }
@@ -102,22 +102,9 @@ namespace Microsoft.BotBuilderSamples
 
     private static async Task SendSuggestedActionsAsync(ITurnContext turnContext, CancellationToken cancellationToken)
     {
-
-
-      var reply = MessageFactory.Text("您好，本機器人提供鄰近區域服務、物品買賣仲介，第一次使用請傳送您的位置資訊");
-      reply.SuggestedActions = new SuggestedActions()
-      {
-
-        Actions = new List<CardAction>()
-            {
-                new CardAction() { Title = "Red", Type = ActionTypes.ImBack, Value = "Red", Image = "https://via.placeholder.com/20/FF0000?text=R", ImageAltText = "R" },
-                new CardAction() { Title = "Yellow", Type = ActionTypes.ImBack, Value = "Yellow", Image = "https://via.placeholder.com/20/FFFF00?text=Y", ImageAltText = "Y" },
-                new CardAction() { Title = "Blue", Type = ActionTypes.ImBack, Value = "Blue", Image = "https://via.placeholder.com/20/0000FF?text=B", ImageAltText = "B"   },
-            },
-      };
-
-
-      await turnContext.SendActivityAsync(reply, cancellationToken);
+      await turnContext.SendActivityAsync(MessageFactory.Text("您好，本機器人提供鄰近區域服務、物品買賣仲介。"), cancellationToken);
+      var startPos = new StartDialog();
+      await startPos.StartFlow(turnContext, ConversationState, UserState, cancellationToken);
     }
 
 
@@ -173,24 +160,24 @@ namespace Microsoft.BotBuilderSamples
           int inu = getNumberInString(inum.Entity);
 
           string uid = turnContext.Activity.Recipient.Id;
-          int amount = db.Select_tabItem(inu.ToString());
-          if (amount == 0)
-          {
-            turnContext.SendActivityAsync(MessageFactory.Text("沒有這個物品id優!!!"));
-            return;
-          }
+          //int amount = db.Select_tabItem(inu.ToString());
+          //if (amount == 0)
+          //{
+          //  turnContext.SendActivityAsync(MessageFactory.Text("沒有這個物品id優!!!"));
+          //  return;
+          //}
 
-          if (q <= amount)
-          {
-            db.Insert_tabBought_List(uid, inu.ToString(), q);
-            int remain = amount - q;
-            string sta = remain > 0 ? "on sell" : "sold";
-            db.update_tabItem(sta, inu.ToString(), remain);
+          //if (q <= amount)
+          //{
+          //  db.Insert_tabBought_List(uid, inu.ToString(), q);
+          //  int remain = amount - q;
+          //  string sta = remain > 0 ? "on sell" : "sold";
+          //  db.update_tabItem(sta, inu.ToString(), remain);
 
-            turnContext.SendActivityAsync(MessageFactory.Text($"庫存剩餘:{db.Select_tabItem(inu.ToString())}"));
-          }
-          else
-            turnContext.SendActivityAsync(MessageFactory.Text("庫存不足瞜!!!"));
+          //turnContext.SendActivityAsync(MessageFactory.Text($"庫存剩餘:{db.Select_tabItem(inu.ToString())}"));
+          //}
+          //else
+          //      turnContext.SendActivityAsync(MessageFactory.Text("庫存不足瞜!!!"));
         }
 
       }
@@ -215,7 +202,7 @@ namespace Microsoft.BotBuilderSamples
           string name = "no name";
           if (other.Length > 0)
             name = other;
-          db.Insert_tabItem(itemNow.ToString(), DateTime.Now.ToString(), "second hand", "[]", "selling", quantity, name, "新竹市東區", turnContext.Activity.Recipient.Id, money);
+          //db.Insert_tabItem(itemNow.ToString(), DateTime.Now.ToString(), "second hand", "[]", "on sell", quantity, name, "新竹市東區", turnContext.Activity.Recipient.Id, money);
           // to do get location from user
           itemNow++;
         }
