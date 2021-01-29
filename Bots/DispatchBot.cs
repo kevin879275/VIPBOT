@@ -97,7 +97,7 @@ namespace Microsoft.BotBuilderSamples
                     string id = turnContext.Activity.Recipient.Id;
                     int boughtAmount = db.Select_tabBought_List(id, item.iId);
                     if (boughtAmount > 0)
-                        db.update_Bought_List(id, item.iId, boughtAmount + item.quantiy);
+                        db.update_Bought_List(id, item.iId, item.quantiy);
                     else
                         db.Insert_tabBought_List(id, item.iId, item.quantiy);
                 }
@@ -160,8 +160,8 @@ namespace Microsoft.BotBuilderSamples
                     askFirstState[turnContext.Activity.Recipient.Id] = new StartDialog();
                     await SendFirstActionsAsync(turnContext, cancellationToken);
                     //db.Insert_tabUser(turnContext.Activity.Recipient.Id, "新竹市東區", "[\"天竺鼠車車\",\"車車天竺鼠\"]");
-                    // db.Insert_tabItem(itemNow.ToString(), "now", "cart", "", "selling", 5, "天竺鼠車車", "新竹市東區", turnContext.Activity.Recipient.Id, 99999);
-                    // itemNow++;
+                    db.Insert_tabItem(itemNow.ToString(), "now", "cart", "img", "selling", 5, "天竺鼠車車", "新竹市東區", turnContext.Activity.Recipient.Id, 99999, "天竺鼠");
+                    itemNow++;
                 }
             }
         }
