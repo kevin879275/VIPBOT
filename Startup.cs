@@ -92,21 +92,25 @@ namespace Microsoft.BotBuilderSamples
 
             // Create the bot services (LUIS, QnA) as a singleton.
             services.AddSingleton<IBotServices, BotServices>();
-
+            
             // Create the storage we'll be using for User and Conversation state. (Memory is great for testing purposes.)
-            services.AddSingleton<IStorage, MemoryStorage>();
+            var storage = new MemoryStorage();
+            //services.AddSingleton<IStorage, MemoryStorage>();
 
             // Create the User state. (Used in this bot's Dialog implementation.)
-            services.AddSingleton<UserState>();
+            var userState = new UserState(storage);
+            services.AddSingleton(userState);
 
             // Create the Conversation state. (Used by the Dialog system itself.)
-            services.AddSingleton<ConversationState>();
+            var conversationState = new ConversationState(storage);
+            //services.AddSingleton<ConversationState>();
+            services.AddSingleton(conversationState);
 
             // The Dialog that will be run by the bot.
-            services.AddSingleton<UserProfileDialog>();
+            //services.AddSingleton<StartDialog>();
 
             // Create the bot as a transient.
-            services.AddTransient<IBot, DispatchBot<UserProfileDialog>>();
+            services.AddTransient<IBot, DispatchBot>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,18 +1,17 @@
-﻿
-namespace Microsoft.BotBuilderSamples
+﻿namespace Microsoft.BotBuilderSamples
 {
-    public class StartConversationFlow
+    public class ConversationFlow
     {
         // Identifies the last question asked.
         public enum Question
         {
-            Begin,
-            Location,
-            Interest,
-            End, // Our last action did not involve a question.
+            Name,
+            Age,
+            Date,
+            None, // Our last action did not involve a question.
         }
 
         // The last question asked.
-        public Question LastQuestionAsked { get; set; } = Question.Begin;
+        public Question LastQuestionAsked { get; set; } = Question.None;
     }
 }
