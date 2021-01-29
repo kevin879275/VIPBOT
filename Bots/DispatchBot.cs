@@ -215,7 +215,7 @@ namespace Microsoft.BotBuilderSamples
           string name = "no name";
           if (other.Length > 0)
             name = other;
-          db.Insert_tabItem(itemNow.ToString(), DateTime.Now.ToString(), "second hand", "[]", "on sell", quantity, name, "新竹市東區", turnContext.Activity.Recipient.Id, money);
+          db.Insert_tabItem(itemNow.ToString(), DateTime.Now.ToString(), "second hand", "[]", "selling", quantity, name, "新竹市東區", turnContext.Activity.Recipient.Id, money);
           // to do get location from user
           itemNow++;
         }
