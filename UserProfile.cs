@@ -8,4 +8,11 @@
 
         public string Date { get; set; }
     }
+
+    public class User
+    {
+        public string UserId { get; set; }
+        public string Interest { get; set; }
+        public string Location { get; set; }
+    }
 }
