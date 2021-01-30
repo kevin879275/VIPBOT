@@ -762,15 +762,24 @@ namespace Microsoft.BotBuilderSamples
                 }
                 catch
                 {
-                    message = "上傳失敗，請再試一次";
+                    try
+                    {
+
+                        image = Imgur.Imgur.UploadSrc(turnContext.Activity.Text);
+                    }
+                    catch
+                    {
+                        message = "上傳失敗，請再試一次";
+                    }
+
                 }
             }
-            //else
-            //{
-            //    string input = turnContext.Activity.Attachments[0].ContentUrl;
-            //    image = Imgur.Imgur.UploadSrc(input);
-            //    if (image == "false") message = "圖片格式錯誤，請再試一次";
-            //}
+            else
+            {
+                string input = turnContext.Activity.Attachments[0].ContentUrl;
+                image = Imgur.Imgur.UploadSrc(input);
+                if (image == "false") message = "圖片格式錯誤，請再試一次";
+            }
             return message is null;
         }
 
