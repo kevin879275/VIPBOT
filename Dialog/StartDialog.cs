@@ -126,12 +126,12 @@ namespace Microsoft.BotBuilderSamples
                     {
                         profile.Interest = interest;
                         flow.LastQuestionAsked = StartConversationFlow.Question.End;
-                        //db.Insert_tabUser(
-                        //    profile.UserId,
-                        //    profile.location.Address, 
-                        //    profile.Interest,
-                        //    profile.location.Latitude, 
-                        //    profile.location.Longitude);
+                        db.Insert_tabUser(
+                            profile.UserId,
+                            profile.location.Address,
+                            profile.Interest,
+                            profile.location.Latitude,
+                            profile.location.Longitude);
                         await turnContext.SendActivityAsync($"已完成輸入，感謝您", null, null, cancellationToken);
                         break;
                     }
