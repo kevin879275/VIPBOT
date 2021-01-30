@@ -45,6 +45,11 @@ namespace Microsoft.BotBuilderSamples
             return JObject.FromObject(tmp);
 
         }
+        static public JObject SetCardWithString(string s)
+        {
+            Card tmp = JsonConvert.DeserializeObject<Card>(s);
+            return JObject.FromObject(tmp);
+        }
     }
 
 }
