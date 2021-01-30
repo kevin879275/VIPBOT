@@ -26,10 +26,10 @@ namespace Microsoft.BotBuilderSamples
         public NotifyController(IBotFrameworkHttpAdapter adapter, IConfiguration configuration, ConcurrentDictionary<string, ConversationReference> conversationReferences)
         {
             _adapter = adapter;
-            DispatchBot._adapter = _adapter;
+            //DispatchBot._adapter = _adapter;
             _conversationReferences = conversationReferences;
             _appId = configuration["MicrosoftAppId"] ?? string.Empty;
-            DispatchBot._appId = _appId;
+            //DispatchBot._appId = _appId;
         }
         
         //public async Task<IActionResult> Get()

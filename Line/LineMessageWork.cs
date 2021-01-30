@@ -14,17 +14,18 @@ namespace Microsoft.BotBuilderSamples
     public class LineMsgBot
     {
         private readonly string MyToken = "vdwJ5U7YzRTT89PRsT+m13HgHBvuzoZ5boR5Pu662LfWyuiYHiheFYRYsTmeuLqTRXF5VZPOeQsL7NZr82JnswuEo96RtbdAnvzzvstyXRNrpUJkgLbkgfB9ydVmayyXTy3albpIqx4pxA2mc5TD3QdB04t89/1O/w1cDnyilFU=";
-        private readonly string PushMessageUrl = "https://api.line.me/v2/bot/message/push";
-        private HttpClient Client = new HttpClient();
+        private readonly string PushMessageUrl = "https://api.line.me/v2/bot/message/multicast";
 
         public LineMsgBot()
         {
-            Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {this.MyToken}");
+            
         }
 
         public async Task<HttpStatusCode> PushMessage(IList<string> userId, string sendMessage)
         {
+            HttpClient Client = new HttpClient();
+            Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {this.MyToken}");
             try
             {
                 var post = await Client.PostAsJsonAsync(PushMessageUrl, new
@@ -61,6 +62,9 @@ namespace Microsoft.BotBuilderSamples
 
         public async Task<HttpStatusCode> PushJson(IList<string> userId, JObject msg)
         {
+            HttpClient Client = new HttpClient();
+            Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {this.MyToken}");
             try
             {
                 var post = await Client.PostAsJsonAsync(PushMessageUrl, new
@@ -76,5 +80,7 @@ namespace Microsoft.BotBuilderSamples
                 throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = new StringContent(x.Message) });
             }
         }
+
+
     }
 }

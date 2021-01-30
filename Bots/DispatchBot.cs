@@ -119,13 +119,6 @@ namespace Microsoft.BotBuilderSamples
             //var channelData = ((DelegatingTurnContext<IMessageActivity>)turnContext).Activity.ChannelData.ToString();
             //await turnContext.SendActivityAsync(channelData);
 
-            //var tmp = new LineFunctions();
-            //var msg = tmp.SetCard("https://p2.bahamut.com.tw/B/2KU/06/ab809378e0d5116c0b861c30c31b3di5.JPG", "Name", "30", "70",
-            //    "Testing", "新竹市東區", 5);
-            //List<string> lt = new List<string> { "Uf9ea697c4e6d5209e8ea0eab54d15fd9" };
-            ////await lineBot.PushJson(lt, msg);
-            //await lineBot.PushMessage(lt, "87878");
-
             AddConversationReference(turnContext.Activity as Activity);
 
             // First, we use the dispatch model to determine which cognitive service (LUIS or QnA) to use.
@@ -792,13 +785,11 @@ namespace Microsoft.BotBuilderSamples
             image = "https://p2.bahamut.com.tw/B/2KU/06/ab809378e0d5116c0b861c30c31b3di5.JPG";
             if (turnContext.Activity.ChannelId == "line")
             {
-                //var channelData = ((DelegatingTurnContext<IMessageActivity>)turnContext).Activity.ChannelData.ToString();
+                var channelData = ((DelegatingTurnContext<IMessageActivity>)turnContext).Activity.ChannelData.ToString();
                 //_logger.LogInformation("fuck", channelData);
                 //var msg = JsonConvert.DeserializeObject<LineImage>(channelData);
                 //image = lineBot.GetlineImage(msg.message.id);
                 //message = channelData;
-                
-
                 try
                 {
                     var msg = JsonConvert.DeserializeObject<LineImage>(channelData);
