@@ -22,12 +22,12 @@ namespace Microsoft.BotBuilderSamples
     private SqlConnection connection;
     public SQL_Database()
     {
-            using (connection = new SqlConnection(cb.ConnectionString))
-            {
-                connection.Open();
-                Submit_Tsql_NonQuery(sql_cmd_CreateTables);
+            //using (connection = new SqlConnection(cb.ConnectionString))
+            //{
+            //    connection.Open();
+            //    Submit_Tsql_NonQuery(sql_cmd_CreateTables);
 
-            }
+            //}
 
         }
 
@@ -58,18 +58,18 @@ namespace Microsoft.BotBuilderSamples
                     id  nvarchar(40) PRIMARY KEY,
                     Location    nvarchar(128),
                     InterestType    nvarchar(128),
-                    latitude    FLOAT,
-                    longitude   FLOAT
+                    latitude    Float,
+                    longitude   Float,
                 );
 
                 CREATE TABLE tabItem
                 (
                     id  nvarchar(40) PRIMARY KEY,
                     --Time    DATETIME,
-                    Time    nvarchar(20),
+                    Time    nvarchar(50),
                     Type    nvarchar(20),
                     --img     IMAGE,  
-                    img     nvarchar(20),
+                    img     nvarchar(50),
                     status  nvarchar(20),
                     Count   INT NOT NULL,
                     Description     nvarchar(120),
@@ -96,8 +96,8 @@ namespace Microsoft.BotBuilderSamples
         string user_id,
         string Loaction,
         string InterestType,
-        float latitude,
-        float longitude,
+        double latitude,
+        double longitude,
         string tsqlSourceCode = sql_cmd_Insert_tabUser)
     {
       using (connection = new SqlConnection(cb.ConnectionString))
@@ -382,17 +382,25 @@ namespace Microsoft.BotBuilderSamples
 
                         while (reader.Read())
                         {
-                            user.UserId = reader.GetString(0);
-                            user.Interest = reader.GetString(1);
-                            user.location.Latitude = reader.GetFloat(2);
-                            user.location.Longitude = reader.GetFloat(3);
+                            try
+                            {
+                                user.UserId = reader.GetString(0);
+                                user.Interest = reader.GetString(1);
+                                user.location.Latitude = reader.GetDouble(2);
+                                user.location.Longitude = reader.GetDouble(3);
 
-                            Console.WriteLine(user.UserId);
-                            Console.WriteLine(user.Interest);
-                            Console.WriteLine(user.location.Latitude);
-                            Console.WriteLine(user.location.Longitude);
+                                Console.WriteLine(user.UserId);
+                                Console.WriteLine(user.Interest);
+                                Console.WriteLine(user.location.Latitude);
+                                Console.WriteLine(user.location.Longitude);
 
-                            arr.Add(user);
+                                arr.Add(user);
+                            }
+                            catch
+                            {
+
+                            }
+                            
                         }
                     }
                 }

@@ -63,9 +63,9 @@ namespace Microsoft.BotBuilderSamples
         [JsonPropertyName("address")]
         public string Address { get; set; }
         [JsonPropertyName("latitude")]
-        public float Latitude { get; set; }
+        public double Latitude { get; set; }
         [JsonPropertyName("longitude")]
-        public float Longitude { get; set; }
+        public double Longitude { get; set; }
     }
 
 

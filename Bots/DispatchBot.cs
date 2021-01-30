@@ -171,11 +171,11 @@ namespace Microsoft.BotBuilderSamples
                        userID,
                        item.price,
                        item.name);
-                    //var tmp = new LineFunctions();
-                    //var msg = tmp.SetCard(item.imageSrc, item.name, item.quantity.ToString(), item.price.ToString(),
-                    //    item.description, item.location, itemNow);
-                    //var pushLst = getAccountList(askFirstState[userID].profile, item.type);
-                    //await lineBot.PushJson(pushLst, msg);
+                    var tmp = new LineFunctions();
+                    var msg = tmp.SetCard(item.imageSrc, item.name, item.quantity.ToString(), item.price.ToString(),
+                        item.description, item.location, itemNow);
+                    var pushLst = getAccountList(askFirstState[userID].profile, item.type);
+                    await lineBot.PushJson(pushLst, msg);
                     itemNow++;
                 }
             }
@@ -202,7 +202,7 @@ namespace Microsoft.BotBuilderSamples
                     askFirstState[member.Id] = new StartDialog();
                     await SendFirstActionsAsync(turnContext, cancellationToken);
                     //db.Insert_tabUser(turnContext.Activity.Recipient.Id, "新竹市東區", "[\"天竺鼠車車\",\"車車天竺鼠\"]");
-                    db.Insert_tabItem(itemNow.ToString(), "now", "cart", "img", "selling", 5, "天竺鼠車車", "新竹市東區", turnContext.Activity.Recipient.Id, 99999, "天竺鼠");
+                    //db.Insert_tabItem(itemNow.ToString(), "now", "cart", "img", "selling", 5, "天竺鼠車車", "新竹市東區", turnContext.Activity.Recipient.Id, 99999, "天竺鼠");
                     itemNow++;
                 }
             }
@@ -960,7 +960,7 @@ namespace Microsoft.BotBuilderSamples
             }
             return message is null;
         }
-        private static double getDistance(float lat1, float long1, float lat2, float long2)
+        private static double getDistance(double lat1, double long1, double lat2, double long2)
         {
             var R = 6371;
 

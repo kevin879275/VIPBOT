@@ -40,8 +40,8 @@ namespace Microsoft.BotBuilderSamples
         private static readonly HttpClient client = new HttpClient();
         private static SQL_Database db = new SQL_Database();
         public static string allmsg = "test";
-        public static IBotFrameworkHttpAdapter _adapter;
-        public static string _appId;
+        //public static IBotFrameworkHttpAdapter _adapter;
+        //public static string _appId;
 
         public static ComputerVisionClient cv = new ComputerVisionClient(new ApiKeyServiceClientCredentials("6681cfc712a947ef876d46adb7187ab1")) { Endpoint = "https://vipcv.cognitiveservices.azure.com/" };
 
@@ -107,25 +107,17 @@ namespace Microsoft.BotBuilderSamples
             await UserState.SaveChangesAsync(turnContext, false, cancellationToken);
         }
 
-        public async void sendMsg(string text)
-        {
-            foreach (var conversationReference in _conversationReferences.Values)
-            {
-                await ((BotAdapter)_adapter).ContinueConversationAsync(_appId, conversationReference, async (turnContext, cancellationToken) => await turnContext.SendActivityAsync(text), default(CancellationToken));
-            }
-        }
+        //public async void sendMsg(string text)
+        //{
+        //    foreach (var conversationReference in _conversationReferences.Values)
+        //    {
+        //        await ((BotAdapter)_adapter).ContinueConversationAsync(_appId, conversationReference, async (turnContext, cancellationToken) => await turnContext.SendActivityAsync(text), default(CancellationToken));
+        //    }
+        //}
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
-            sendMsg("Am I Bo");
             //var channelData = ((DelegatingTurnContext<IMessageActivity>)turnContext).Activity.ChannelData.ToString();
             //await turnContext.SendActivityAsync(channelData);
-
-            //var tmp = new LineFunctions();
-            //var msg = tmp.SetCard("https://p2.bahamut.com.tw/B/2KU/06/ab809378e0d5116c0b861c30c31b3di5.JPG", "Name", "30", "70",
-            //    "Testing", "新竹市東區", 5);
-            //List<string> lt = new List<string> { "Uf9ea697c4e6d5209e8ea0eab54d15fd9" };
-            ////await lineBot.PushJson(lt, msg);
-            //await lineBot.PushMessage(lt, "87878");
 
             AddConversationReference(turnContext.Activity as Activity);
 
@@ -179,11 +171,11 @@ namespace Microsoft.BotBuilderSamples
                        userID,
                        item.price,
                        item.name);
-                    //var tmp = new LineFunctions();
-                    //var msg = tmp.SetCard(item.imageSrc, item.name, item.quantity.ToString(), item.price.ToString(),
-                    //    item.description, item.location, itemNow);
-                    //var pushLst = getAccountList(askFirstState[userID].profile, item.type);
-                    //await lineBot.PushJson(pushLst, msg);
+                    var tmp = new LineFunctions();
+                    var msg = tmp.SetCard(item.imageSrc, item.name, item.quantity.ToString(), item.price.ToString(),
+                        item.description, item.location, itemNow);
+                    var pushLst = getAccountList(askFirstState[userID].profile, item.type);
+                    await lineBot.PushJson(pushLst, msg);
                     itemNow++;
                 }
             }
@@ -210,7 +202,7 @@ namespace Microsoft.BotBuilderSamples
                     askFirstState[member.Id] = new StartDialog();
                     await SendFirstActionsAsync(turnContext, cancellationToken);
                     //db.Insert_tabUser(turnContext.Activity.Recipient.Id, "新竹市東區", "[\"天竺鼠車車\",\"車車天竺鼠\"]");
-                    db.Insert_tabItem(itemNow.ToString(), "now", "cart", "img", "selling", 5, "天竺鼠車車", "新竹市東區", turnContext.Activity.Recipient.Id, 99999, "天竺鼠");
+                    //db.Insert_tabItem(itemNow.ToString(), "now", "cart", "img", "selling", 5, "天竺鼠車車", "新竹市東區", turnContext.Activity.Recipient.Id, 99999, "天竺鼠");
                     itemNow++;
                 }
             }
@@ -649,7 +641,7 @@ namespace Microsoft.BotBuilderSamples
                     if (ValidateType(input, out var type, out message))
                     {
                         Item.type = type;
-                        await turnContext.SendActivityAsync("您好，請上傳物品圖片並稍後片刻", null, null, cancellationToken);
+                        await turnContext.SendActivityAsync("您好，請上傳物品圖片並稍後片刻 (or輸入跳過)", null, null, cancellationToken);
                         flow.LastQuestionAsked = SellFlow.Question.imageSrc;
                         break;
                     }
@@ -661,6 +653,13 @@ namespace Microsoft.BotBuilderSamples
                 case SellFlow.Question.imageSrc:
                     if (ValidateImage(turnContext, out var image, out message))
                     {
+                        if(image == "跳過")
+                        {
+                            Item.imageSrc = image;
+                            await turnContext.SendActivityAsync("請輸入您的物品名稱", null, null, cancellationToken);
+                            flow.LastQuestionAsked = SellFlow.Question.name;
+                            break;
+                        }
                         Item.imageSrc = image;
                         Item.cvResults = await cvResult(image);
                         var o = Item.cvResults.Objects;
@@ -688,8 +687,14 @@ namespace Microsoft.BotBuilderSamples
                     }
                 case SellFlow.Question.name:
                     if (ValidateName(input, out var name, out message))
-                    {
+                    {                   
                         Item.name = name;
+                        if(Item.imageSrc == "跳過")
+                        {
+                            await turnContext.SendActivityAsync("請輸入您的物品描述", null, null, cancellationToken);
+                            flow.LastQuestionAsked = SellFlow.Question.discription;
+                            break;
+                        }
                         var captions = Item.cvResults.Description.Captions;
                         string c_text = captions[0].Text;
                         var obj = MessageFactory.Text("請問您的物品描述是否為");
@@ -744,7 +749,12 @@ namespace Microsoft.BotBuilderSamples
                     if (ValidatePrice(input, out var price, out message))
                     {
                         Item.price = price;
-                        var rep = MessageFactory.Text("請確認您的商品?");
+                        var rep = MessageFactory.Text("請確認您的商品");
+                        string s = $"商品名稱 : {Item.name}\n" +
+                            $"商品描述 : {Item.description}\n" +
+                            $"商品數量 : {Item.quantity}\n " +
+                            $"商品金額 : {Item.price}";
+                        await turnContext.SendActivityAsync(s, null, null, cancellationToken);
 
                         rep.SuggestedActions = new SuggestedActions()
                         {
@@ -790,22 +800,44 @@ namespace Microsoft.BotBuilderSamples
         private bool ValidateImage(ITurnContext turnContext, out string image, out string message)
         {
             message = null;
+            if(turnContext.Activity.Text == "跳過")
+            {
+                image = turnContext.Activity.Text;
+                return message is null;
+            }
             image = "https://p2.bahamut.com.tw/B/2KU/06/ab809378e0d5116c0b861c30c31b3di5.JPG";
             if (turnContext.Activity.ChannelId == "line")
             {
-                //var channelData = ((DelegatingTurnContext<IMessageActivity>)turnContext).Activity.ChannelData.ToString();
+                var channelData = ((DelegatingTurnContext<IMessageActivity>)turnContext).Activity.ChannelData.ToString();
                 //_logger.LogInformation("fuck", channelData);
                 //var msg = JsonConvert.DeserializeObject<LineImage>(channelData);
                 //image = lineBot.GetlineImage(msg.message.id);
                 //message = channelData;
-                
+                try
+                {
+                    var msg = JsonConvert.DeserializeObject<LineImage>(channelData);
+                    image = lineBot.GetlineImage(msg.message.id);
+                }
+                catch
+                {
+                    try
+                    {
+
+                        image = Imgur.Imgur.UploadSrc(turnContext.Activity.Text);
+                    }
+                    catch
+                    {
+                        message = "上傳失敗，請再試一次";
+                    }
+
+                }
             }
-            //else
-            //{
-            //    string input = turnContext.Activity.Attachments[0].ContentUrl;
-            //    image = Imgur.Imgur.UploadSrc(input);
-            //    if (image == "false") message = "圖片格式錯誤，請再試一次";
-            //}
+            else
+            {
+                string input = turnContext.Activity.Attachments[0].ContentUrl;
+                image = Imgur.Imgur.UploadSrc(input);
+                if (image == "false") message = "圖片格式錯誤，請再試一次";
+            }
             return message is null;
         }
 
@@ -813,7 +845,7 @@ namespace Microsoft.BotBuilderSamples
         {
             Name = input.Trim();
             message = null;
-            if (Name == "其他") message = "麻煩請輸入您的商品";
+            if (Name == "其他") message = "麻煩請輸入您的商品名稱";
             return message is null;
         }
 
@@ -928,7 +960,7 @@ namespace Microsoft.BotBuilderSamples
             }
             return message is null;
         }
-        private static double getDistance(float lat1, float long1, float lat2, float long2)
+        private static double getDistance(double lat1, double long1, double lat2, double long2)
         {
             var R = 6371;
 

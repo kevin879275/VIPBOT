@@ -132,7 +132,7 @@ namespace Microsoft.BotBuilderSamples
                             profile.Interest,
                             profile.location.Latitude,
                             profile.location.Longitude);
-                        await turnContext.SendActivityAsync($"已完成輸入，感謝您", null, null, cancellationToken);
+                        await turnContext.SendActivityAsync($"已完成輸入，感謝您。請輸入買或賣", null, null, cancellationToken);
                         break;
                     }
                     else
