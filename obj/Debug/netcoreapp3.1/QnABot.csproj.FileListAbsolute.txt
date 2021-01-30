@@ -532,3 +532,4 @@ C:\Users\ASUS\Documents\GitHub\VIPBOT\obj\Debug\netcoreapp3.1\QnABot.pdb
 C:\Users\ASUS\Documents\GitHub\VIPBOT\obj\Debug\netcoreapp3.1\QnABot.genruntimeconfig.cache
 C:\Users\ASUS\Documents\GitHub\VIPBOT\bin\Debug\netcoreapp3.1\Microsoft.Azure.CognitiveServices.Vision.ComputerVision.dll
 C:\Users\ASUS\Documents\GitHub\VIPBOT\obj\Debug\netcoreapp3.1\QnABot.csprojAssemblyReference.cache
+C:\Users\ASUS\Documents\GitHub\VIPBOT\bin\Debug\netcoreapp3.1\Controllers\NotifyController.cs

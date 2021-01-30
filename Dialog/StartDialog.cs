@@ -149,6 +149,13 @@ namespace Microsoft.BotBuilderSamples
             location = null;
             if (((ITurnContext<IMessageActivity>)turnContext).Activity.ChannelId != "line")
             {
+                location = new Location
+                {
+                    Type = "location",
+                    Address = "新竹市東區",
+                    Latitude = 35.688806F,
+                    Longitude = 139.701739F,
+                };
                 return true;
             }
 
@@ -167,13 +174,7 @@ namespace Microsoft.BotBuilderSamples
             {
                 return false;
             }
-            //location = new Location
-            //{
-            //    Type = "location",
-            //    Address = "新竹市東區",
-            //    Latitude = 35.688806F,
-            //    Longitude = 139.701739F,
-            //};
+            
             return location is not null;
         }
 

@@ -25,6 +25,9 @@ using Microsoft.Recognizers.Text.DateTime;
 using Microsoft.Recognizers.Text.Number;
 using Microsoft.Bot.Builder.Dialogs.Choices;
 
+using System.Collections.Concurrent;
+using Microsoft.Bot.Builder.Integration.AspNet.Core;
+
 namespace Microsoft.BotBuilderSamples
 {
 
@@ -32,9 +35,13 @@ namespace Microsoft.BotBuilderSamples
     {
         private readonly ILogger<DispatchBot> _logger;
         private readonly IBotServices _botServices;
+        private readonly ConcurrentDictionary<string, ConversationReference> _conversationReferences;
 
         private static readonly HttpClient client = new HttpClient();
         private static SQL_Database db = new SQL_Database();
+        public static string allmsg = "test";
+        //public static IBotFrameworkHttpAdapter _adapter;
+        //public static string _appId;
 
         public static ComputerVisionClient cv = new ComputerVisionClient(new ApiKeyServiceClientCredentials("6681cfc712a947ef876d46adb7187ab1")) { Endpoint = "https://vipcv.cognitiveservices.azure.com/" };
 
@@ -46,12 +53,12 @@ namespace Microsoft.BotBuilderSamples
         //protected readonly StartDialog Dialog;
         private static Dictionary<string, StartDialog> askFirstState = new Dictionary<string, StartDialog>();
         private static Dictionary<string, string> dialogState = new Dictionary<string, string>();
+        
 
         private readonly string[] _cards = {
-
-        //Path.Combine (".", "Cards", "Covid19Status.json"),
-        //Path.Combine (".", "Cards", "GlobalStatus.json"),
-    };
+            //Path.Combine (".", "Cards", "Covid19Status.json"),
+            //Path.Combine (".", "Cards", "GlobalStatus.json"),
+        };
 
         public static Task<ImageAnalysis> cvResult(string imgurl)
         {
@@ -60,10 +67,11 @@ namespace Microsoft.BotBuilderSamples
             VisualFeatureTypes.Objects
           });
         }
-        public DispatchBot(IBotServices botServices, ILogger<DispatchBot> logger, ConversationState conversationState, UserState userState)
+        public DispatchBot(IBotServices botServices, ILogger<DispatchBot> logger, ConversationState conversationState, UserState userState, ConcurrentDictionary<string, ConversationReference> conversationReferences)
         {
             _logger = logger;
             _botServices = botServices;
+            _conversationReferences = conversationReferences;
             ConversationState = conversationState;
             UserState = userState;
 
@@ -77,6 +85,18 @@ namespace Microsoft.BotBuilderSamples
             //}
         }
 
+        private void AddConversationReference(Activity activity)
+        {
+            var conversationReference = activity.GetConversationReference();
+            _conversationReferences.AddOrUpdate(conversationReference.User.Id, conversationReference, (key, newValue) => conversationReference);
+        }
+
+        protected override Task OnConversationUpdateActivityAsync(ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
+        {
+            AddConversationReference(turnContext.Activity as Activity);
+
+            return base.OnConversationUpdateActivityAsync(turnContext, cancellationToken);
+        }
 
         public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default)
         {
@@ -87,8 +107,27 @@ namespace Microsoft.BotBuilderSamples
             await UserState.SaveChangesAsync(turnContext, false, cancellationToken);
         }
 
+        //public async void sendMsg(string text)
+        //{
+        //    foreach (var conversationReference in _conversationReferences.Values)
+        //    {
+        //        await ((BotAdapter)_adapter).ContinueConversationAsync(_appId, conversationReference, async (turnContext, cancellationToken) => await turnContext.SendActivityAsync(text), default(CancellationToken));
+        //    }
+        //}
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
+            //var channelData = ((DelegatingTurnContext<IMessageActivity>)turnContext).Activity.ChannelData.ToString();
+            //await turnContext.SendActivityAsync(channelData);
+
+            //var tmp = new LineFunctions();
+            //var msg = tmp.SetCard("https://p2.bahamut.com.tw/B/2KU/06/ab809378e0d5116c0b861c30c31b3di5.JPG", "Name", "30", "70",
+            //    "Testing", "新竹市東區", 5);
+            //List<string> lt = new List<string> { "Uf9ea697c4e6d5209e8ea0eab54d15fd9" };
+            ////await lineBot.PushJson(lt, msg);
+            //await lineBot.PushMessage(lt, "87878");
+
+            AddConversationReference(turnContext.Activity as Activity);
+
             // First, we use the dispatch model to determine which cognitive service (LUIS or QnA) to use.
             //await Dialog.BeginDialogAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
             string userID = getID(turnContext);
@@ -139,11 +178,11 @@ namespace Microsoft.BotBuilderSamples
                        userID,
                        item.price,
                        item.name);
-                    var tmp = new LineFunctions();
-                    var msg = tmp.SetCard(item.imageSrc, item.name, item.quantity.ToString(), item.price.ToString(),
-                        item.description, item.location, itemNow);
-                    var pushLst = getAccountList(askFirstState[userID].profile, item.type);
-                    await lineBot.PushJson(pushLst, msg);
+                    //var tmp = new LineFunctions();
+                    //var msg = tmp.SetCard(item.imageSrc, item.name, item.quantity.ToString(), item.price.ToString(),
+                    //    item.description, item.location, itemNow);
+                    //var pushLst = getAccountList(askFirstState[userID].profile, item.type);
+                    //await lineBot.PushJson(pushLst, msg);
                     itemNow++;
                 }
             }
@@ -578,7 +617,7 @@ namespace Microsoft.BotBuilderSamples
             return message is null;
         }
 
-        private static async Task FillOutSellItemAsync(SellFlow flow, SellItem Item, ITurnContext turnContext, CancellationToken cancellationToken)
+        private async Task FillOutSellItemAsync(SellFlow flow, SellItem Item, ITurnContext turnContext, CancellationToken cancellationToken)
         {
             var input = turnContext.Activity.Text?.Trim();
             string message;
@@ -747,23 +786,18 @@ namespace Microsoft.BotBuilderSamples
             }
         }
 
-        private static bool ValidateImage(ITurnContext turnContext, out string image, out string message)
+        private bool ValidateImage(ITurnContext turnContext, out string image, out string message)
         {
             message = null;
             image = "https://p2.bahamut.com.tw/B/2KU/06/ab809378e0d5116c0b861c30c31b3di5.JPG";
             if (turnContext.Activity.ChannelId == "line")
             {
-                var channelData = ((DelegatingTurnContext<IMessageActivity>)turnContext).Activity.ChannelData.ToString();
+                //var channelData = ((DelegatingTurnContext<IMessageActivity>)turnContext).Activity.ChannelData.ToString();
                 //_logger.LogInformation("fuck", channelData);
-                try
-                {
-                    var msg = JsonConvert.DeserializeObject<LineImage>(channelData);
-                    image = lineBot.GetlineImage(msg.message.id);
-                }
-                catch
-                {
-                    message = "上傳失敗，請再試一次";
-                }
+                //var msg = JsonConvert.DeserializeObject<LineImage>(channelData);
+                //image = lineBot.GetlineImage(msg.message.id);
+                //message = channelData;
+                
             }
             //else
             //{
@@ -923,7 +957,7 @@ namespace Microsoft.BotBuilderSamples
             var userList = db.Select_tabUser();
             foreach (User user in userList)
             {
-                if (user.UserId == me.UserId) continue;
+                //if (user.UserId == me.UserId) continue;
                 double dis = getDistance(me.location.Latitude, me.location.Longitude, user.location.Latitude, user.location.Longitude);
                 if (dis < 1F + 1e-9F || (itemType != "其他" && itemType == user.Interest && dis < 5F + 1e-9F))
                 {
