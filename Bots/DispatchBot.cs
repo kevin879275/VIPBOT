@@ -641,7 +641,7 @@ namespace Microsoft.BotBuilderSamples
                     if (ValidateType(input, out var type, out message))
                     {
                         Item.type = type;
-                        await turnContext.SendActivityAsync("您好，請上傳物品圖片並稍後片刻", null, null, cancellationToken);
+                        await turnContext.SendActivityAsync("您好，請上傳物品圖片並稍後片刻 (or輸入跳過)", null, null, cancellationToken);
                         flow.LastQuestionAsked = SellFlow.Question.imageSrc;
                         break;
                     }
@@ -653,6 +653,13 @@ namespace Microsoft.BotBuilderSamples
                 case SellFlow.Question.imageSrc:
                     if (ValidateImage(turnContext, out var image, out message))
                     {
+                        if(image == "跳過")
+                        {
+                            Item.imageSrc = image;
+                            await turnContext.SendActivityAsync("請輸入您的物品名稱", null, null, cancellationToken);
+                            flow.LastQuestionAsked = SellFlow.Question.name;
+                            break;
+                        }
                         Item.imageSrc = image;
                         Item.cvResults = await cvResult(image);
                         var o = Item.cvResults.Objects;
@@ -680,8 +687,14 @@ namespace Microsoft.BotBuilderSamples
                     }
                 case SellFlow.Question.name:
                     if (ValidateName(input, out var name, out message))
-                    {
+                    {                   
                         Item.name = name;
+                        if(Item.imageSrc == "跳過")
+                        {
+                            await turnContext.SendActivityAsync("請輸入您的物品描述", null, null, cancellationToken);
+                            flow.LastQuestionAsked = SellFlow.Question.discription;
+                            break;
+                        }
                         var captions = Item.cvResults.Description.Captions;
                         string c_text = captions[0].Text;
                         var obj = MessageFactory.Text("請問您的物品描述是否為");
@@ -736,7 +749,12 @@ namespace Microsoft.BotBuilderSamples
                     if (ValidatePrice(input, out var price, out message))
                     {
                         Item.price = price;
-                        var rep = MessageFactory.Text("請確認您的商品?");
+                        var rep = MessageFactory.Text("請確認您的商品");
+                        string s = $"商品名稱 : {Item.name}\n" +
+                            $"商品描述 : {Item.description}\n" +
+                            $"商品數量 : {Item.quantity}\n " +
+                            $"商品金額 : {Item.price}";
+                        await turnContext.SendActivityAsync(s, null, null, cancellationToken);
 
                         rep.SuggestedActions = new SuggestedActions()
                         {
@@ -782,6 +800,11 @@ namespace Microsoft.BotBuilderSamples
         private bool ValidateImage(ITurnContext turnContext, out string image, out string message)
         {
             message = null;
+            if(turnContext.Activity.Text == "跳過")
+            {
+                image = turnContext.Activity.Text;
+                return message is null;
+            }
             image = "https://p2.bahamut.com.tw/B/2KU/06/ab809378e0d5116c0b861c30c31b3di5.JPG";
             if (turnContext.Activity.ChannelId == "line")
             {
@@ -822,7 +845,7 @@ namespace Microsoft.BotBuilderSamples
         {
             Name = input.Trim();
             message = null;
-            if (Name == "其他") message = "麻煩請輸入您的商品";
+            if (Name == "其他") message = "麻煩請輸入您的商品名稱";
             return message is null;
         }
 
